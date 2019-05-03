@@ -20,6 +20,11 @@ namespace WaterSieveDynamicClone
             AddBuilding.IntoTechTree("Distillation", ID);
         }
 
+        public static Color32 Color()
+        {
+            return new Color32(0, 255, 104, 255);
+        }
+
         public override BuildingDef CreateBuildingDef()
         {
             BuildingDef buildingDef = base.CreateBuildingDef();

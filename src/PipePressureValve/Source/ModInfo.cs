@@ -3,6 +3,6 @@
     public static class ModInfo
     {
         public static string Name = "Pipe Pressure Valve";
-        public static int Version = 0;
+        public static int Version = 1;
     }
 }

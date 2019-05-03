@@ -14,4 +14,16 @@ namespace WaterSieveDynamicClone
             }
         }
     }
+
+    [HarmonyPatch(typeof(BuildingComplete), "OnSpawn")]
+    public class ApplyColor
+    {
+        public static void Postfix(BuildingComplete __instance)
+        {
+            if (string.Compare(__instance.name, (WaterPurifierDynamicConfig.ID + "Complete")) == 0)
+            {
+                __instance.GetComponent<KAnimControllerBase>().TintColour = WaterPurifierDynamicConfig.Color();
+            }
+        }
+    }
 }
