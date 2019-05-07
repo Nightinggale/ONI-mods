@@ -13,17 +13,17 @@ namespace HighFlowStorage
         public static string Description = "";
         public const string Effect = "For people where one pipe isn't enough.";
 
-        private ConduitPortInfo inputPort1 = new ConduitPortInfo(ConduitType.Liquid, new CellOffset(1, 1));
-        private ConduitPortInfo inputPort2 = new ConduitPortInfo(ConduitType.Liquid, new CellOffset(1, 2));
+        private NightLib.DisplayConduitPortInfo inputPort1 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(1, 1), true);
+        private NightLib.DisplayConduitPortInfo inputPort2 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(1, 2), true);
 
-        private ConduitPortInfo outputPort1 = new ConduitPortInfo(ConduitType.Liquid, new CellOffset(0, 1));
-        private ConduitPortInfo outputPort2 = new ConduitPortInfo(ConduitType.Liquid, new CellOffset(0, 2));
+        private NightLib.DisplayConduitPortInfo outputPort1 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(0, 1));
+        private NightLib.DisplayConduitPortInfo outputPort2 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(0, 2));
 
         public static void Setup()
         {
             NightLib.AddBuilding.AddStrings(ID, DisplayName, Description, Effect);
 
-            NightLib.AddBuilding.AddBuildingToPlanScreen("Base", ID, LiquidReservoirConfig.ID);
+            NightLib.AddBuilding.AddBuildingToPlanScreen("Base", ID, LadderConfig.ID);// LiquidReservoirConfig.ID);
         }
 
         public override BuildingDef CreateBuildingDef()
@@ -48,14 +48,10 @@ namespace HighFlowStorage
             Storage storage = go.GetComponent<Storage>();
 
             NightLib.ConduitDispenser1 conduitDispenser1 = go.AddOrGet<NightLib.ConduitDispenser1>();
-            conduitDispenser1.conduitType = ConduitType.Liquid;
-            conduitDispenser1.elementFilter = null;
-            conduitDispenser1.portInfo = outputPort1;
+            conduitDispenser1.AssignPort(this.outputPort1);
 
             NightLib.ConduitDispenser2 conduitDispenser2 = go.AddOrGet<NightLib.ConduitDispenser2>();
-            conduitDispenser2.conduitType = ConduitType.Liquid;
-            conduitDispenser2.elementFilter = null;
-            conduitDispenser2.portInfo = outputPort2;
+            conduitDispenser2.AssignPort(this.outputPort2);
 
             NightLib.ConduitConsumer1 consumer1 = go.AddOrGet<NightLib.ConduitConsumer1>();
             consumer1.conduitType = ConduitType.Liquid;
@@ -63,7 +59,7 @@ namespace HighFlowStorage
             consumer1.forceAlwaysSatisfied = true;
             consumer1.alwaysConsume = true;
             consumer1.capacityKG = storage.capacityKg;
-            consumer1.portInfo = this.inputPort1;
+            consumer1.AssignPort(this.inputPort1);
 
             NightLib.ConduitConsumer2 consumer2 = go.AddOrGet<NightLib.ConduitConsumer2>();
             consumer2.conduitType = ConduitType.Liquid;
@@ -71,22 +67,20 @@ namespace HighFlowStorage
             consumer2.forceAlwaysSatisfied = true;
             consumer2.alwaysConsume = true;
             consumer2.capacityKG = storage.capacityKg;
-            consumer2.portInfo = this.inputPort2;
+            consumer2.AssignPort(this.inputPort2);
         }
 
         private void AttachPort(GameObject go)
         {
             NightLib.PortDisplay output1 = go.AddComponent<NightLib.PortDisplay1>();
             NightLib.PortDisplay output2 = go.AddComponent<NightLib.PortDisplay2>();
-            output1.portInfo = this.outputPort1;
-            output2.portInfo = this.outputPort2;
+            output1.AssignPort(this.outputPort1);
+            output2.AssignPort(this.outputPort2);
 
             NightLib.PortDisplay input1 = go.AddComponent<NightLib.PortDisplay3>();
             NightLib.PortDisplay input2 = go.AddComponent<NightLib.PortDisplay4>();
-            input1.portInfo = this.inputPort1;
-            input2.portInfo = this.inputPort2;
-            input1.input = true;
-            input2.input = true;
+            input1.AssignPort(this.inputPort1);
+            input2.AssignPort(this.inputPort2);
         }
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)

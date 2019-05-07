@@ -12,23 +12,22 @@ namespace NightLib
     internal class PortDisplay7 : PortDisplay { }
     internal class PortDisplay8 : PortDisplay { }
 
+    // can't be stored in components. It somehow gets reset before it's used
+    // Serialization doesn't seem to help at all
     internal class DisplayConduitPortInfo
     {
-        readonly internal ConduitType conduitType;
-
+        readonly internal ConduitType type;
         readonly internal CellOffset offset;
-
         readonly internal bool input;
-
         readonly internal Color color;
 
         internal DisplayConduitPortInfo(ConduitType type, CellOffset offset, bool input = false, Color? color = null)
         {
-            this.conduitType = type;
+            this.type = type;
             this.offset = offset;
             this.input = input;
 
-            this.color = color ?? (input ? Color.white : Color.green);
+            this.color = color ?? (input ? new Color(0.4f, 0.4f, 0.4f) : new Color(0.1f, 0.5f, 0.2f));
         }
     }
 
@@ -39,53 +38,55 @@ namespace NightLib
         private int utilityCell = -1;
 
         [SerializeField]
-        internal ConduitPortInfo portInfo;
+        internal ConduitType type;
 
-        internal bool input = false;
+        [SerializeField]
+        internal CellOffset offset;
 
-        internal ConduitType GetSecondaryConduitType()
+        [SerializeField]
+        internal bool input;
+
+        [SerializeField]
+        internal Color32 color;
+
+        internal void AssignPort(DisplayConduitPortInfo port)
         {
-            return this.portInfo.conduitType;
+            this.type = port.type;
+            this.offset = port.offset;
+            this.input = port.input;
+            this.color = port.color;
         }
-
-        internal CellOffset GetSecondaryConduitOffset()
-        {
-            return this.portInfo.offset;
-        }
-
-        internal Color32 portColor = new Color(0.4f, 0.4f, 0.4f);
 
         internal void Draw(GameObject obj, BuildingCellVisualizer visualizer)
         {
             
             if (utilityCell == -1)
             {
-                utilityCell = visualizer.GetBuilding().GetCellWithOffset(GetSecondaryConduitOffset());
+                utilityCell = visualizer.GetBuilding().GetCellWithOffset(this.offset);
             }
-            visualizer.DrawUtilityIcon(utilityCell, GetSprite(visualizer), ref portObject, portColor, Color.white);
+            visualizer.DrawUtilityIcon(utilityCell, GetSprite(visualizer), ref portObject, color, Color.red);
         }
 
         private Sprite GetSprite(BuildingCellVisualizer visualizer)
         {
-            ConduitType type = GetSecondaryConduitType();
             if (input)
             {
-                if (type == ConduitType.Gas)
+                if (this.type == ConduitType.Gas)
                 {
                     return visualizer.GetResources().gasInputIcon;
                 }
-                else if (type == ConduitType.Liquid || type == ConduitType.Solid)
+                else if (this.type == ConduitType.Liquid || this.type == ConduitType.Solid)
                 {
                     return visualizer.GetResources().liquidInputIcon;
                 }
             }
             else
             {
-                if (type == ConduitType.Gas)
+                if (this.type == ConduitType.Gas)
                 {
                     return visualizer.GetResources().gasOutputIcon;
                 }
-                else if (type == ConduitType.Liquid || type == ConduitType.Solid)
+                else if (this.type == ConduitType.Liquid || this.type == ConduitType.Solid)
                 {
                     return visualizer.GetResources().liquidOutputIcon;
                 }

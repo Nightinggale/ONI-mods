@@ -14,15 +14,15 @@ namespace NightLib
     [SkipSaveFileSerialization]
     internal abstract class ConduitConsumerBase : KMonoBehaviour
     {
-        [SerializeField]
-        internal ConduitPortInfo portInfo;
-
         internal enum WrongElementResult
         {
             Destroy,
             Dump,
             Store
         }
+
+        [SerializeField]
+        internal CellOffset conduitOffset;
 
         [SerializeField]
         internal ConduitType conduitType;
@@ -70,6 +70,13 @@ namespace NightLib
         private bool satisfied;
 
         internal ConduitConsumer.WrongElementResult wrongElementResult;
+
+        internal void AssignPort(DisplayConduitPortInfo port)
+        {
+            this.conduitType = port.type;
+            this.conduitOffset = port.offset;
+            if (!port.input) Console.WriteLine("CONFIG ERROR: ConduitConsumer assigned to an output port");
+        }
 
         internal bool IsConnected
         {
@@ -169,7 +176,7 @@ namespace NightLib
 
         private int GetInputCell()
         {
-            return base.GetComponent<Building>().GetCellWithOffset(this.portInfo.offset);
+            return base.GetComponent<Building>().GetCellWithOffset(this.conduitOffset);
         }
 
         protected override void OnSpawn()
@@ -177,8 +184,8 @@ namespace NightLib
             base.OnSpawn();
             this.utilityCell = this.GetInputCell();
 
-            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.portInfo.conduitType);
-            this.networkItem = new FlowUtilityNetwork.NetworkItem(this.portInfo.conduitType, Endpoint.Sink, this.utilityCell, base.gameObject);
+            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.conduitType);
+            this.networkItem = new FlowUtilityNetwork.NetworkItem(this.conduitType, Endpoint.Sink, this.utilityCell, base.gameObject);
             networkManager.AddToNetworks(this.utilityCell, this.networkItem, true);
 
             ScenePartitionerLayer layer = GameScenePartitioner.Instance.objectLayers[(this.conduitType != ConduitType.Gas) ? 16 : 12];
@@ -189,7 +196,7 @@ namespace NightLib
 
         protected override void OnCleanUp()
         {
-            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.portInfo.conduitType);
+            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.conduitType);
             networkManager.RemoveFromNetworks(this.utilityCell, this.networkItem, true);
 
             this.GetConduitManager().RemoveConduitUpdater(new Action<float>(this.ConduitUpdate));

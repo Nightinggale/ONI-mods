@@ -16,13 +16,13 @@ namespace NightLib
     internal class CustomConduitDispenser : KMonoBehaviour, ISaveLoadable
     {
         [SerializeField]
-        internal ConduitPortInfo portInfo;
+        internal CellOffset conduitOffset;
 
         [SerializeField]
         internal ConduitType conduitType;
 
         [SerializeField]
-        internal SimHashes[] elementFilter;
+        internal SimHashes[] elementFilter = null;
 
         [SerializeField]
         internal bool invertElementFilter;
@@ -45,6 +45,13 @@ namespace NightLib
         protected int utilityCell = -1;
 
         private int elementOutputOffset;
+
+        internal void AssignPort(DisplayConduitPortInfo port)
+        {
+            this.conduitType = port.type;
+            this.conduitOffset = port.offset;
+            if (port.input) Console.WriteLine("CONFIG ERROR: ConduitDispenser assigned to an input port");
+        }
 
         internal ConduitType TypeOfConduit
         {
@@ -104,9 +111,9 @@ namespace NightLib
         {
             base.OnSpawn();
 
-            this.utilityCell = base.GetComponent<Building>().GetCellWithOffset(GetSecondaryConduitOffset());
-            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.portInfo.conduitType);
-            this.networkItem = new FlowUtilityNetwork.NetworkItem(this.portInfo.conduitType, Endpoint.Source, this.utilityCell, base.gameObject);
+            this.utilityCell = base.GetComponent<Building>().GetCellWithOffset(this.conduitOffset);
+            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.conduitType);
+            this.networkItem = new FlowUtilityNetwork.NetworkItem(this.conduitType, Endpoint.Source, this.utilityCell, base.gameObject);
             networkManager.AddToNetworks(this.utilityCell, this.networkItem, true);
 
             ScenePartitionerLayer layer = GameScenePartitioner.Instance.objectLayers[(this.conduitType != ConduitType.Gas) ? 16 : 12];
@@ -117,7 +124,7 @@ namespace NightLib
 
         protected override void OnCleanUp()
         {
-            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.portInfo.conduitType);
+            IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.conduitType);
             networkManager.RemoveFromNetworks(this.utilityCell, this.networkItem, true);
 
             this.GetConduitManager().RemoveConduitUpdater(new Action<float>(this.ConduitUpdate));
@@ -175,16 +182,6 @@ namespace NightLib
                 }
             }
             return false;
-        }
-
-        internal ConduitType GetSecondaryConduitType()
-        {
-            return this.portInfo.conduitType;
-        }
-
-        internal CellOffset GetSecondaryConduitOffset()
-        {
-            return this.portInfo.offset;
         }
     }
 }
