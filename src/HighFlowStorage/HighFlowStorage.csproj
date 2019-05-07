@@ -70,6 +70,9 @@
     <Compile Include="..\NightLib\ConduitDispenser.cs">
       <Link>NightLib\ConduitDispenser.cs</Link>
     </Compile>
+    <Compile Include="..\NightLib\ConduitPatches.cs">
+      <Link>NightLib\ConduitPatches.cs</Link>
+    </Compile>
     <Compile Include="..\NightLib\ConduitPortDisplay.cs">
       <Link>NightLib\ConduitPortDisplay.cs</Link>
     </Compile>
@@ -79,6 +82,7 @@
     <Compile Include="..\NightLib\Extensions.cs">
       <Link>NightLib\Extensions.cs</Link>
     </Compile>
+    <Compile Include="Source\PortDisplayHelpers.cs" />
     <Compile Include="Source\ModInfo.cs" />
     <Compile Include="Source\Properties\AssemblyInfo.cs" />
     <Compile Include="Source\HighFlowStorageConfig.cs" />
