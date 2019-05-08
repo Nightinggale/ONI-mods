@@ -51,5 +51,24 @@ namespace NightLib
             }
             return null;
         }
+
+        //
+        // Below this line are specific examples of ref arguments
+        // Ref arguments can't be added generic and they have to have a specific function for each.
+        // If added as generic as possible, maybe they can be reused at some point.
+        //
+
+        internal static object Call<T>(object o, string methodName, object a, object b, object c, ref T d) where T : class
+        {
+            var mi = o.GetType().GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (mi != null)
+            {
+                var varlist = new object[] { a, b, c, d };
+                object result = mi.Invoke(o, varlist);
+                d = varlist[3] as T;
+                return result;
+            }
+            return null;
+        }
     }
 }
