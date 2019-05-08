@@ -26,7 +26,7 @@ using System;
  * Usage is self explainatory. Allows easy and clean access to correctly formatting strings
  */
 
-namespace NightLib
+namespace NightLib.AddBuilding
 {
     internal static class AddBuilding
     {

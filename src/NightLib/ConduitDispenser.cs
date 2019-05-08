@@ -5,15 +5,8 @@ using UnityEngine;
 
 namespace NightLib
 {
-    internal class ConduitDispenser0 : CustomConduitDispenser { }
-    internal class ConduitDispenser1 : CustomConduitDispenser { }
-    internal class ConduitDispenser2 : CustomConduitDispenser { }
-    internal class ConduitDispenser3 : CustomConduitDispenser { }
-    internal class ConduitDispenser4 : CustomConduitDispenser { }
-    internal class ConduitDispenser5 : CustomConduitDispenser { }
-
     [SerializationConfig(MemberSerialization.OptIn)]
-    internal class CustomConduitDispenser : KMonoBehaviour, ISaveLoadable
+    internal class PortConduitDispenser : KMonoBehaviour, ISaveLoadable
     {
         [SerializeField]
         internal CellOffset conduitOffset;
@@ -133,7 +126,7 @@ namespace NightLib
 
         protected virtual void ConduitUpdate(float dt)
         {
-            this.operational.SetFlag(CustomConduitDispenser.outputConduitFlag, this.IsConnected);
+            this.operational.SetFlag(PortConduitDispenser.outputConduitFlag, this.IsConnected);
             if (this.operational.IsOperational || this.alwaysDispense)
             {
                 PrimaryElement primaryElement = this.FindSuitableElement();

@@ -4,15 +4,8 @@ using UnityEngine;
 
 namespace NightLib
 {
-    internal class ConduitConsumer0 : ConduitConsumerBase { }
-    internal class ConduitConsumer1 : ConduitConsumerBase { }
-    internal class ConduitConsumer2 : ConduitConsumerBase { }
-    internal class ConduitConsumer3 : ConduitConsumerBase { }
-    internal class ConduitConsumer4 : ConduitConsumerBase { }
-    internal class ConduitConsumer5 : ConduitConsumerBase { }
- 
     [SkipSaveFileSerialization]
-    internal abstract class ConduitConsumerBase : KMonoBehaviour
+    internal class PortConduitConsumer : KMonoBehaviour
     {
         internal enum WrongElementResult
         {

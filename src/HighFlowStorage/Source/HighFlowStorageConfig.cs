@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using NightLib;
+using NightLib.AddBuilding;
 
 namespace HighFlowStorage
 {
@@ -22,9 +23,9 @@ namespace HighFlowStorage
 
         public static void Setup()
         {
-            NightLib.AddBuilding.AddStrings(ID, DisplayName, Description, Effect);
+            AddBuilding.AddStrings(ID, DisplayName, Description, Effect);
 
-            NightLib.AddBuilding.AddBuildingToPlanScreen("Base", ID, LadderConfig.ID);// LiquidReservoirConfig.ID);
+            AddBuilding.AddBuildingToPlanScreen("Base", ID, LadderConfig.ID);// LiquidReservoirConfig.ID);
         }
 
         public override BuildingDef CreateBuildingDef()
@@ -48,13 +49,13 @@ namespace HighFlowStorage
 
             Storage storage = go.GetComponent<Storage>();
 
-            NightLib.ConduitDispenser1 conduitDispenser1 = go.AddOrGet<NightLib.ConduitDispenser1>();
+            PortConduitDispenser conduitDispenser1 = go.AddComponent<PortConduitDispenser>();
             conduitDispenser1.AssignPort(outputPort1);
 
-            NightLib.ConduitDispenser2 conduitDispenser2 = go.AddOrGet<NightLib.ConduitDispenser2>();
+            PortConduitDispenser conduitDispenser2 = go.AddComponent<PortConduitDispenser>();
             conduitDispenser2.AssignPort(outputPort2);
 
-            NightLib.ConduitConsumer1 consumer1 = go.AddOrGet<NightLib.ConduitConsumer1>();
+            PortConduitConsumer consumer1 = go.AddComponent<PortConduitConsumer>();
             consumer1.conduitType = ConduitType.Liquid;
             consumer1.ignoreMinMassCheck = true;
             consumer1.forceAlwaysSatisfied = true;
@@ -62,7 +63,7 @@ namespace HighFlowStorage
             consumer1.capacityKG = storage.capacityKg;
             consumer1.AssignPort(inputPort1);
 
-            NightLib.ConduitConsumer2 consumer2 = go.AddOrGet<NightLib.ConduitConsumer2>();
+            PortConduitConsumer consumer2 = go.AddComponent<PortConduitConsumer>();
             consumer2.conduitType = ConduitType.Liquid;
             consumer2.ignoreMinMassCheck = true;
             consumer2.forceAlwaysSatisfied = true;
