@@ -1,7 +1,8 @@
 ﻿using Harmony;
 using DisplayPortHelpers;
+using NightLib;
 
-namespace NightLib
+namespace NightLib.PortDisplayDrawing
 {
     public static class ConduitDisplayPortPatches
     {
@@ -14,7 +15,7 @@ namespace NightLib
                 if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
                 {
                     UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
-                    foreach (NightLib.PortDisplay portDisplay in go.GetComponents<NightLib.PortDisplay>())
+                    foreach (PortDisplay portDisplay in go.GetComponents<PortDisplay>())
                     {
                         portDisplay.DisableIcons();
                     }
@@ -25,26 +26,49 @@ namespace NightLib
 
         [HarmonyPatch(typeof(BuildingCellVisualizer))]
         [HarmonyPatch("Tick")]
-        public static class ApplyPorts
+        public static class DrawPorts
         {
+            internal static bool useGas = false;
+            internal static bool useLiquid = false;
+            internal static bool useSolid = false;
+
             public static void Postfix(BuildingCellVisualizer __instance, HashedString mode)
             {
-                ConduitType type =
-                    (mode == OverlayModes.LiquidConduits.ID) ? ConduitType.Liquid :
-                    (mode == OverlayModes.GasConduits.ID) ? ConduitType.Gas :
-                    (mode == OverlayModes.SolidConveyor.ID) ? ConduitType.Solid :
-                    ConduitType.None;
-
-                if (type != ConduitType.None && __instance.GetBuilding().name.IsBuildingPartOfThisMod())
+                if (useGas && mode == OverlayModes.GasConduits.ID)
                 {
-                    UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
-                    foreach (NightLib.PortDisplay portDisplay in go.GetComponents<NightLib.PortDisplay>())
+                    if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
                     {
-                        if (type == portDisplay.type)
+                        UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
+                        foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayGas>())
                         {
                             portDisplay.Draw(go, __instance);
                         }
                     }
+                    return;
+                }
+                if (useLiquid && mode == OverlayModes.LiquidConduits.ID)
+                {
+                    if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
+                    {
+                        UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
+                        foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayLiquid>())
+                        {
+                            portDisplay.Draw(go, __instance);
+                        }
+                    }
+                    return;
+                }
+                if (useSolid && mode == OverlayModes.SolidConveyor.ID)
+                {
+                    if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
+                    {
+                        UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
+                        foreach (PortDisplay portDisplay in go.GetComponents<PortDisplaySolid>())
+                        {
+                            portDisplay.Draw(go, __instance);
+                        }
+                    }
+                    return;
                 }
             }
 

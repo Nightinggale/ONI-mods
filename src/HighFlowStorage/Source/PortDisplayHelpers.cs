@@ -13,7 +13,7 @@ namespace DisplayPortHelpers
     {
         internal static bool IsBuildingPartOfThisMod(this String building)
         {
-            return building.Equals(HighFlowStorage.HighFlowLiquidReservoirConfig.ID + "Complete");
+            return building.Equals(HighFlowStorage.HighFlowLiquidReservoirConfig.ID + "Complete") || building.Equals(HighFlowStorage.HighFlowLiquidReservoirConfig.ID + "UnderConstruction");
         }
     }
 }

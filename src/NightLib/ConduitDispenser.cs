@@ -46,11 +46,10 @@ namespace NightLib
 
         private int elementOutputOffset;
 
-        internal void AssignPort(DisplayConduitPortInfo port)
+        internal void AssignPort(IPortDisplayOutput port)
         {
-            this.conduitType = port.type;
-            this.conduitOffset = port.offset;
-            if (port.input) Console.WriteLine("CONFIG ERROR: ConduitDispenser assigned to an input port");
+            this.conduitType = port.GetConduitType();
+            this.conduitOffset = port.GetOffset();
         }
 
         internal ConduitType TypeOfConduit

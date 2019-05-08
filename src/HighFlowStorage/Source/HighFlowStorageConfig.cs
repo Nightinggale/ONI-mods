@@ -1,6 +1,7 @@
 ﻿using KSerialization;
 using UnityEngine;
 using System;
+using NightLib;
 
 namespace HighFlowStorage
 {
@@ -13,11 +14,11 @@ namespace HighFlowStorage
         public static string Description = "";
         public const string Effect = "For people where one pipe isn't enough.";
 
-        private NightLib.DisplayConduitPortInfo inputPort1 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(1, 1), true);
-        private NightLib.DisplayConduitPortInfo inputPort2 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(1, 2), true);
+        private PortDisplayLiquidInput inputPort1 = new PortDisplayLiquidInput(new CellOffset(1, 1));
+        private PortDisplayLiquidInput inputPort2 = new PortDisplayLiquidInput(new CellOffset(1, 2));
 
-        private NightLib.DisplayConduitPortInfo outputPort1 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(0, 1));
-        private NightLib.DisplayConduitPortInfo outputPort2 = new NightLib.DisplayConduitPortInfo(ConduitType.Liquid, new CellOffset(0, 2));
+        private PortDisplayLiquidOutput outputPort1 = new PortDisplayLiquidOutput(new CellOffset(0, 1));
+        private PortDisplayLiquidOutput outputPort2 = new PortDisplayLiquidOutput(new CellOffset(0, 2));
 
         public static void Setup()
         {
@@ -72,15 +73,10 @@ namespace HighFlowStorage
 
         private void AttachPort(GameObject go)
         {
-            NightLib.PortDisplay output1 = go.AddComponent<NightLib.PortDisplay1>();
-            NightLib.PortDisplay output2 = go.AddComponent<NightLib.PortDisplay2>();
-            output1.AssignPort(this.outputPort1);
-            output2.AssignPort(this.outputPort2);
-
-            NightLib.PortDisplay input1 = go.AddComponent<NightLib.PortDisplay3>();
-            NightLib.PortDisplay input2 = go.AddComponent<NightLib.PortDisplay4>();
-            input1.AssignPort(this.inputPort1);
-            input2.AssignPort(this.inputPort2);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(this.outputPort1);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(this.outputPort2);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(this.inputPort1);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(this.inputPort2);
         }
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)

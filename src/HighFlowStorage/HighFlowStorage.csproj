@@ -76,6 +76,9 @@
     <Compile Include="..\NightLib\ConduitPortDisplay.cs">
       <Link>NightLib\ConduitPortDisplay.cs</Link>
     </Compile>
+    <Compile Include="..\NightLib\ConduitPortDisplayClasses.cs">
+      <Link>NightLib\ConduitPortDisplayClasses.cs</Link>
+    </Compile>
     <Compile Include="..\NightLib\ConduitReadPrivate.cs">
       <Link>NightLib\ConduitReadPrivate.cs</Link>
     </Compile>

@@ -2,35 +2,9 @@
 
 namespace NightLib
 {
-    internal class PortDisplay0 : PortDisplay { }
-    internal class PortDisplay1 : PortDisplay { }
-    internal class PortDisplay2 : PortDisplay { }
-    internal class PortDisplay3 : PortDisplay { }
-    internal class PortDisplay4 : PortDisplay { }
-    internal class PortDisplay5 : PortDisplay { }
-    internal class PortDisplay6 : PortDisplay { }
-    internal class PortDisplay7 : PortDisplay { }
-    internal class PortDisplay8 : PortDisplay { }
-
-    // can't be stored in components. It somehow gets reset before it's used
-    // Serialization doesn't seem to help at all
-    internal class DisplayConduitPortInfo
-    {
-        readonly internal ConduitType type;
-        readonly internal CellOffset offset;
-        readonly internal bool input;
-        readonly internal Color color;
-
-        internal DisplayConduitPortInfo(ConduitType type, CellOffset offset, bool input = false, Color? color = null)
-        {
-            this.type = type;
-            this.offset = offset;
-            this.input = input;
-
-            this.color = color ?? (input ? new Color(0.4f, 0.4f, 0.4f) : new Color(0.1f, 0.5f, 0.2f));
-        }
-    }
-
+    internal class PortDisplayGas    : PortDisplay { public void AssignPort(PortDisplayGasBase    port) { base.AssignPort(port); } }
+    internal class PortDisplayLiquid : PortDisplay { public void AssignPort(PortDisplayLiquidBase port) { base.AssignPort(port); } }
+    internal class PortDisplaySolid  : PortDisplay { public void AssignPort(PortDisplaySolidBase  port) { base.AssignPort(port); } }
 
     internal abstract class PortDisplay : KMonoBehaviour
     {
@@ -49,7 +23,7 @@ namespace NightLib
         [SerializeField]
         internal Color32 color;
 
-        internal void AssignPort(DisplayConduitPortInfo port)
+        protected void AssignPort(DisplayConduitPortInfo port)
         {
             this.type = port.type;
             this.offset = port.offset;
