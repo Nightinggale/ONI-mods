@@ -11,14 +11,14 @@ namespace HighFlowStorage
         new public const string ID = "HighFlowLiquidReservoir";
 
         private const string DisplayName = "High Flow Liquid Reservoir";
-        public static string Description = "";
+        public const string Description = "";
         public const string Effect = "For people where one pipe isn't enough.";
 
-        private PortDisplayLiquidInput inputPort1 = new PortDisplayLiquidInput(new CellOffset(1, 1));
-        private PortDisplayLiquidInput inputPort2 = new PortDisplayLiquidInput(new CellOffset(1, 2));
+        private static readonly PortDisplayLiquidInput inputPort1 = new PortDisplayLiquidInput(new CellOffset(1, 1));
+        private static readonly PortDisplayLiquidInput inputPort2 = new PortDisplayLiquidInput(new CellOffset(1, 2));
 
-        private PortDisplayLiquidOutput outputPort1 = new PortDisplayLiquidOutput(new CellOffset(0, 1));
-        private PortDisplayLiquidOutput outputPort2 = new PortDisplayLiquidOutput(new CellOffset(0, 2));
+        private static readonly PortDisplayLiquidOutput outputPort1 = new PortDisplayLiquidOutput(new CellOffset(0, 1));
+        private static readonly PortDisplayLiquidOutput outputPort2 = new PortDisplayLiquidOutput(new CellOffset(0, 2));
 
         public static void Setup()
         {
@@ -49,10 +49,10 @@ namespace HighFlowStorage
             Storage storage = go.GetComponent<Storage>();
 
             NightLib.ConduitDispenser1 conduitDispenser1 = go.AddOrGet<NightLib.ConduitDispenser1>();
-            conduitDispenser1.AssignPort(this.outputPort1);
+            conduitDispenser1.AssignPort(outputPort1);
 
             NightLib.ConduitDispenser2 conduitDispenser2 = go.AddOrGet<NightLib.ConduitDispenser2>();
-            conduitDispenser2.AssignPort(this.outputPort2);
+            conduitDispenser2.AssignPort(outputPort2);
 
             NightLib.ConduitConsumer1 consumer1 = go.AddOrGet<NightLib.ConduitConsumer1>();
             consumer1.conduitType = ConduitType.Liquid;
@@ -60,7 +60,7 @@ namespace HighFlowStorage
             consumer1.forceAlwaysSatisfied = true;
             consumer1.alwaysConsume = true;
             consumer1.capacityKG = storage.capacityKg;
-            consumer1.AssignPort(this.inputPort1);
+            consumer1.AssignPort(inputPort1);
 
             NightLib.ConduitConsumer2 consumer2 = go.AddOrGet<NightLib.ConduitConsumer2>();
             consumer2.conduitType = ConduitType.Liquid;
@@ -68,15 +68,15 @@ namespace HighFlowStorage
             consumer2.forceAlwaysSatisfied = true;
             consumer2.alwaysConsume = true;
             consumer2.capacityKG = storage.capacityKg;
-            consumer2.AssignPort(this.inputPort2);
+            consumer2.AssignPort(inputPort2);
         }
 
         private void AttachPort(GameObject go)
         {
-            go.AddComponent<PortDisplayLiquid>().AssignPort(this.outputPort1);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(this.outputPort2);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(this.inputPort1);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(this.inputPort2);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, outputPort1);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, outputPort2);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, inputPort1);
+            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, inputPort2);
         }
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)

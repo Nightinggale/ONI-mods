@@ -1,6 +1,6 @@
 ﻿using Harmony;
-using DisplayPortHelpers;
-using NightLib;
+using System;
+using System.Collections.Generic;
 
 namespace NightLib.PortDisplayDrawing
 {
@@ -12,7 +12,7 @@ namespace NightLib.PortDisplayDrawing
         {
             public static void Postfix(BuildingCellVisualizer __instance)
             {
-                if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
+                if (DrawPorts.HasBuilding(__instance.GetBuilding().name))
                 {
                     UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                     foreach (PortDisplay portDisplay in go.GetComponents<PortDisplay>())
@@ -28,15 +28,24 @@ namespace NightLib.PortDisplayDrawing
         [HarmonyPatch("Tick")]
         public static class DrawPorts
         {
-            internal static bool useGas = false;
-            internal static bool useLiquid = false;
-            internal static bool useSolid = false;
+            // cache variables
+            private static bool useGas    = false;
+            private static bool useLiquid = false;
+            private static bool useSolid  = false;
 
+            private static HashSet<string> buildings       = new HashSet<string>();
+            private static HashSet<string> buildingsGas    = new HashSet<string>();
+            private static HashSet<string> buildingsLiquid = new HashSet<string>();
+            private static HashSet<string> buildingsSolid  = new HashSet<string>();
+
+            // Draw port icons on the screen
+            // Uses the cache to skip buildings the cache tells will not have ports
+            // Uses cache to skip overlays entirely if no ports exist for the overlay in question
             public static void Postfix(BuildingCellVisualizer __instance, HashedString mode)
             {
                 if (useGas && mode == OverlayModes.GasConduits.ID)
                 {
-                    if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
+                    if (buildingsGas.Contains(__instance.GetBuilding().name))
                     {
                         UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                         foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayGas>())
@@ -48,7 +57,7 @@ namespace NightLib.PortDisplayDrawing
                 }
                 if (useLiquid && mode == OverlayModes.LiquidConduits.ID)
                 {
-                    if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
+                    if (buildingsLiquid.Contains(__instance.GetBuilding().name))
                     {
                         UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                         foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayLiquid>())
@@ -60,7 +69,7 @@ namespace NightLib.PortDisplayDrawing
                 }
                 if (useSolid && mode == OverlayModes.SolidConveyor.ID)
                 {
-                    if (__instance.GetBuilding().name.IsBuildingPartOfThisMod())
+                    if (buildingsSolid.Contains(__instance.GetBuilding().name))
                     {
                         UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                         foreach (PortDisplay portDisplay in go.GetComponents<PortDisplaySolid>())
@@ -72,6 +81,37 @@ namespace NightLib.PortDisplayDrawing
                 }
             }
 
+            private static void AddBuilding(string ID, ref HashSet<String> list)
+            {
+                list.Add(ID + "Complete");
+                list.Add(ID + "UnderConstruction");
+            }
+
+            internal static bool HasBuilding(string name)
+            {
+                return buildings.Contains(name);
+            }
+
+            // Add a building to the cache
+            internal static void AddBuilding(string ID, ConduitType type)
+            {
+                AddBuilding(ID, ref buildings);
+                switch (type)
+                {
+                    case ConduitType.Gas:
+                        AddBuilding(ID, ref buildingsGas);
+                        useGas = true;
+                        break;
+                    case ConduitType.Liquid:
+                        AddBuilding(ID, ref buildingsLiquid);
+                        useLiquid = true;
+                        break;
+                    case ConduitType.Solid:
+                        AddBuilding(ID, ref buildingsSolid);
+                        useSolid = true;
+                        break;
+                }
+            }
         }
 
     }

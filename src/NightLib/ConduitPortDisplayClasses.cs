@@ -78,20 +78,6 @@ namespace NightLib
             this.input = input;
 
             this.color = color ?? (input ? new Color(0.4f, 0.4f, 0.4f) : new Color(0.1f, 0.5f, 0.2f));
-
-            // setup drawing flag to enable drawing of the type in question
-            if (type == ConduitType.Gas)
-            {
-                NightLib.PortDisplayDrawing.ConduitDisplayPortPatches.DrawPorts.useGas = true;
-            }
-            else if (type == ConduitType.Liquid)
-            {
-                NightLib.PortDisplayDrawing.ConduitDisplayPortPatches.DrawPorts.useLiquid = true;
-            }
-            else if (type == ConduitType.Solid)
-            {
-                NightLib.PortDisplayDrawing.ConduitDisplayPortPatches.DrawPorts.useSolid = true;
-            }
         }
 
         public override ConduitType GetConduitType()
