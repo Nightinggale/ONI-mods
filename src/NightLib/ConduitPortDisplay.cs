@@ -9,7 +9,7 @@ namespace NightLib
     internal abstract class PortDisplay : KMonoBehaviour
     {
         private GameObject portObject;
-        private int utilityCell = -1;
+        internal int utilityCell = -1;
 
         [SerializeField]
         internal ConduitType type;

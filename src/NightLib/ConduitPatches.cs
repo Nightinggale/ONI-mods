@@ -9,12 +9,27 @@ namespace NightLib.PortDisplayDrawing
     public static class ConduitDisplayPortPatches
     {
         [HarmonyPatch(typeof(BuildingCellVisualizer))]
+        [HarmonyPatch("CheckRequiresComponent")]
+        public static class CheckRequiresComponent
+        {
+            public static void Postfix(ref bool __result, BuildingDef def)
+            {
+                if (!__result)
+                {
+                    Console.WriteLine(def.PrefabID);
+                }
+                __result |= DrawPorts.HasBuilding(def.PrefabID);
+            }
+        }
+
+
+        [HarmonyPatch(typeof(BuildingCellVisualizer))]
         [HarmonyPatch("DisableIcons")]
         public static class HidePorts
         {
             public static void Postfix(BuildingCellVisualizer __instance)
             {
-                if (DrawPorts.HasBuilding(__instance.GetBuilding().name))
+                if (DrawPorts.HasBuilding(__instance.GetBuilding().Def.PrefabID))
                 {
                     UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                     foreach (PortDisplay portDisplay in go.GetComponents<PortDisplay>())
@@ -47,11 +62,13 @@ namespace NightLib.PortDisplayDrawing
             {
                 if (useGas && mode == OverlayModes.GasConduits.ID)
                 {
-                    if (buildingsGas.Contains(__instance.GetBuilding().name))
+                    if (buildingsGas.Contains(__instance.GetBuilding().Def.PrefabID))
                     {
+                        bool preview = __instance.GetBuilding() is BuildingPreview;
                         UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                         foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayGas>())
                         {
+                            if (preview) portDisplay.utilityCell = -1;
                             portDisplay.Draw(go, __instance);
                         }
                     }
@@ -59,11 +76,13 @@ namespace NightLib.PortDisplayDrawing
                 }
                 if (useLiquid && mode == OverlayModes.LiquidConduits.ID)
                 {
-                    if (buildingsLiquid.Contains(__instance.GetBuilding().name))
+                    if (buildingsLiquid.Contains(__instance.GetBuilding().Def.PrefabID))
                     {
+                        bool preview = __instance.GetBuilding() is BuildingPreview;
                         UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                         foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayLiquid>())
                         {
+                            if (preview) portDisplay.utilityCell = -1;
                             portDisplay.Draw(go, __instance);
                         }
                     }
@@ -71,22 +90,18 @@ namespace NightLib.PortDisplayDrawing
                 }
                 if (useSolid && mode == OverlayModes.SolidConveyor.ID)
                 {
-                    if (buildingsSolid.Contains(__instance.GetBuilding().name))
+                    if (buildingsSolid.Contains(__instance.GetBuilding().Def.PrefabID))
                     {
+                        bool preview = __instance.GetBuilding() is BuildingPreview;
                         UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
                         foreach (PortDisplay portDisplay in go.GetComponents<PortDisplaySolid>())
                         {
+                            if (preview) portDisplay.utilityCell = -1;
                             portDisplay.Draw(go, __instance);
                         }
                     }
                     return;
                 }
-            }
-
-            private static void AddBuilding(string ID, ref HashSet<String> list)
-            {
-                list.Add(ID + "Complete");
-                list.Add(ID + "UnderConstruction");
             }
 
             internal static bool HasBuilding(string name)
@@ -97,19 +112,19 @@ namespace NightLib.PortDisplayDrawing
             // Add a building to the cache
             internal static void AddBuilding(string ID, ConduitType type)
             {
-                AddBuilding(ID, ref buildings);
+                buildings.Add(ID);
                 switch (type)
                 {
                     case ConduitType.Gas:
-                        AddBuilding(ID, ref buildingsGas);
+                        buildingsGas.Add(ID);
                         useGas = true;
                         break;
                     case ConduitType.Liquid:
-                        AddBuilding(ID, ref buildingsLiquid);
+                        buildingsLiquid.Add(ID);
                         useLiquid = true;
                         break;
                     case ConduitType.Solid:
-                        AddBuilding(ID, ref buildingsSolid);
+                        buildingsSolid.Add(ID);
                         useSolid = true;
                         break;
                 }
