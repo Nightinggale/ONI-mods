@@ -16,11 +16,11 @@ namespace HighFlowStorage
         public const string Description = "";
         public const string Effect = "For people where one pipe just isn't enough.";
 
-        private static readonly PortDisplayGasInput inputPort0 = new PortDisplayGasInput(new CellOffset(-2, 2), Color.white);
-        private static readonly PortDisplayGasInput inputPort1 = new PortDisplayGasInput(new CellOffset(-1, 2), Color.white);
-        private static readonly PortDisplayGasInput inputPort2 = new PortDisplayGasInput(new CellOffset(0, 2), Color.white);
-        private static readonly PortDisplayGasInput inputPort3 = new PortDisplayGasInput(new CellOffset(1, 2), Color.white);
-        private static readonly PortDisplayGasInput inputPort4 = new PortDisplayGasInput(new CellOffset(2, 2), Color.white);
+        private static readonly PortDisplayGasInput inputPort0 = new PortDisplayGasInput(new CellOffset(-2, 2));
+        private static readonly PortDisplayGasInput inputPort1 = new PortDisplayGasInput(new CellOffset(-1, 2));
+        private static readonly PortDisplayGasInput inputPort2 = new PortDisplayGasInput(new CellOffset(0, 2));
+        private static readonly PortDisplayGasInput inputPort3 = new PortDisplayGasInput(new CellOffset(1, 2));
+        private static readonly PortDisplayGasInput inputPort4 = new PortDisplayGasInput(new CellOffset(2, 2));
 
         private static readonly PortDisplayGasOutput outputPort0 = new PortDisplayGasOutput(new CellOffset(-2, 0));
         private static readonly PortDisplayGasOutput outputPort1 = new PortDisplayGasOutput(new CellOffset(-1, 0));
@@ -60,6 +60,7 @@ namespace HighFlowStorage
 
             BuildingDef buildingDef = BuildingTemplates.CreateBuildingDef(ID, width, height, anim, hitpoints, construction_time, mass, materials, melting_point, build_location_rule, decor, noise, temperature_modification_mass_scale);
 
+            buildingDef.Overheatable = false;
             buildingDef.Floodable = false;
             buildingDef.ViewMode = OverlayModes.GasConduits.ID;
             buildingDef.AudioCategory = "HollowMetal";

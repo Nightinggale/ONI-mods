@@ -21,14 +21,22 @@ namespace NightLib
         internal bool input;
 
         [SerializeField]
-        internal Color32 color;
+        internal Color32 colorConnected;
+
+        [SerializeField]
+        internal Color32 colorDisconnected;
+
+        [SerializeField]
+        internal Sprite sprite;
 
         protected void AssignPort(string ID, DisplayConduitPortInfo port)
         {
             this.type = port.type;
             this.offset = port.offset;
             this.input = port.input;
-            this.color = port.color;
+            this.colorConnected = port.colorConnected;
+            this.colorDisconnected = port.colorDisconnected;
+            this.sprite = GetSprite();
 
             // Add the building/overlay combo to the drawing code cache
             // For performance reasons only building/overlay combos in the cache will attempt to draw modded ports
@@ -43,31 +51,37 @@ namespace NightLib
             {
                 utilityCell = visualizer.GetBuilding().GetCellWithOffset(this.offset);
             }
-            visualizer.DrawUtilityIcon(utilityCell, GetSprite(visualizer), ref portObject, color, Color.red);
+            visualizer.DrawUtilityIcon(utilityCell, this.sprite, ref portObject, GetColor(), Color.white);
         }
 
-        private Sprite GetSprite(BuildingCellVisualizer visualizer)
+        private Color32 GetColor()
         {
+            return this.type.IsConnected(this.utilityCell) ? this.colorConnected : this.colorDisconnected;
+        }
+
+        private Sprite GetSprite()
+        {
+            var resources = BuildingCellVisualizerResources.Instance();
             if (input)
             {
                 if (this.type == ConduitType.Gas)
                 {
-                    return visualizer.GetResources().gasInputIcon;
+                    return resources.gasInputIcon;
                 }
                 else if (this.type == ConduitType.Liquid || this.type == ConduitType.Solid)
                 {
-                    return visualizer.GetResources().liquidInputIcon;
+                    return resources.liquidInputIcon;
                 }
             }
             else
             {
                 if (this.type == ConduitType.Gas)
                 {
-                    return visualizer.GetResources().gasOutputIcon;
+                    return resources.gasOutputIcon;
                 }
                 else if (this.type == ConduitType.Liquid || this.type == ConduitType.Solid)
                 {
-                    return visualizer.GetResources().liquidOutputIcon;
+                    return resources.liquidOutputIcon;
                 }
             }
 

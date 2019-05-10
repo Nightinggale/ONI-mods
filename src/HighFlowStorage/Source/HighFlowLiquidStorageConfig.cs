@@ -15,9 +15,9 @@ namespace HighFlowStorage
         public const string Description = "";
         public const string Effect = "For people where one pipe just isn't enough.";
 
-        private static readonly PortDisplayLiquidInput inputPort0 = new PortDisplayLiquidInput(new CellOffset(1, 0), Color.white);
-        private static readonly PortDisplayLiquidInput inputPort1 = new PortDisplayLiquidInput(new CellOffset(1, 1), Color.white);
-        private static readonly PortDisplayLiquidInput inputPort2 = new PortDisplayLiquidInput(new CellOffset(1, 2), Color.white);
+        private static readonly PortDisplayLiquidInput inputPort0 = new PortDisplayLiquidInput(new CellOffset(1, 0));
+        private static readonly PortDisplayLiquidInput inputPort1 = new PortDisplayLiquidInput(new CellOffset(1, 1));
+        private static readonly PortDisplayLiquidInput inputPort2 = new PortDisplayLiquidInput(new CellOffset(1, 2));
 
         private static readonly PortDisplayLiquidOutput outputPort0 = new PortDisplayLiquidOutput(new CellOffset(0, 0));
         private static readonly PortDisplayLiquidOutput outputPort1 = new PortDisplayLiquidOutput(new CellOffset(0, 1));
@@ -53,6 +53,7 @@ namespace HighFlowStorage
 
             BuildingDef buildingDef = BuildingTemplates.CreateBuildingDef(ID, width, height, anim, hitpoints, construction_time, mass, materials, melting_point, build_location_rule, decor, noise, temperature_modification_mass_scale);
 
+            buildingDef.Overheatable = false;
             buildingDef.Floodable = false;
             buildingDef.ViewMode = OverlayModes.LiquidConduits.ID;
             buildingDef.AudioCategory = "HollowMetal";

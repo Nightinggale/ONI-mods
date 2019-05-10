@@ -16,49 +16,49 @@ namespace NightLib
 
     internal class PortDisplayGasInput : PortDisplayGasBase, IPortDisplayInput
     {
-        internal PortDisplayGasInput(CellOffset offset, Color? color = null) : base(offset, true, color) { }
+        internal PortDisplayGasInput(CellOffset offset, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, true, colorConnected, colorDisonnected) { }
     }
 
     internal class PortDisplayGasOutput : PortDisplayGasBase, IPortDisplayOutput
     {
-        internal PortDisplayGasOutput(CellOffset offset, Color? color = null) : base(offset, false, color) { }
+        internal PortDisplayGasOutput(CellOffset offset, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, false, colorConnected, colorDisonnected) { }
     }
 
     internal class PortDisplayLiquidInput : PortDisplayLiquidBase, IPortDisplayInput
     {
-        internal PortDisplayLiquidInput(CellOffset offset, Color? color = null) : base(offset, true, color) { }
+        internal PortDisplayLiquidInput(CellOffset offset, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, true, colorConnected, colorDisonnected) { }
     }
 
     internal class PortDisplayLiquidOutput : PortDisplayLiquidBase, IPortDisplayOutput
     {
-        internal PortDisplayLiquidOutput(CellOffset offset, Color? color = null) : base(offset, false, color) { }
+        internal PortDisplayLiquidOutput(CellOffset offset, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, false, colorConnected, colorDisonnected) { }
     }
 
     internal class PortDisplaySolidInput : PortDisplaySolidBase, IPortDisplayInput
     {
-        internal PortDisplaySolidInput(CellOffset offset, Color? color = null) : base(offset, true, color) { }
+        internal PortDisplaySolidInput(CellOffset offset, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, true, colorConnected, colorDisonnected) { }
     }
 
     internal class PortDisplaySolidOutput : PortDisplaySolidBase, IPortDisplayOutput
     {
-        internal PortDisplaySolidOutput(CellOffset offset, Color? color = null) : base(offset, false, color) { }
+        internal PortDisplaySolidOutput(CellOffset offset, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, false, colorConnected, colorDisonnected) { }
     }
 
 
 
     internal abstract class PortDisplayGasBase : DisplayConduitPortInfo
     {
-        protected PortDisplayGasBase(CellOffset offset, bool input, Color? color) : base(ConduitType.Gas, offset, input, color) { }
+        protected PortDisplayGasBase(CellOffset offset, bool input, Color? colorConnected, Color? colorDisonnected) : base(ConduitType.Gas, offset, input, colorConnected, colorDisonnected) { }
     }
 
     internal abstract class PortDisplayLiquidBase : DisplayConduitPortInfo
     {
-        protected PortDisplayLiquidBase(CellOffset offset, bool input, Color? color) : base(ConduitType.Liquid, offset, input, color) { }
+        protected PortDisplayLiquidBase(CellOffset offset, bool input, Color? colorConnected, Color? colorDisonnected) : base(ConduitType.Liquid, offset, input, colorConnected, colorDisonnected) { }
     }
 
     internal abstract class PortDisplaySolidBase : DisplayConduitPortInfo
     {
-        protected PortDisplaySolidBase(CellOffset offset, bool input, Color? color) : base(ConduitType.Solid, offset, input, color) { }
+        protected PortDisplaySolidBase(CellOffset offset, bool input, Color? colorConnected, Color? colorDisonnected) : base(ConduitType.Solid, offset, input, colorConnected, colorDisonnected) { }
     }
 
 
@@ -69,15 +69,31 @@ namespace NightLib
         readonly internal ConduitType type;
         readonly internal CellOffset offset;
         readonly internal bool input;
-        readonly internal Color color;
+        readonly internal Color colorConnected;
+        readonly internal Color colorDisconnected;
 
-        internal DisplayConduitPortInfo(ConduitType type, CellOffset offset, bool input = false, Color? color = null)
+        internal DisplayConduitPortInfo(ConduitType type, CellOffset offset, bool input, Color? colorConnected, Color? colorDisonnected)
         {
             this.type = type;
             this.offset = offset;
             this.input = input;
 
-            this.color = color ?? (input ? new Color(0.4f, 0.4f, 0.4f) : new Color(0.1f, 0.5f, 0.2f));
+            // assign port colors
+            if (colorConnected != null)
+            {
+                this.colorConnected = colorConnected ?? Color.white;
+                this.colorDisconnected = colorDisonnected ?? this.colorConnected;
+            }
+            else
+            {
+                // none given. Use defaults
+                var resources = BuildingCellVisualizerResources.Instance();
+                var ioColors = type == ConduitType.Gas ? resources.gasIOColours : resources.liquidIOColours;
+                var colorSet = input ? ioColors.input : ioColors.output;
+
+                this.colorConnected = colorSet.connected;
+                this.colorDisconnected = colorSet.disconnected;
+            }
         }
 
         public override ConduitType GetConduitType()

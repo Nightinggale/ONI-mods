@@ -12,11 +12,6 @@ namespace NightLib
             return ReadPrivate.Get(typeof(BuildingCellVisualizer), __instance, "building") as Building;
         }
 
-        internal static BuildingCellVisualizerResources GetResources(this BuildingCellVisualizer __instance)
-        {
-            return ReadPrivate.Get(typeof(BuildingCellVisualizer), __instance, "resources") as BuildingCellVisualizerResources;
-        }
-
         internal static void DrawUtilityIcon(this BuildingCellVisualizer __instance, int cell, Sprite icon_img, ref GameObject visualizerObj, Color tint, Color connectorColor, float scaleMultiplier = 1.5f, bool hideBG = false)
         {
             var mi = typeof(BuildingCellVisualizer).GetMethods(BindingFlags.InvokeMethod | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)

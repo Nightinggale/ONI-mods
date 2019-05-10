@@ -36,6 +36,12 @@ namespace NightLib
             return 0;
         }
 
+        // Get the index of the layer with the connectors (ports) for the conduit type in question 
+        internal static bool IsConnected(this ConduitType conduitType, int cell)
+        {
+            return Grid.Objects[cell, conduitType.GetConduitObjectLayer()] != null;
+        }
+
         // Get a cell of a building. Takes rotation into account
         internal static int GetCellWithOffset(this Building building, CellOffset offset)
         {
