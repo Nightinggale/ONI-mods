@@ -85,9 +85,11 @@
     <Compile Include="..\NightLib\Extensions.cs">
       <Link>NightLib\Extensions.cs</Link>
     </Compile>
+    <Compile Include="Source\HighFlowLGasStorageVerticalConfig.cs" />
+    <Compile Include="Source\HighFlowLGasStorageConfig.cs" />
     <Compile Include="Source\ModInfo.cs" />
     <Compile Include="Source\Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\HighFlowStorageConfig.cs" />
+    <Compile Include="Source\HighFlowLiquidStorageConfig.cs" />
     <Compile Include="Source\HighFlowStoragePatches.cs" />
   </ItemGroup>
   <ItemGroup />

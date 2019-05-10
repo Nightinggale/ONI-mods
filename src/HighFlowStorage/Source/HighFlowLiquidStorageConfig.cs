@@ -2,10 +2,7 @@
 using UnityEngine;
 using NightLib;
 using NightLib.AddBuilding;
-using System;
 using TUNING;
-using UnityEngine;
-
 
 namespace HighFlowStorage
 {
@@ -32,6 +29,11 @@ namespace HighFlowStorage
 
             AddBuilding.AddBuildingToPlanScreen("Base", ID, LiquidReservoirConfig.ID);
             AddBuilding.IntoTechTree("ImprovedLiquidPiping", ID);
+        }
+
+        public static Color32 BuildingColor()
+        {
+            return new Color32(0, 255, 104, 255);
         }
 
         public override BuildingDef CreateBuildingDef()
