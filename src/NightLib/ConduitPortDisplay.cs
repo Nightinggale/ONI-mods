@@ -18,6 +18,9 @@ namespace NightLib
         internal CellOffset offset;
 
         [SerializeField]
+        internal CellOffset offsetFlipped;
+
+        [SerializeField]
         internal bool input;
 
         [SerializeField]
@@ -33,6 +36,7 @@ namespace NightLib
         {
             this.type = port.type;
             this.offset = port.offset;
+            this.offsetFlipped = port.offsetFlipped;
             this.input = port.input;
             this.colorConnected = port.colorConnected;
             this.colorDisconnected = port.colorDisconnected;
@@ -49,7 +53,8 @@ namespace NightLib
             
             if (utilityCell == -1)
             {
-                utilityCell = visualizer.GetBuilding().GetCellWithOffset(this.offset);
+                var building = visualizer.GetBuilding();
+                utilityCell = building.GetCellWithOffset(building.Orientation == Orientation.Neutral ? this.offset : this.offsetFlipped);
             }
             visualizer.DrawUtilityIcon(utilityCell, this.sprite, ref portObject, GetColor(), Color.white);
         }

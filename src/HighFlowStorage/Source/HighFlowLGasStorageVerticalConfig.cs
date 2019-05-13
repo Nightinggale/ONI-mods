@@ -16,17 +16,17 @@ namespace HighFlowStorage
         public const string Description = "";
         public const string Effect = "For people where one pipe just isn't enough.";
 
-        private static readonly PortDisplayGasInput inputPort0 = new PortDisplayGasInput(new CellOffset(-2, 2));
-        private static readonly PortDisplayGasInput inputPort1 = new PortDisplayGasInput(new CellOffset(-1, 2));
-        private static readonly PortDisplayGasInput inputPort2 = new PortDisplayGasInput(new CellOffset(0, 2));
-        private static readonly PortDisplayGasInput inputPort3 = new PortDisplayGasInput(new CellOffset(1, 2));
-        private static readonly PortDisplayGasInput inputPort4 = new PortDisplayGasInput(new CellOffset(2, 2));
+        private static readonly PortDisplayGasInput inputPort0 = new PortDisplayGasInput(new CellOffset(-2, 2), new CellOffset(-2, 0));
+        private static readonly PortDisplayGasInput inputPort1 = new PortDisplayGasInput(new CellOffset(-1, 2), new CellOffset(-1, 0));
+        private static readonly PortDisplayGasInput inputPort2 = new PortDisplayGasInput(new CellOffset(0, 2), new CellOffset(0, 0));
+        private static readonly PortDisplayGasInput inputPort3 = new PortDisplayGasInput(new CellOffset(1, 2), new CellOffset(1, 0));
+        private static readonly PortDisplayGasInput inputPort4 = new PortDisplayGasInput(new CellOffset(2, 2), new CellOffset(2, 0));
 
-        private static readonly PortDisplayGasOutput outputPort0 = new PortDisplayGasOutput(new CellOffset(-2, 0));
-        private static readonly PortDisplayGasOutput outputPort1 = new PortDisplayGasOutput(new CellOffset(-1, 0));
-        private static readonly PortDisplayGasOutput outputPort2 = new PortDisplayGasOutput(new CellOffset(0, 0));
-        private static readonly PortDisplayGasOutput outputPort3 = new PortDisplayGasOutput(new CellOffset(1, 0));
-        private static readonly PortDisplayGasOutput outputPort4 = new PortDisplayGasOutput(new CellOffset(2, 0));
+        private static readonly PortDisplayGasOutput outputPort0 = new PortDisplayGasOutput(new CellOffset(-2, 0), new CellOffset(-2, 2));
+        private static readonly PortDisplayGasOutput outputPort1 = new PortDisplayGasOutput(new CellOffset(-1, 0), new CellOffset(-1, 2));
+        private static readonly PortDisplayGasOutput outputPort2 = new PortDisplayGasOutput(new CellOffset(0, 0), new CellOffset(0, 2));
+        private static readonly PortDisplayGasOutput outputPort3 = new PortDisplayGasOutput(new CellOffset(1, 0), new CellOffset(1, 2));
+        private static readonly PortDisplayGasOutput outputPort4 = new PortDisplayGasOutput(new CellOffset(2, 0), new CellOffset(2, 2));
 
         private static readonly PortDisplayGasInput[] inputPorts = { inputPort0, inputPort1, inputPort2, inputPort3, inputPort4 };
 
@@ -65,7 +65,7 @@ namespace HighFlowStorage
             buildingDef.Floodable = false;
             buildingDef.ViewMode = OverlayModes.GasConduits.ID;
             buildingDef.AudioCategory = "HollowMetal";
-            buildingDef.PermittedRotations = PermittedRotations.Unrotatable;
+            buildingDef.PermittedRotations = PermittedRotations.FlipH;
             return buildingDef;
         }
 

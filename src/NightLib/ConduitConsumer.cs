@@ -18,6 +18,9 @@ namespace NightLib
         internal CellOffset conduitOffset;
 
         [SerializeField]
+        internal CellOffset conduitOffsetFlipped;
+
+        [SerializeField]
         internal ConduitType conduitType;
 
         [SerializeField]
@@ -68,6 +71,7 @@ namespace NightLib
         {
             this.conduitType = port.GetConduitType();
             this.conduitOffset = port.GetOffset();
+            this.conduitOffsetFlipped = port.GetOffsetFlipped();
         }
 
         internal bool IsConnected
@@ -168,7 +172,8 @@ namespace NightLib
 
         private int GetInputCell()
         {
-            return base.GetComponent<Building>().GetCellWithOffset(this.conduitOffset);
+            var building = base.GetComponent<Building>();
+            return building.GetCellWithOffset(building.Orientation == Orientation.Neutral ? this.conduitOffset : this.conduitOffsetFlipped);
         }
 
         protected override void OnSpawn()

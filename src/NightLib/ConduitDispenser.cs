@@ -12,6 +12,9 @@ namespace NightLib
         internal CellOffset conduitOffset;
 
         [SerializeField]
+        internal CellOffset conduitOffsetFlipped;
+
+        [SerializeField]
         internal ConduitType conduitType;
 
         [SerializeField]
@@ -43,6 +46,7 @@ namespace NightLib
         {
             this.conduitType = port.GetConduitType();
             this.conduitOffset = port.GetOffset();
+            this.conduitOffsetFlipped = port.GetOffsetFlipped();
         }
 
         internal ConduitType TypeOfConduit
@@ -103,7 +107,8 @@ namespace NightLib
         {
             base.OnSpawn();
 
-            this.utilityCell = base.GetComponent<Building>().GetCellWithOffset(this.conduitOffset);
+            var building = base.GetComponent<Building>();
+            this.utilityCell = building.GetCellWithOffset(building.Orientation == Orientation.Neutral ? this.conduitOffset : this.conduitOffsetFlipped);
             IUtilityNetworkMgr networkManager = Conduit.GetNetworkManager(this.conduitType);
             this.networkItem = new FlowUtilityNetwork.NetworkItem(this.conduitType, Endpoint.Source, this.utilityCell, base.gameObject);
             networkManager.AddToNetworks(this.utilityCell, this.networkItem, true);
