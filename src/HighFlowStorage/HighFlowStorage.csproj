@@ -44,6 +44,9 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\OxygenNotIncluded_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\OxygenNotIncluded_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\OxygenNotIncluded_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
@@ -85,6 +88,7 @@
     <Compile Include="..\NightLib\Extensions.cs">
       <Link>NightLib\Extensions.cs</Link>
     </Compile>
+    <Compile Include="Source\ConfigFile.cs" />
     <Compile Include="Source\HighFlowLGasStorageVerticalConfig.cs" />
     <Compile Include="Source\HighFlowLGasStorageConfig.cs" />
     <Compile Include="Source\ModInfo.cs" />
@@ -97,7 +101,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)"
-copy "$(TargetPath)" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)"</PostBuildEvent>
+copy "$(TargetPath)" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)"
+copy "$(TargetDir)*.json" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

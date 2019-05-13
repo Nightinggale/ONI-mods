@@ -14,10 +14,6 @@ namespace NightLib.PortDisplayDrawing
         {
             public static void Postfix(ref bool __result, BuildingDef def)
             {
-                if (!__result)
-                {
-                    Console.WriteLine(def.PrefabID);
-                }
                 __result |= DrawPorts.HasBuilding(def.PrefabID);
             }
         }

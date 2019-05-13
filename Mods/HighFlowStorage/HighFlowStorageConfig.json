@@ -1,0 +1,13 @@
+{
+  "liquidStorageCapacity"         : 5000,
+  "liquidStorageConstructionTime" : 240,
+  "liquidStorageMetalCost"        : 800,
+
+  "Gas3StorageCapacity"           : 300,
+  "Gas3StorageConstructionTime"   : 240,
+  "Gas3StorageMetalCost"          : 800,
+
+  "Gas5StorageCapacity"           : 300,
+  "Gas5StorageConstructionTime"   : 240,
+  "Gas5StorageMetalCost"          : 800,
+}

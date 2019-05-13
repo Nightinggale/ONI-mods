@@ -45,8 +45,9 @@ namespace HighFlowStorage
             int height = 3;
             string anim = "gasstorage_kanim";
             int hitpoints = 100;
-            float construction_time = 240f;
+            float construction_time = HighFlowStorageConfig.Config.Gas3StorageConstructionTime;
             float[] mass = BUILDINGS.CONSTRUCTION_MASS_KG.TIER5;
+            mass[0] = HighFlowStorageConfig.Config.Gas3StorageMetalCost;
             string[] materials = MATERIALS.ALL_METALS;
             float melting_point = 800f;
             BuildLocationRule build_location_rule = BuildLocationRule.OnFloor;
@@ -71,7 +72,7 @@ namespace HighFlowStorage
             storage.showDescriptor = true;
             storage.allowItemRemoval = false;
             storage.storageFilters = STORAGEFILTERS.GASES;
-            storage.capacityKg = 300f;
+            storage.capacityKg = HighFlowStorageConfig.Config.Gas3StorageCapacity;
             storage.SetDefaultStoredItemModifiers(GasReservoirConfig.ReservoirStoredItemModifiers);
 
             PortConduitDispenser conduitDispenser0 = go.AddComponent<PortConduitDispenser>();
