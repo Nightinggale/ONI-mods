@@ -46,6 +46,9 @@ namespace NightLib
 
         public void AssignPort(GameObject go, DisplayConduitPortInfo port)
         {
+            PortDisplay portDisplay = go.AddComponent<PortDisplay>();
+            portDisplay.AssignPort(port);
+
             // The design strategy here is to cache ports for when they should be drawn.
             // When a frame is drawn, rather than checking what should be drawn, pick the list matching the overlay in question.
             // 2 lists exist for each frame: when changing to the overlay and a screen update on the same overlay.
@@ -56,8 +59,6 @@ namespace NightLib
             {
                 case ConduitType.Gas:
                     {
-                        PortDisplayGas portDisplay = go.AddComponent<PortDisplayGas>();
-                        portDisplay.AssignPort(port);
                         this.gasNewOverlay.Add(portDisplay);
                         if (port.colorConnected != port.colorDisconnected || go.IsPreview())
                         {
@@ -67,8 +68,6 @@ namespace NightLib
                     break;
                 case ConduitType.Liquid:
                     {
-                        PortDisplayLiquid portDisplay = go.AddComponent<PortDisplayLiquid>();
-                        portDisplay.AssignPort(port);
                         this.liquidNewOverlay.Add(portDisplay);
                         if (port.colorConnected != port.colorDisconnected || go.IsPreview())
                         {
@@ -78,8 +77,6 @@ namespace NightLib
                     break;
                 case ConduitType.Solid:
                     {
-                        PortDisplaySolid portDisplay = go.AddComponent<PortDisplaySolid>();
-                        portDisplay.AssignPort(port);
                         this.solidNewOverlay.Add(portDisplay);
                         if (port.colorConnected != port.colorDisconnected || go.IsPreview())
                         {

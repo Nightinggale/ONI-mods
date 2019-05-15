@@ -2,11 +2,7 @@
 
 namespace NightLib
 {
-    internal class PortDisplayGas    : PortDisplay { public void AssignPort(PortDisplayGasBase    port) { base.AssignPort(port); } }
-    internal class PortDisplayLiquid : PortDisplay { public void AssignPort(PortDisplayLiquidBase port) { base.AssignPort(port); } }
-    internal class PortDisplaySolid  : PortDisplay { public void AssignPort(PortDisplaySolidBase  port) { base.AssignPort(port); } }
-
-    internal abstract class PortDisplay : KMonoBehaviour
+    internal class PortDisplay : KMonoBehaviour
     {
         private GameObject portObject;
 

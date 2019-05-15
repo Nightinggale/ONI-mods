@@ -67,11 +67,11 @@ namespace NightLib
 
         internal ConduitConsumer.WrongElementResult wrongElementResult;
 
-        internal void AssignPort(IPortDisplayInput port)
+        internal void AssignPort(PortDisplayInput port)
         {
-            this.conduitType = port.GetConduitType();
-            this.conduitOffset = port.GetOffset();
-            this.conduitOffsetFlipped = port.GetOffsetFlipped();
+            this.conduitType = port.type;
+            this.conduitOffset = port.offset;
+            this.conduitOffsetFlipped = port.offsetFlipped;
         }
 
         internal bool IsConnected

@@ -2,65 +2,14 @@
 
 namespace NightLib
 {
-    internal interface IPortDisplayInput
+    internal class PortDisplayInput : DisplayConduitPortInfo
     {
-        ConduitType GetConduitType();
-        CellOffset GetOffset();
-        CellOffset GetOffsetFlipped();
+        public PortDisplayInput(ConduitType type, CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(type, offset, offsetFlipped, true, colorConnected, colorDisonnected) { }
     }
 
-    internal interface IPortDisplayOutput
+    internal class PortDisplayOutput : DisplayConduitPortInfo
     {
-        ConduitType GetConduitType();
-        CellOffset GetOffset();
-        CellOffset GetOffsetFlipped();
-    }
-
-    internal class PortDisplayGasInput : PortDisplayGasBase, IPortDisplayInput
-    {
-        internal PortDisplayGasInput(CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, offsetFlipped, true, colorConnected, colorDisonnected) { }
-    }
-
-    internal class PortDisplayGasOutput : PortDisplayGasBase, IPortDisplayOutput
-    {
-        internal PortDisplayGasOutput(CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, offsetFlipped, false, colorConnected, colorDisonnected) { }
-    }
-
-    internal class PortDisplayLiquidInput : PortDisplayLiquidBase, IPortDisplayInput
-    {
-        internal PortDisplayLiquidInput(CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, offsetFlipped, true, colorConnected, colorDisonnected) { }
-    }
-
-    internal class PortDisplayLiquidOutput : PortDisplayLiquidBase, IPortDisplayOutput
-    {
-        internal PortDisplayLiquidOutput(CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, offsetFlipped, false, colorConnected, colorDisonnected) { }
-    }
-
-    internal class PortDisplaySolidInput : PortDisplaySolidBase, IPortDisplayInput
-    {
-        internal PortDisplaySolidInput(CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, offsetFlipped, true, colorConnected, colorDisonnected) { }
-    }
-
-    internal class PortDisplaySolidOutput : PortDisplaySolidBase, IPortDisplayOutput
-    {
-        internal PortDisplaySolidOutput(CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(offset, offsetFlipped, false, colorConnected, colorDisonnected) { }
-    }
-
-
-
-    internal abstract class PortDisplayGasBase : DisplayConduitPortInfo
-    {
-        protected PortDisplayGasBase(CellOffset offset, CellOffset? offsetFlipped, bool input, Color? colorConnected, Color? colorDisonnected) : base(ConduitType.Gas, offset, offsetFlipped, input, colorConnected, colorDisonnected) { }
-    }
-
-    internal abstract class PortDisplayLiquidBase : DisplayConduitPortInfo
-    {
-        protected PortDisplayLiquidBase(CellOffset offset, CellOffset? offsetFlipped, bool input, Color? colorConnected, Color? colorDisonnected) : base(ConduitType.Liquid, offset, offsetFlipped, input, colorConnected, colorDisonnected) { }
-    }
-
-    internal abstract class PortDisplaySolidBase : DisplayConduitPortInfo
-    {
-        protected PortDisplaySolidBase(CellOffset offset, CellOffset? offsetFlipped, bool input, Color? colorConnected, Color? colorDisonnected) : base(ConduitType.Solid, offset, offsetFlipped, input, colorConnected, colorDisonnected) { }
+        public PortDisplayOutput(ConduitType type, CellOffset offset, CellOffset? offsetFlipped = null, Color? colorConnected = null, Color? colorDisonnected = null) : base(type, offset, offsetFlipped, false, colorConnected, colorDisonnected) { }
     }
 
 
@@ -75,7 +24,7 @@ namespace NightLib
         readonly internal Color colorConnected;
         readonly internal Color colorDisconnected;
 
-        internal DisplayConduitPortInfo(ConduitType type, CellOffset offset, CellOffset? offsetFlipped, bool input, Color? colorConnected, Color? colorDisonnected)
+        protected DisplayConduitPortInfo(ConduitType type, CellOffset offset, CellOffset? offsetFlipped, bool input, Color? colorConnected, Color? colorDisonnected)
         {
             this.type = type;
             this.offset = offset;
@@ -99,21 +48,6 @@ namespace NightLib
                 this.colorConnected = colorSet.connected;
                 this.colorDisconnected = colorSet.disconnected;
             }
-        }
-
-        public virtual ConduitType GetConduitType()
-        {
-            return this.type;
-        }
-
-        public virtual CellOffset GetOffset()
-        {
-            return this.offset;
-        }
-
-        public virtual CellOffset GetOffsetFlipped()
-        {
-            return this.offsetFlipped;
         }
     }
 }

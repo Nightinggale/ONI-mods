@@ -42,11 +42,11 @@ namespace NightLib
 
         private int elementOutputOffset;
 
-        internal void AssignPort(IPortDisplayOutput port)
+        internal void AssignPort(PortDisplayOutput port)
         {
-            this.conduitType = port.GetConduitType();
-            this.conduitOffset = port.GetOffset();
-            this.conduitOffsetFlipped = port.GetOffsetFlipped();
+            this.conduitType = port.type;
+            this.conduitOffset = port.offset;
+            this.conduitOffsetFlipped = port.offsetFlipped;
         }
 
         internal ConduitType TypeOfConduit

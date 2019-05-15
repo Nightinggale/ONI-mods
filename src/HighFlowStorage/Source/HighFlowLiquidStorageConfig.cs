@@ -15,13 +15,13 @@ namespace HighFlowStorage
         public const string Description = "";
         public const string Effect = "For people where one pipe just isn't enough.";
 
-        private static readonly PortDisplayLiquidInput inputPort0 = new PortDisplayLiquidInput(new CellOffset(1, 0));
-        private static readonly PortDisplayLiquidInput inputPort1 = new PortDisplayLiquidInput(new CellOffset(1, 1));
-        private static readonly PortDisplayLiquidInput inputPort2 = new PortDisplayLiquidInput(new CellOffset(1, 2));
+        private static readonly PortDisplayInput inputPort0 = new PortDisplayInput(ConduitType.Liquid, new CellOffset(1, 0));
+        private static readonly PortDisplayInput inputPort1 = new PortDisplayInput(ConduitType.Liquid, new CellOffset(1, 1));
+        private static readonly PortDisplayInput inputPort2 = new PortDisplayInput(ConduitType.Liquid, new CellOffset(1, 2));
 
-        private static readonly PortDisplayLiquidOutput outputPort0 = new PortDisplayLiquidOutput(new CellOffset(0, 0));
-        private static readonly PortDisplayLiquidOutput outputPort1 = new PortDisplayLiquidOutput(new CellOffset(0, 1));
-        private static readonly PortDisplayLiquidOutput outputPort2 = new PortDisplayLiquidOutput(new CellOffset(0, 2));
+        private static readonly PortDisplayOutput outputPort0 = new PortDisplayOutput(ConduitType.Liquid, new CellOffset(0, 0));
+        private static readonly PortDisplayOutput outputPort1 = new PortDisplayOutput(ConduitType.Liquid, new CellOffset(0, 1));
+        private static readonly PortDisplayOutput outputPort2 = new PortDisplayOutput(ConduitType.Liquid, new CellOffset(0, 2));
 
         public static void Setup()
         {

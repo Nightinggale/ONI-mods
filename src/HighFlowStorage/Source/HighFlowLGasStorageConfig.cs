@@ -16,15 +16,15 @@ namespace HighFlowStorage
         public const string Description = "";
         public const string Effect = "For people where one pipe just isn't enough.";
 
-        private static readonly PortDisplayGasInput inputPort0 = new PortDisplayGasInput(new CellOffset(2, 0));
-        private static readonly PortDisplayGasInput inputPort1 = new PortDisplayGasInput(new CellOffset(2, 1));
-        private static readonly PortDisplayGasInput inputPort2 = new PortDisplayGasInput(new CellOffset(2, 2));
+        private static readonly PortDisplayInput inputPort0 = new PortDisplayInput(ConduitType.Gas, new CellOffset(2, 0));
+        private static readonly PortDisplayInput inputPort1 = new PortDisplayInput(ConduitType.Gas, new CellOffset(2, 1));
+        private static readonly PortDisplayInput inputPort2 = new PortDisplayInput(ConduitType.Gas, new CellOffset(2, 2));
 
-        private static readonly PortDisplayGasOutput outputPort0 = new PortDisplayGasOutput(new CellOffset(-2, 0));
-        private static readonly PortDisplayGasOutput outputPort1 = new PortDisplayGasOutput(new CellOffset(-2, 1));
-        private static readonly PortDisplayGasOutput outputPort2 = new PortDisplayGasOutput(new CellOffset(-2, 2));
+        private static readonly PortDisplayOutput outputPort0 = new PortDisplayOutput(ConduitType.Gas, new CellOffset(-2, 0));
+        private static readonly PortDisplayOutput outputPort1 = new PortDisplayOutput(ConduitType.Gas, new CellOffset(-2, 1));
+        private static readonly PortDisplayOutput outputPort2 = new PortDisplayOutput(ConduitType.Gas, new CellOffset(-2, 2));
 
-        private static readonly PortDisplayGasInput[] inputPorts = { inputPort0, inputPort1, inputPort2, };
+        private static readonly PortDisplayInput[] inputPorts = { inputPort0, inputPort1, inputPort2, };
 
         public static void Setup()
         {
@@ -84,7 +84,7 @@ namespace HighFlowStorage
             PortConduitDispenser conduitDispenser2 = go.AddComponent<PortConduitDispenser>();
             conduitDispenser2.AssignPort(outputPort2);
 
-            foreach (PortDisplayGasInput port in inputPorts)
+            foreach (PortDisplayInput port in inputPorts)
             {
                 PortConduitConsumer consumer = go.AddComponent<PortConduitConsumer>();
                 consumer.ignoreMinMassCheck = true;
