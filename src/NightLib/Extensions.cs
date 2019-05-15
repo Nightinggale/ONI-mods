@@ -52,5 +52,10 @@ namespace NightLib
             return Grid.OffsetCell(bottomLeftCell, rotatedOffset);
         }
         
+        internal static bool IsPreview(this GameObject go)
+        {
+            string name = go.PrefabID().Name;
+            return name.Substring(name.Length - 7) == "Preview";
+        }
     }
 }

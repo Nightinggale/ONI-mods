@@ -2,14 +2,22 @@
 
 namespace NightLib
 {
-    internal class PortDisplayGas    : PortDisplay { public void AssignPort(string ID, PortDisplayGasBase    port) { base.AssignPort(ID, port); } }
-    internal class PortDisplayLiquid : PortDisplay { public void AssignPort(string ID, PortDisplayLiquidBase port) { base.AssignPort(ID, port); } }
-    internal class PortDisplaySolid  : PortDisplay { public void AssignPort(string ID, PortDisplaySolidBase  port) { base.AssignPort(ID, port); } }
+    internal class PortDisplayGas    : PortDisplay { public void AssignPort(PortDisplayGasBase    port) { base.AssignPort(port); } }
+    internal class PortDisplayLiquid : PortDisplay { public void AssignPort(PortDisplayLiquidBase port) { base.AssignPort(port); } }
+    internal class PortDisplaySolid  : PortDisplay { public void AssignPort(PortDisplaySolidBase  port) { base.AssignPort(port); } }
 
     internal abstract class PortDisplay : KMonoBehaviour
     {
         private GameObject portObject;
-        internal int utilityCell = -1;
+
+        // The cache for last location/color.
+        // The default values doesn't matter and will be overwritten on first call.
+        // However there is a theoredical risk that no default value can cause a crash, hence setting them to something.
+        [SerializeField]
+        private int lastUtilityCell = -1;
+
+        [SerializeField]
+        private Color lastColor = Color.black;
 
         [SerializeField]
         internal ConduitType type;
@@ -32,7 +40,7 @@ namespace NightLib
         [SerializeField]
         internal Sprite sprite;
 
-        protected void AssignPort(string ID, DisplayConduitPortInfo port)
+        internal void AssignPort(DisplayConduitPortInfo port)
         {
             this.type = port.type;
             this.offset = port.offset;
@@ -41,27 +49,27 @@ namespace NightLib
             this.colorConnected = port.colorConnected;
             this.colorDisconnected = port.colorDisconnected;
             this.sprite = GetSprite();
-
-            // Add the building/overlay combo to the drawing code cache
-            // For performance reasons only building/overlay combos in the cache will attempt to draw modded ports
-            // Call added here as this makes the cache self configuring without extra code for each building
-            NightLib.PortDisplayDrawing.ConduitDisplayPortPatches.DrawPorts.AddBuilding(ID, type);
         }
 
-        internal void Draw(GameObject obj, BuildingCellVisualizer visualizer)
+        internal void Draw(GameObject obj, BuildingCellVisualizer visualizer, bool force)
         {
-            
-            if (utilityCell == -1)
+            Building building = visualizer.GetBuilding();
+            int utilityCell = building.GetCellWithOffset(building.Orientation == Orientation.Neutral ? this.offset : this.offsetFlipped);
+
+            Color color = GetColor(utilityCell);
+
+            // redraw if anything changed
+            if (force || utilityCell != this.lastUtilityCell || color != this.lastColor)
             {
-                var building = visualizer.GetBuilding();
-                utilityCell = building.GetCellWithOffset(building.Orientation == Orientation.Neutral ? this.offset : this.offsetFlipped);
+                this.lastColor = color;
+                this.lastUtilityCell = utilityCell;
+                visualizer.DrawUtilityIcon(utilityCell, this.sprite, ref portObject, color, Color.white);
             }
-            visualizer.DrawUtilityIcon(utilityCell, this.sprite, ref portObject, GetColor(), Color.white);
         }
 
-        private Color32 GetColor()
+        private Color32 GetColor(int utilityCell)
         {
-            return this.type.IsConnected(this.utilityCell) ? this.colorConnected : this.colorDisconnected;
+            return this.type.IsConnected(utilityCell) ? this.colorConnected : this.colorDisconnected;
         }
 
         private Sprite GetSprite()

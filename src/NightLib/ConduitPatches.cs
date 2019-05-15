@@ -18,86 +18,26 @@ namespace NightLib.PortDisplayDrawing
             }
         }
 
-
-        [HarmonyPatch(typeof(BuildingCellVisualizer))]
-        [HarmonyPatch("DisableIcons")]
-        public static class HidePorts
-        {
-            public static void Postfix(BuildingCellVisualizer __instance)
-            {
-                if (DrawPorts.HasBuilding(__instance.GetBuilding().Def.PrefabID))
-                {
-                    UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
-                    foreach (PortDisplay portDisplay in go.GetComponents<PortDisplay>())
-                    {
-                        portDisplay.DisableIcons();
-                    }
-                }
-            }
-        }
-        
-
         [HarmonyPatch(typeof(BuildingCellVisualizer))]
         [HarmonyPatch("Tick")]
         public static class DrawPorts
         {
             // cache variables
-            private static bool useGas    = false;
-            private static bool useLiquid = false;
-            private static bool useSolid  = false;
-
             private static HashSet<string> buildings       = new HashSet<string>();
-            private static HashSet<string> buildingsGas    = new HashSet<string>();
-            private static HashSet<string> buildingsLiquid = new HashSet<string>();
-            private static HashSet<string> buildingsSolid  = new HashSet<string>();
-
-            // Draw port icons on the screen
-            // Uses the cache to skip buildings the cache tells will not have ports
-            // Uses cache to skip overlays entirely if no ports exist for the overlay in question
-            public static void Postfix(BuildingCellVisualizer __instance, HashedString mode)
+            
+            public static bool Prefix(BuildingCellVisualizer __instance, HashedString mode)
             {
-                if (useGas && mode == OverlayModes.GasConduits.ID)
+
+                if (buildings.Contains(__instance.GetBuilding().Def.PrefabID))
                 {
-                    if (buildingsGas.Contains(__instance.GetBuilding().Def.PrefabID))
+                    UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
+                    PortDisplayController controller = go.GetComponent<PortDisplayController>();
+                    if (controller != null)
                     {
-                        bool preview = __instance.GetBuilding() is BuildingPreview;
-                        UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
-                        foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayGas>())
-                        {
-                            if (preview) portDisplay.utilityCell = -1;
-                            portDisplay.Draw(go, __instance);
-                        }
+                        return controller.Draw(__instance, mode, go);
                     }
-                    return;
                 }
-                if (useLiquid && mode == OverlayModes.LiquidConduits.ID)
-                {
-                    if (buildingsLiquid.Contains(__instance.GetBuilding().Def.PrefabID))
-                    {
-                        bool preview = __instance.GetBuilding() is BuildingPreview;
-                        UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
-                        foreach (PortDisplay portDisplay in go.GetComponents<PortDisplayLiquid>())
-                        {
-                            if (preview) portDisplay.utilityCell = -1;
-                            portDisplay.Draw(go, __instance);
-                        }
-                    }
-                    return;
-                }
-                if (useSolid && mode == OverlayModes.SolidConveyor.ID)
-                {
-                    if (buildingsSolid.Contains(__instance.GetBuilding().Def.PrefabID))
-                    {
-                        bool preview = __instance.GetBuilding() is BuildingPreview;
-                        UnityEngine.GameObject go = __instance.GetBuilding().gameObject;
-                        foreach (PortDisplay portDisplay in go.GetComponents<PortDisplaySolid>())
-                        {
-                            if (preview) portDisplay.utilityCell = -1;
-                            portDisplay.Draw(go, __instance);
-                        }
-                    }
-                    return;
-                }
+                return true;
             }
 
             internal static bool HasBuilding(string name)
@@ -106,24 +46,9 @@ namespace NightLib.PortDisplayDrawing
             }
 
             // Add a building to the cache
-            internal static void AddBuilding(string ID, ConduitType type)
+            internal static void AddBuilding(string ID)
             {
                 buildings.Add(ID);
-                switch (type)
-                {
-                    case ConduitType.Gas:
-                        buildingsGas.Add(ID);
-                        useGas = true;
-                        break;
-                    case ConduitType.Liquid:
-                        buildingsLiquid.Add(ID);
-                        useLiquid = true;
-                        break;
-                    case ConduitType.Solid:
-                        buildingsSolid.Add(ID);
-                        useSolid = true;
-                        break;
-                }
             }
         }
 

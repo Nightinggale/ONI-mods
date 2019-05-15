@@ -99,16 +99,19 @@ namespace HighFlowStorage
 
         private void AttachPort(GameObject go)
         {
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, outputPort0);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, outputPort1);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, outputPort2);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, outputPort3);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, outputPort4);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, inputPort0);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, inputPort1);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, inputPort2);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, inputPort3);
-            go.AddComponent<PortDisplayGas>().AssignPort(ID, inputPort4);
+            PortDisplayController controller = go.AddComponent<PortDisplayController>();
+            controller.Init(go);
+
+            controller.AssignPort(go, outputPort0);
+            controller.AssignPort(go, outputPort1);
+            controller.AssignPort(go, outputPort2);
+            controller.AssignPort(go, outputPort3);
+            controller.AssignPort(go, outputPort4);
+            controller.AssignPort(go, inputPort0);
+            controller.AssignPort(go, inputPort1);
+            controller.AssignPort(go, inputPort2);
+            controller.AssignPort(go, inputPort3);
+            controller.AssignPort(go, inputPort4);
         }
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)

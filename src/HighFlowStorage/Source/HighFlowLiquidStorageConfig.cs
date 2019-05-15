@@ -9,7 +9,7 @@ namespace HighFlowStorage
     [SerializationConfig(MemberSerialization.OptIn)]
     public class HighFlowLiquidReservoirConfig : IBuildingConfig
     {
-        new public const string ID = "Nightinggale.HighFlowLiquidReservoir";
+        public const string ID = "Nightinggale.HighFlowLiquidReservoir";
 
         private const string DisplayName = "High Flow Liquid Reservoir";
         public const string Description = "";
@@ -110,12 +110,15 @@ namespace HighFlowStorage
 
         private void AttachPort(GameObject go)
         {
-            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, outputPort0);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, outputPort1);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, outputPort2);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, inputPort0);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, inputPort1);
-            go.AddComponent<PortDisplayLiquid>().AssignPort(ID, inputPort2);
+            PortDisplayController controller = go.AddComponent<PortDisplayController>();
+            controller.Init(go);
+
+            controller.AssignPort(go, outputPort0);
+            controller.AssignPort(go, outputPort1);
+            controller.AssignPort(go, outputPort2);
+            controller.AssignPort(go, inputPort0);
+            controller.AssignPort(go, inputPort1);
+            controller.AssignPort(go, inputPort2);
         }
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
