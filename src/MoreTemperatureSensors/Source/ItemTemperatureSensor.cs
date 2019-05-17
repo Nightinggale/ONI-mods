@@ -2,12 +2,13 @@
 using STRINGS;
 using System;
 using UnityEngine;
+using NightLib.OnOverlayChange;
 
 
 namespace MoreTemperatureSensors
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class ItemTemperatureSensor : Switch, ISaveLoadable, IThresholdSwitch, ISim200ms
+    public class ItemTemperatureSensor : Switch, ISaveLoadable, IThresholdSwitch, ISim200ms, IOverlayChangeEvent
     {
         [Serialize]
         public float thresholdTemperature = 280f;
@@ -142,6 +143,12 @@ namespace MoreTemperatureSensors
                 };
             }
         }
+
+        public void OnOverlayChange(HashedString mode)
+        {
+            KBatchedAnimController component = base.GetComponent<KBatchedAnimController>();
+            component.TintColour = ItemTemperatureSensorConfig.BuildingColor();
+        }
     
         protected override void OnSpawn()
         {
@@ -153,13 +160,16 @@ namespace MoreTemperatureSensors
             this.switchedOn = false;
             this.UpdateVisualState(true);
             this.Update();
-            KBatchedAnimController component = base.GetComponent<KBatchedAnimController>();
-            component.TintColour = ItemTemperatureSensorConfig.BuildingColor();
+
+            // Apply color
+            this.OnOverlayChange("");
+            OverlayChangeController.Add(this);
         }
 
         protected override void OnCleanUp()
         {
             GameScenePartitioner.Instance.Free(ref this.pickupablesChangedEntry);
+            OverlayChangeController.Remove(this);
             base.OnCleanUp();
         }
 

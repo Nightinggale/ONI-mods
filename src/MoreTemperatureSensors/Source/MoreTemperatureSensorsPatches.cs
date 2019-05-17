@@ -30,14 +30,6 @@ namespace MoreTemperatureSensors
                     KAnim.TintColour = TileTemperatureSensorConfig.BuildingColor();
                 }
             }
-            else if (__instance.name.Equals((ItemTemperatureSensorConfig.ID + "Complete")))
-            {
-                var KAnim = __instance.GetComponent<KAnimControllerBase>();
-                if (KAnim != null)
-                {
-                    KAnim.TintColour = ItemTemperatureSensorConfig.BuildingColor();
-                }
-            }
         }
     }
 }
