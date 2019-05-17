@@ -94,6 +94,7 @@
     <Compile Include="..\NightLib\OnOverlayChange.cs">
       <Link>NightLib\OnOverlayChange.cs</Link>
     </Compile>
+    <Compile Include="Source\ConfigFile.cs" />
     <Compile Include="Source\ItemTemperatureSensor.cs" />
     <Compile Include="Source\ItemTemperatureSensorConfig.cs" />
     <Compile Include="Source\LogicTemperatureSensorNoAnim.cs" />

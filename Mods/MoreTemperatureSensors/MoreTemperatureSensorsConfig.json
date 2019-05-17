@@ -1,0 +1,14 @@
+{
+  "_comment": "                                                                     \
+  Instructions                                                                      \
+  The item sensor can be slowed down to reduce CPU load.                            \
+  The sensor is event based meaning it updates whenever items are added or removed. \
+  Changing higher/lower than or threshold value also triggers an update.            \
+  There is however a periodic update, which catches when items change temperature   \
+  without being moved. This might not need updates multiple times each second.      \
+  ",
+
+
+  "ItemSensorUpdateIntervalSeconds" : 0.15,
+
+}

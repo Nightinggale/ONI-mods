@@ -32,6 +32,8 @@ namespace MoreTemperatureSensors
 
         private float timeSinceLastUpdate;
 
+        private float refreshInterval;
+
         private HandleVector<int>.Handle pickupablesChangedEntry;
 
         public float Threshold
@@ -161,6 +163,12 @@ namespace MoreTemperatureSensors
             this.UpdateVisualState(true);
             this.Update();
 
+            this.refreshInterval = MoreTemperatureSensorsConfig.Config.ItemSensorUpdateIntervalSeconds;
+            if (this.refreshInterval < 0.15f)
+            {
+                this.refreshInterval = 0.15f;
+            }
+
             // Apply color
             this.OnOverlayChange("");
             OverlayChangeController.Add(this);
@@ -183,7 +191,7 @@ namespace MoreTemperatureSensors
             if (this.lastActivateOnWarmerThan == this.activateOnWarmerThan && this.lastThresholdTemperature == this.thresholdTemperature)
             {
                 this.timeSinceLastUpdate += dt;
-                if (this.timeSinceLastUpdate < 0.1)
+                if (this.timeSinceLastUpdate < this.refreshInterval)
                 {
                     return;
                 }
