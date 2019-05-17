@@ -40,7 +40,15 @@ namespace NightLib
 
         // copied from https://stackoverflow.com/questions/135443/how-do-i-use-reflection-to-invoke-a-private-method
 
-        
+        internal static void Set(Type type, object instance, string fieldName, object value)
+        {
+            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                | BindingFlags.Static;
+            FieldInfo field = type.GetField(fieldName, bindFlags);
+            field.SetValue(instance, value);
+        }
+
+
 
         internal static object Call(object o, string methodName, params object[] args)
         {
