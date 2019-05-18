@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using UnityEngine;
 
 namespace MoreTemperatureSensors
 {
@@ -31,6 +32,24 @@ namespace MoreTemperatureSensors
                     KAnim.TintColour = TileTemperatureSensorConfig.BuildingColor();
                 }
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(LogicPressureSensorGasConfig), "DoPostConfigureComplete")]
+    public class ConfigureGasSensor
+    {
+        public static void Postfix(GameObject go)
+        {
+            go.GetComponent<LogicPressureSensor>().rangeMax = MoreTemperatureSensorsConfig.Config.GasPressureSensorMax;
+        }
+    }
+
+    [HarmonyPatch(typeof(LogicPressureSensorLiquidConfig), "DoPostConfigureComplete")]
+    public class ConfigureLiquidSensor
+    {
+        public static void Postfix(GameObject go)
+        {
+            go.GetComponent<LogicPressureSensor>().rangeMax = MoreTemperatureSensorsConfig.Config.LiquidPressureSensorMax;
         }
     }
 }

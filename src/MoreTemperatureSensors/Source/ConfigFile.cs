@@ -7,6 +7,8 @@ namespace MoreTemperatureSensors
     class MoreTemperatureSensorsConfig
     {
         public float ItemSensorUpdateIntervalSeconds = 0.15f;
+        public float GasPressureSensorMax = 50f;
+        public float LiquidPressureSensorMax = 2000f;
 
         public static void OnLoad(string modPath)
         {
@@ -24,7 +26,6 @@ namespace MoreTemperatureSensors
             try
             {
                 JsonSerializer serializer = JsonSerializer.CreateDefault(new JsonSerializerSettings { Formatting = Formatting.Indented, ObjectCreationHandling = ObjectCreationHandling.Replace });
-                
                 // assign default values in case something isn't mentioned in the file
                 T result = (T)Activator.CreateInstance(typeof(T));
                 using (StreamReader streamReader = new StreamReader(path))
@@ -42,6 +43,7 @@ namespace MoreTemperatureSensors
             {
                 // something went wrong while loading the file, possibly missing or malformated file
                 // return the default values
+                Console.WriteLine("FAILED TO LOAD CONFIG FILE: " + ModInfo.Name);
                 return (T)Activator.CreateInstance(typeof(T));
             }
             
