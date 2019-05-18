@@ -9,6 +9,6 @@
   ",
 
 
-  "ItemSensorUpdateIntervalSeconds" : 0.15,
+  "ItemSensorUpdateIntervalSeconds" : 2.5,
 
 }
