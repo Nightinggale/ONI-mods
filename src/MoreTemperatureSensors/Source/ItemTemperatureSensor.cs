@@ -1,34 +1,22 @@
 ﻿using KSerialization;
-using STRINGS;
 using System;
-using UnityEngine;
 using NightLib.OnOverlayChange;
+using NightLib;
 
 
 namespace MoreTemperatureSensors
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class ItemTemperatureSensor : Switch, ISaveLoadable, IThresholdSwitch, ISim200ms, IOverlayChangeEvent
+    public class ItemTemperatureSensor : LogicTemperatureSensor, IOverlayChangeEvent
     {
-        [Serialize]
-        public float thresholdTemperature = 280f;
-
-        [Serialize]
-        public bool activateOnWarmerThan;
 
         private float lastThresholdTemperature;
 
         private bool lastActivateOnWarmerThan;
 
-        public float minTemp;
-
-        public float maxTemp = 373.15f;
-
         private float lastTemperatureLow;
 
         private float lastTemperatureHigh;
-
-        private bool wasOn;
 
         private float timeSinceLastUpdate;
 
@@ -36,115 +24,6 @@ namespace MoreTemperatureSensors
 
         private HandleVector<int>.Handle pickupablesChangedEntry;
 
-        public float Threshold
-        {
-            get
-            {
-                return this.thresholdTemperature;
-            }
-            set
-            {
-                this.thresholdTemperature = value;
-            }
-        }
-
-        public bool ActivateAboveThreshold
-        {
-            get
-            {
-                return this.activateOnWarmerThan;
-            }
-            set
-            {
-                this.activateOnWarmerThan = value;
-            }
-        }
-
-        public float CurrentValue
-        {
-            get
-            {
-                return this.GetTemperature();
-            }
-        }
-
-        public float RangeMin
-        {
-            get
-            {
-                return this.minTemp;
-            }
-        }
-
-        public float RangeMax
-        {
-            get
-            {
-                return this.maxTemp;
-            }
-        }
-
-        public LocString Title
-        {
-            get
-            {
-                return UI.UISIDESCREENS.TEMPERATURESWITCHSIDESCREEN.TITLE;
-            }
-        }
-
-        public LocString ThresholdValueName
-        {
-            get
-            {
-                return UI.UISIDESCREENS.THRESHOLD_SWITCH_SIDESCREEN.TEMPERATURE;
-            }
-        }
-
-        public string AboveToolTip
-        {
-            get
-            {
-                return UI.UISIDESCREENS.THRESHOLD_SWITCH_SIDESCREEN.TEMPERATURE_TOOLTIP_ABOVE;
-            }
-        }
-
-        public string BelowToolTip
-        {
-            get
-            {
-                return UI.UISIDESCREENS.THRESHOLD_SWITCH_SIDESCREEN.TEMPERATURE_TOOLTIP_BELOW;
-            }
-        }
-
-        public ThresholdScreenLayoutType LayoutType
-        {
-            get
-            {
-                return ThresholdScreenLayoutType.SliderBar;
-            }
-        }
-
-        public int IncrementScale
-        {
-            get
-            {
-                return 1;
-            }
-        }
-
-        public NonLinearSlider.Range[] GetRanges
-        {
-            get
-            {
-                return new NonLinearSlider.Range[]
-                {
-                new NonLinearSlider.Range(25f, 260f),
-                new NonLinearSlider.Range(50f, 400f),
-                new NonLinearSlider.Range(12f, 1500f),
-                new NonLinearSlider.Range(13f, 10000f)
-                };
-            }
-        }
 
         public void OnOverlayChange(HashedString mode)
         {
@@ -157,12 +36,9 @@ namespace MoreTemperatureSensors
             base.OnSpawn();
             int cell = this.NaturalBuildingCell();
             this.pickupablesChangedEntry = GameScenePartitioner.Instance.Add("ItemTemperatureSensor.PickupablesChanged", base.gameObject, cell, GameScenePartitioner.Instance.pickupablesChangedLayer, new Action<object>(this.OnPickupablesChanged));
+            this.Update();            
 
-            base.OnToggle += new Action<bool>(this.OnSwitchToggled);
-            this.switchedOn = false;
-            this.UpdateVisualState(true);
-            this.Update();
-
+            // load refresh interval from config file
             this.refreshInterval = MoreTemperatureSensorsConfig.Config.ItemSensorUpdateIntervalSeconds;
             if (this.refreshInterval < 0.15f)
             {
@@ -185,8 +61,8 @@ namespace MoreTemperatureSensors
         {
             this.Update();
         }
-
-        public void Sim200ms(float dt)
+        
+        new public void Sim200ms(float dt)
         {
             if (this.lastActivateOnWarmerThan == this.activateOnWarmerThan && this.lastThresholdTemperature == this.thresholdTemperature)
             {
@@ -253,80 +129,7 @@ namespace MoreTemperatureSensors
                 }
             }
             pooledList.Recycle();
+            ReadPrivate.Set(typeof(LogicTemperatureSensor), this, "averageTemp", this.activateOnWarmerThan ? this.lastTemperatureLow : this.lastTemperatureHigh);
         }
-
-        public float GetTemperature()
-        {
-            return this.activateOnWarmerThan ? this.lastTemperatureLow : this.lastTemperatureHigh;
-        }
-        
-        private void OnSwitchToggled(bool toggled_on)
-        {
-            this.UpdateVisualState(false);
-            base.GetComponent<LogicPorts>().SendSignal(LogicSwitch.PORT_ID, (!this.switchedOn) ? 0 : 1);
-        }
-
-        private void UpdateVisualState(bool force = false)
-        {
-            if (this.wasOn != this.switchedOn || force)
-            {
-                this.wasOn = this.switchedOn;
-                
-                KBatchedAnimController component = base.GetComponent<KBatchedAnimController>();
-                component.Play((!this.switchedOn) ? "on_pst" : "on_pre", KAnim.PlayMode.Once, 1f, 0f);
-                component.Queue((!this.switchedOn) ? "off" : "on", KAnim.PlayMode.Once, 1f, 0f);
-            }
-        }
-        
-        public float GetRangeMinInputField()
-        {
-            return GameUtil.GetConvertedTemperature(this.RangeMin, false);
-        }
-
-        public float GetRangeMaxInputField()
-        {
-            return GameUtil.GetConvertedTemperature(this.RangeMax, false);
-        }
-
-        public string Format(float value, bool units)
-        {
-            return GameUtil.GetFormattedTemperature(value, GameUtil.TimeSlice.None, GameUtil.TemperatureInterpretation.Absolute, units, true);
-        }
-
-        public float ProcessedSliderValue(float input)
-        {
-            return Mathf.Round(input);
-        }
-
-        public float ProcessedInputValue(float input)
-        {
-            return GameUtil.GetTemperatureConvertedToKelvin(input);
-        }
-
-        public LocString ThresholdValueUnits()
-        {
-            LocString result = null;
-            GameUtil.TemperatureUnit temperatureUnit = GameUtil.temperatureUnit;
-            if (temperatureUnit != GameUtil.TemperatureUnit.Celsius)
-            {
-                if (temperatureUnit != GameUtil.TemperatureUnit.Fahrenheit)
-                {
-                    if (temperatureUnit == GameUtil.TemperatureUnit.Kelvin)
-                    {
-                        result = UI.UNITSUFFIXES.TEMPERATURE.KELVIN;
-                    }
-                }
-                else
-                {
-                    result = UI.UNITSUFFIXES.TEMPERATURE.FAHRENHEIT;
-                }
-            }
-            else
-            {
-                result = UI.UNITSUFFIXES.TEMPERATURE.CELSIUS;
-            }
-            return result;
-        }
-        
     }
 }
