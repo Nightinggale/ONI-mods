@@ -34,9 +34,15 @@ namespace MoreTemperatureSensors
         protected override void OnSpawn()
         {
             base.OnSpawn();
+
+            // subscribe to add/remove pickupables on the cell in question
             int cell = this.NaturalBuildingCell();
             this.pickupablesChangedEntry = GameScenePartitioner.Instance.Add("ItemTemperatureSensor.PickupablesChanged", base.gameObject, cell, GameScenePartitioner.Instance.pickupablesChangedLayer, new Action<object>(this.OnPickupablesChanged));
-            this.Update();            
+
+            // make sure the init state is correct if there are no items
+            this.Toggle();
+
+            this.Update();
 
             // load refresh interval from config file
             this.refreshInterval = MoreTemperatureSensorsConfig.Config.ItemSensorUpdateIntervalSeconds;

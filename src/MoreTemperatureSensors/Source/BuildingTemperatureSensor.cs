@@ -1,0 +1,81 @@
+﻿using KSerialization;
+using System;
+using NightLib.OnOverlayChange;
+using NightLib;
+using UnityEngine;
+
+
+namespace MoreTemperatureSensors
+{
+    [SerializationConfig(MemberSerialization.OptIn)]
+    public class BuildingTemperatureSensor : LogicTemperatureSensor, IOverlayChangeEvent
+    {
+
+        private int cell;
+
+        public void OnOverlayChange(HashedString mode)
+        {
+            KBatchedAnimController component = base.GetComponent<KBatchedAnimController>();
+            component.TintColour = BuildingTemperatureSensorConfig.BuildingColor();
+        }
+
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+
+            this.cell = base.GetComponent<Building>().GetCellWithOffset(new CellOffset(0, -1));
+
+            this.Update();
+
+            // Apply color
+            this.OnOverlayChange("");
+            OverlayChangeController.Add(this);
+        }
+
+        protected override void OnCleanUp()
+        {
+            OverlayChangeController.Remove(this);
+            base.OnCleanUp();
+        }
+
+        new public void Sim200ms(float dt)
+        {
+            this.Update();
+        }
+
+        private void Update()
+        {
+            this.SetTemperature();
+
+            if (this.activateOnWarmerThan)
+            {
+                if ((this.GetTemperature() > this.thresholdTemperature && !base.IsSwitchedOn) || (this.GetTemperature() < this.thresholdTemperature && base.IsSwitchedOn))
+                {
+                    this.Toggle();
+                }
+            }
+            else if ((this.GetTemperature() > this.thresholdTemperature && base.IsSwitchedOn) || (this.GetTemperature() < this.thresholdTemperature && !base.IsSwitchedOn))
+
+            {
+                this.Toggle();
+            }
+        }
+
+
+        private void SetTemperature()
+        {
+            float temperature = 0;
+            GameObject go = Grid.Objects[this.cell, (int)ObjectLayer.Building];
+
+            if (go != null)
+            {
+                PrimaryElement element = go.GetComponent<PrimaryElement>();
+                if (element != null)
+                {
+                    temperature = element.Temperature;
+                }   
+            }
+            ReadPrivate.Set(typeof(LogicTemperatureSensor), this, "averageTemp", temperature);
+        }
+    }
+}

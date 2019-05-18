@@ -43,7 +43,7 @@ namespace MoreTemperatureSensors
         {
             int width = 1;
             int height = 1;
-            string anim = "switchthermal_kanim";
+            string anim = "floor_metal_kanim";
             int hitpoints = 100;
             float construction_time = 90f;
             float[] tIER = TUNING.BUILDINGS.CONSTRUCTION_MASS_KG.TIER2;

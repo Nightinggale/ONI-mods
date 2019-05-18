@@ -12,6 +12,7 @@ namespace MoreTemperatureSensors
             {
                 TileTemperatureSensorConfig.Setup();
                 ItemTemperatureSensorConfig.Setup();
+                BuildingTemperatureSensorConfig.Setup();
             }
         }
     }
