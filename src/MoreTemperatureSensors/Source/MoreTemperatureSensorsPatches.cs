@@ -14,6 +14,7 @@ namespace MoreTemperatureSensors
                 TileTemperatureSensorConfig.Setup();
                 ItemTemperatureSensorConfig.Setup();
                 BuildingTemperatureSensorConfig.Setup();
+                ModdedLogicElementSensorLiquidConfig.Setup();
             }
         }
     }
@@ -50,6 +51,16 @@ namespace MoreTemperatureSensors
         public static void Postfix(GameObject go)
         {
             go.GetComponent<LogicPressureSensor>().rangeMax = MoreTemperatureSensorsConfig.Config.LiquidPressureSensorMax;
+        }
+    }
+
+    [HarmonyPatch(typeof(LogicElementSensorGasConfig), "CreateBuildingDef")]
+    public class ConfigureGasElementSensor
+    {
+        public static void Postfix(BuildingDef __result)
+        {
+            __result.RequiresPowerInput = false;
+            __result.EnergyConsumptionWhenActive = 0f;
         }
     }
 }
