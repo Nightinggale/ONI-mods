@@ -59,6 +59,9 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\OxygenNotIncluded_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\NightLib\AddBuilding.cs">
@@ -96,6 +99,9 @@
     </Compile>
     <Compile Include="Source\BuildingTemperatureSensorConfig.cs" />
     <Compile Include="Source\BuildingTemperatureSensor.cs" />
+    <Compile Include="Source\Conduit\ConduitPressureSensorLiquid.cs" />
+    <Compile Include="Source\Conduit\ConduitPressureSensor.cs" />
+    <Compile Include="Source\Conduit\ConduitPressureSensorGas.cs" />
     <Compile Include="Source\ElementSensorLiquidConfig.cs" />
     <Compile Include="Source\ConfigFile.cs" />
     <Compile Include="Source\ItemTemperatureSensor.cs" />
