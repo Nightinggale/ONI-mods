@@ -11,12 +11,15 @@ namespace MoreTemperatureSensors
         {
             public static void Prefix()
             {
+                Strings.Add($"NIGHTINGGALE.SENSORY.OVERLOADED.MASS", "Mass");
+
                 TileTemperatureSensorConfig.Setup();
                 ItemTemperatureSensorConfig.Setup();
                 BuildingTemperatureSensorConfig.Setup();
                 ModdedLogicElementSensorLiquidConfig.Setup();
                 ConduitPressureSensorGas.Setup();
                 ConduitPressureSensorLiquid.Setup();
+                SolidConduitPressureSensorConfig.Setup();
             }
         }
     }
