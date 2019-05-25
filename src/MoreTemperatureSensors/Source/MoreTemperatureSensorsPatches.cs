@@ -20,6 +20,7 @@ namespace MoreTemperatureSensors
                 ConduitPressureSensorGas.Setup();
                 ConduitPressureSensorLiquid.Setup();
 
+                SolidConduitGermsSensorConfig.Setup();
                 SolidConduitTemperatureSensorConfig.Setup();
                 SolidConduitPressureSensorConfig.Setup();
             }
