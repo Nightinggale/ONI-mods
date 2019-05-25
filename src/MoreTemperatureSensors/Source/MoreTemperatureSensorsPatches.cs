@@ -19,6 +19,8 @@ namespace MoreTemperatureSensors
                 ModdedLogicElementSensorLiquidConfig.Setup();
                 ConduitPressureSensorGas.Setup();
                 ConduitPressureSensorLiquid.Setup();
+
+                SolidConduitTemperatureSensorConfig.Setup();
                 SolidConduitPressureSensorConfig.Setup();
             }
         }

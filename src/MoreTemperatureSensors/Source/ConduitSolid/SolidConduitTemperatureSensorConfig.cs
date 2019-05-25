@@ -4,29 +4,29 @@ using NightLib.AddBuilding;
 
 namespace MoreTemperatureSensors
 {
-    public class SolidConduitPressureSensorConfig : IBuildingConfig
+    public class SolidConduitTemperatureSensorConfig : IBuildingConfig
     {
-        public const string ID = "Nightinggale.SolidConduitPressureSensor";
+        public const string ID = "Nightinggale.SolidConduitTemperatureSensor";
 
         public static void Setup()
         {
-            LocString NAME = "Conveyor Rail Mass Sensor";
-            LocString DESC = "Usage tips:\nAbove 0: detects if rail contains anything.\nAbove 20000: detects full rails.";
-            LocString EFFECT = SolidConduitThresholdSensor.MakeEffect("mass");
+            LocString NAME = "Conveyor Rail Temperature Sensor";
+            LocString DESC = "";
+            LocString EFFECT = SolidConduitThresholdSensor.MakeEffect("temperature");
 
             AddBuilding.AddStrings(ID, NAME, DESC, EFFECT);
 
             AddBuilding.AddBuildingToPlanScreen("Conveyance", ID);
-            AddBuilding.IntoTechTree("SolidTransport", ID); 
+            AddBuilding.IntoTechTree("SolidTransport", ID);
         }
 
-        public static readonly LogicPorts.Port OUTPUT_PORT = SolidConduitThresholdSensor.MakePort("Mass");
+        public static readonly LogicPorts.Port OUTPUT_PORT = SolidConduitThresholdSensor.MakePort("Temperature");
 
         public override BuildingDef CreateBuildingDef()
         {
             int width = 1;
             int height = 1;
-            string anim = "liquid_germs_sensor_kanim";
+            string anim = "gas_temperature_sensor_kanim";
             int hitpoints = 30;
             float construction_time = 30f;
             float[] tIER = TUNING.BUILDINGS.CONSTRUCTION_MASS_KG.TIER0;
@@ -60,9 +60,10 @@ namespace MoreTemperatureSensors
         public override void DoPostConfigureComplete(GameObject go)
         {
             GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
-            
-            SolidConduitPressureSensor sensor = go.AddOrGet<SolidConduitPressureSensor>();
+
+            SolidConduitTemperatureSensor sensor = go.AddOrGet<SolidConduitTemperatureSensor>();
             sensor.manuallyControlled = false;
+            sensor.Threshold = 280f;
         }
     }
 }

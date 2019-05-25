@@ -1,60 +1,57 @@
 ﻿using KSerialization;
 using STRINGS;
+using UnityEngine;
 
 namespace MoreTemperatureSensors
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class SolidConduitPressureSensor : SolidConduitThresholdSensor, IThresholdSwitch
+    public class SolidConduitTemperatureSensor : SolidConduitThresholdSensor, IThresholdSwitch
     {
-        private float currentValue;
+        private float currentValue = 280f;
 
-        private readonly float max = 20000f;
+        private readonly float max = 9999f + 273.15f;
 
         public float GetRangeMinInputField()
         {
-            return 0f;
+            return GameUtil.GetConvertedTemperature(this.RangeMin, false);
         }
 
         public float GetRangeMaxInputField()
         {
-            return this.max;
+            return GameUtil.GetConvertedTemperature(this.RangeMax, false);
         }
 
         public string Format(float value, bool units)
         {
-            if (value < 1)
-            {
-                GameUtil.MetricMassFormat massFormat = GameUtil.MetricMassFormat.Gram;
-                return GameUtil.GetFormattedMass(value, GameUtil.TimeSlice.None, massFormat, units, "{0:0.#}");
-            }
-            else
-            
-            {
-                GameUtil.MetricMassFormat massFormat = GameUtil.MetricMassFormat.Kilogram;
-                return GameUtil.GetFormattedMass(value, GameUtil.TimeSlice.None, massFormat, units, "{0:0.00}");
-            }
+            // call vanilla code rather than making up our own or copy paste
+            // The reason is support for modded temperature display
+            ConduitTemperatureSensor temp = new ConduitTemperatureSensor();
+            return temp.Format(value, units);
         }
 
         public float ProcessedSliderValue(float input)
         {
-            return input;
+            return Mathf.Round(input);
         }
 
         public float ProcessedInputValue(float input)
         {
-            return input;
+            return GameUtil.GetTemperatureConvertedToKelvin(input);
         }
 
         public LocString ThresholdValueUnits()
         {
-            return GameUtil.GetCurrentMassUnit(true);
+            // call vanilla code rather than making up our own or copy paste
+            // The reason is support for modded temperature display
+            ConduitTemperatureSensor temp = new ConduitTemperatureSensor();
+            return temp.ThresholdValueUnits();
         }
 
         public override float CurrentValue
         {
             get
             {
-                return this.currentValue / 1000;
+                return this.currentValue;
             }
         }
 
@@ -78,7 +75,7 @@ namespace MoreTemperatureSensors
         {
             get
             {
-                return "Mass Threshold";
+                return UI.UISIDESCREENS.TEMPERATURESWITCHSIDESCREEN.TITLE;
             }
         }
 
@@ -86,7 +83,7 @@ namespace MoreTemperatureSensors
         {
             get
             {
-                return new LocString("", "NIGHTINGGALE.SENSORY.OVERLOADED.MASS");
+                return UI.UISIDESCREENS.THRESHOLD_SWITCH_SIDESCREEN.TEMPERATURE;
             }
         }
 
@@ -126,44 +123,42 @@ namespace MoreTemperatureSensors
         {
             get
             {
-                return NonLinearSlider.GetDefaultRange(this.RangeMax);
+                return new NonLinearSlider.Range[]
+                {
+                new NonLinearSlider.Range(25f, 260f),
+                new NonLinearSlider.Range(50f, 400f),
+                new NonLinearSlider.Range(12f, 1500f),
+                new NonLinearSlider.Range(13f, 10000f)
+                };
             }
         }
-        
+
         protected override void ConduitUpdate(float dt)
         {
-            this.currentValue = 0f;
-
             int cell = Grid.PosToCell(this);
             SolidConduitFlow.ConduitContents contents = Game.Instance.solidConduitFlow.GetContents(cell);
             if (contents.pickupableHandle.IsValid())
             {
                 Pickupable pickupable = Game.Instance.solidConduitFlow.GetPickupable(contents.pickupableHandle);
-                this.currentValue = pickupable.TotalAmount * 1000f;
+                PrimaryElement primaryElement = pickupable.GetComponent<PrimaryElement>();
+
+                if (primaryElement != null)
+                {
+                    this.currentValue = primaryElement.Temperature;
+                }
+                else
+                {
+                    return;
+                }
             }
+            else
+            {
+                return;
+            }
+
 
             if (this.activateAboveThreshold)
             {
-                // Empty is always false
-                if (this.currentValue <= 0f)
-                {
-                    if (base.IsSwitchedOn)
-                    {
-                        this.Toggle();
-                    }
-                    return;
-                }
-
-                // Full is always true
-                if (this.currentValue >= this.max)
-                {
-                    if (!base.IsSwitchedOn)
-                    {
-                        this.Toggle();
-                    }
-                    return;
-                }
-
                 if ((this.currentValue > this.threshold && !base.IsSwitchedOn) || (this.currentValue <= this.threshold && base.IsSwitchedOn))
                 {
                     this.Toggle();
@@ -174,12 +169,12 @@ namespace MoreTemperatureSensors
                 this.Toggle();
             }
         }
-        
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
 
-            // Update currentValue to avoid all displays from showing 0 g on load.
+            // Update currentValue to avoid all displays from showing default value on load.
             // No functional change. It's purely a display issue.
             this.ConduitUpdate(0);
         }
