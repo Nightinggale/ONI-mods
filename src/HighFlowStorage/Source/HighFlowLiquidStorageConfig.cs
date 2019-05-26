@@ -72,16 +72,16 @@ namespace HighFlowStorage
             storage.capacityKg = HighFlowStorageConfig.Config.liquidStorageCapacity;
             storage.SetDefaultStoredItemModifiers(GasReservoirConfig.ReservoirStoredItemModifiers);
 
-            PortConduitDispenser conduitDispenser0 = go.AddComponent<PortConduitDispenser>();
+            PortConduitDispenser conduitDispenser0 = go.AddComponent<HighFlowStorage_PortConduitDispenser>();
             conduitDispenser0.AssignPort(outputPort0);
 
-            PortConduitDispenser conduitDispenser1 = go.AddComponent<PortConduitDispenser>();
+            PortConduitDispenser conduitDispenser1 = go.AddComponent<HighFlowStorage_PortConduitDispenser>();
             conduitDispenser1.AssignPort(outputPort1);
 
-            PortConduitDispenser conduitDispenser2 = go.AddComponent<PortConduitDispenser>();
+            PortConduitDispenser conduitDispenser2 = go.AddComponent<HighFlowStorage_PortConduitDispenser>();
             conduitDispenser2.AssignPort(outputPort2);
 
-            PortConduitConsumer consumer0 = go.AddComponent<PortConduitConsumer>();
+            PortConduitConsumer consumer0 = go.AddComponent<HighFlowStorage_PortConduitConsumer>();
             consumer0.conduitType = ConduitType.Liquid;
             consumer0.ignoreMinMassCheck = true;
             consumer0.forceAlwaysSatisfied = true;
@@ -89,7 +89,7 @@ namespace HighFlowStorage
             consumer0.capacityKG = storage.capacityKg;
             consumer0.AssignPort(inputPort0);
 
-            PortConduitConsumer consumer1 = go.AddComponent<PortConduitConsumer>();
+            PortConduitConsumer consumer1 = go.AddComponent<HighFlowStorage_PortConduitConsumer>();
             consumer1.conduitType = ConduitType.Liquid;
             consumer1.ignoreMinMassCheck = true;
             consumer1.forceAlwaysSatisfied = true;
@@ -97,7 +97,7 @@ namespace HighFlowStorage
             consumer1.capacityKG = storage.capacityKg;
             consumer1.AssignPort(inputPort1);
 
-            PortConduitConsumer consumer2 = go.AddComponent<PortConduitConsumer>();
+            PortConduitConsumer consumer2 = go.AddComponent<HighFlowStorage_PortConduitConsumer>();
             consumer2.conduitType = ConduitType.Liquid;
             consumer2.ignoreMinMassCheck = true;
             consumer2.forceAlwaysSatisfied = true;

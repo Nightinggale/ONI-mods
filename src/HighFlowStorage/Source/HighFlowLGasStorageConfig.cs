@@ -75,18 +75,18 @@ namespace HighFlowStorage
             storage.capacityKg = HighFlowStorageConfig.Config.Gas3StorageCapacity;
             storage.SetDefaultStoredItemModifiers(GasReservoirConfig.ReservoirStoredItemModifiers);
 
-            PortConduitDispenser conduitDispenser0 = go.AddComponent<PortConduitDispenser>();
+            PortConduitDispenser conduitDispenser0 = go.AddComponent<HighFlowStorage_PortConduitDispenser>();
             conduitDispenser0.AssignPort(outputPort0);
 
-            PortConduitDispenser conduitDispenser1 = go.AddComponent<PortConduitDispenser>();
+            PortConduitDispenser conduitDispenser1 = go.AddComponent<HighFlowStorage_PortConduitDispenser>();
             conduitDispenser1.AssignPort(outputPort1);
 
-            PortConduitDispenser conduitDispenser2 = go.AddComponent<PortConduitDispenser>();
+            PortConduitDispenser conduitDispenser2 = go.AddComponent<HighFlowStorage_PortConduitDispenser>();
             conduitDispenser2.AssignPort(outputPort2);
 
             foreach (PortDisplayInput port in inputPorts)
             {
-                PortConduitConsumer consumer = go.AddComponent<PortConduitConsumer>();
+                PortConduitConsumer consumer = go.AddComponent<HighFlowStorage_PortConduitConsumer>();
                 consumer.ignoreMinMassCheck = true;
                 consumer.forceAlwaysSatisfied = true;
                 consumer.alwaysConsume = true;
