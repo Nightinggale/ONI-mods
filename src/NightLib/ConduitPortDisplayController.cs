@@ -12,22 +12,22 @@ namespace NightLib
         private HashedString lastMode = OverlayModes.None.ID;
 
         [SerializeField]
-        private List<PortDisplay> gasNewOverlay = new List<PortDisplay>();
+        private List<PortDisplay2> gasNewOverlay = new List<PortDisplay2>();
 
         [SerializeField]
-        private List<PortDisplay> gasUpdate = new List<PortDisplay>();
+        private List<PortDisplay2> gasUpdate = new List<PortDisplay2>();
 
         [SerializeField]
-        private List<PortDisplay> liquidNewOverlay = new List<PortDisplay>();
+        private List<PortDisplay2> liquidNewOverlay = new List<PortDisplay2>();
 
         [SerializeField]
-        private List<PortDisplay> liquidUpdate = new List<PortDisplay>();
+        private List<PortDisplay2> liquidUpdate = new List<PortDisplay2>();
 
         [SerializeField]
-        private List<PortDisplay> solidNewOverlay = new List<PortDisplay>();
+        private List<PortDisplay2> solidNewOverlay = new List<PortDisplay2>();
 
         [SerializeField]
-        private List<PortDisplay> solidUpdate = new List<PortDisplay>();
+        private List<PortDisplay2> solidUpdate = new List<PortDisplay2>();
 
         [SerializeField]
         private bool hasPower = false;
@@ -46,7 +46,7 @@ namespace NightLib
 
         public void AssignPort(GameObject go, DisplayConduitPortInfo port)
         {
-            PortDisplay portDisplay = go.AddComponent<PortDisplay>();
+            PortDisplay2 portDisplay = go.AddComponent<PortDisplay2>();
             portDisplay.AssignPort(port);
 
             // The design strategy here is to cache ports for when they should be drawn.
@@ -115,7 +115,7 @@ namespace NightLib
                 this.lastMode = mode;
             }
 
-            foreach (PortDisplay port in this.GetPorts(mode, isNewMode))
+            foreach (PortDisplay2 port in this.GetPorts(mode, isNewMode))
             {
                 port.Draw(go, __instance, isNewMode);
             }
@@ -132,13 +132,13 @@ namespace NightLib
 
         private void ClearPorts()
         {
-            foreach (PortDisplay port in this.GetPorts(this.lastMode, true))
+            foreach (PortDisplay2 port in this.GetPorts(this.lastMode, true))
             {
                 port.DisableIcons();
             }
         }
 
-        private List<PortDisplay> GetPorts(HashedString mode, bool newOverlay)
+        private List<PortDisplay2> GetPorts(HashedString mode, bool newOverlay)
         {
             if (newOverlay)
             {
@@ -152,7 +152,7 @@ namespace NightLib
                 if (mode == OverlayModes.LiquidConduits.ID) return this.liquidUpdate;
                 if (mode == OverlayModes.SolidConveyor .ID) return this.solidUpdate;
             }
-            return new List<PortDisplay>();
+            return new List<PortDisplay2>();
         }
     }
 }

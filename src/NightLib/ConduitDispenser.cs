@@ -3,10 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NightLib
+namespace NightLib.SavegameUnsafe
 {
+    // Don't add this directly as components to GameObjects
+    // Use a subclass to inherit this and doesn't add anything
+    // This is to avoid crashes on loading savegames due to class name clashes
     [SerializationConfig(MemberSerialization.OptIn)]
-    internal class PortConduitDispenser : KMonoBehaviour, ISaveLoadable
+    internal abstract class PortConduitDispenserBase : KMonoBehaviour, ISaveLoadable
     {
         [SerializeField]
         internal CellOffset conduitOffset;
@@ -131,7 +134,7 @@ namespace NightLib
 
         protected virtual void ConduitUpdate(float dt)
         {
-            this.operational.SetFlag(PortConduitDispenser.outputConduitFlag, this.IsConnected);
+            this.operational.SetFlag(PortConduitDispenserBase.outputConduitFlag, this.IsConnected);
             if (this.operational.IsOperational || this.alwaysDispense)
             {
                 PrimaryElement primaryElement = this.FindSuitableElement();

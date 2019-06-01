@@ -2,7 +2,8 @@
 
 namespace NightLib
 {
-    internal class PortDisplay : KMonoBehaviour
+    [SkipSaveFileSerialization]
+    internal class PortDisplay2 : KMonoBehaviour
     {
         private GameObject portObject;
 

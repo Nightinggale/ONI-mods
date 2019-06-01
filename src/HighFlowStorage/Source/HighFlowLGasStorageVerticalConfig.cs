@@ -87,7 +87,7 @@ namespace HighFlowStorage
 
             foreach (PortDisplayInput port in inputPorts)
             {
-                PortConduitConsumer consumer = go.AddComponent<HighFlowStorage_PortConduitConsumer>();
+                PortConduitConsumer consumer = go.AddComponent<PortConduitConsumer>();
                 consumer.ignoreMinMassCheck = true;
                 consumer.forceAlwaysSatisfied = true;
                 consumer.alwaysConsume = true;

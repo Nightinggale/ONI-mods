@@ -59,7 +59,7 @@ namespace NightLib.PortDisplayDrawing
         {
             public static void Postfix(BuildingDef __instance, int cell, Orientation orientation, ObjectLayer layer, GameObject go)
             {
-                foreach (PortDisplay portDisplay in __instance.BuildingComplete.GetComponents<PortDisplay>())
+                foreach (PortDisplay2 portDisplay in __instance.BuildingComplete.GetComponents<PortDisplay2>())
                 {
                     ConduitType secondaryConduitType2 = portDisplay.type;
                     ObjectLayer objectLayerForConduitType4 = Grid.GetObjectLayerForConduitType(secondaryConduitType2);
@@ -80,7 +80,7 @@ namespace NightLib.PortDisplayDrawing
             {
                 if (__result)
                 {
-                    foreach (PortDisplay portDisplay in __instance.BuildingComplete.GetComponents<PortDisplay>())
+                    foreach (PortDisplay2 portDisplay in __instance.BuildingComplete.GetComponents<PortDisplay2>())
                     {
                         CellOffset rotatedCellOffset = Rotatable.GetRotatedCellOffset(portDisplay.offset, orientation);
                         int utility_cell = Grid.OffsetCell(cell, rotatedCellOffset);
