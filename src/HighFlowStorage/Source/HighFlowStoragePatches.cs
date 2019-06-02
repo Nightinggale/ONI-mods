@@ -14,6 +14,7 @@ namespace HighFlowStorage
                 HighFlowStorage.HighFlowGasReservoirConfig.Setup();
                 HighFlowStorage.HighFlowGasReservoirVerticalConfig.Setup();
                 HighFlowStorage.HighFlowLiquidReservoirConfig2.Setup();
+                HighFlowStorage.HighFlowLiquidReservoirVerticalConfig2.Setup();
                 HighFlowStorage.HighFlowGasReservoirConfig2.Setup();
                 HighFlowStorage.HighFlowGasReservoirVerticalConfig2.Setup();
             }
@@ -28,6 +29,10 @@ namespace HighFlowStorage
             if (__instance.name.Equals((HighFlowLiquidReservoirConfig2.ID + "Complete")))
             {
                 __instance.GetComponent<KAnimControllerBase>().TintColour = HighFlowLiquidReservoirConfig2.BuildingColor();
+            }
+            else if (__instance.name.Equals((HighFlowLiquidReservoirVerticalConfig2.ID + "Complete")))
+            {
+                __instance.GetComponent<KAnimControllerBase>().TintColour = HighFlowLiquidReservoirVerticalConfig2.BuildingColor();
             }
             else if (__instance.name.Equals((HighFlowGasReservoirConfig2.ID + "Complete")))
             {
