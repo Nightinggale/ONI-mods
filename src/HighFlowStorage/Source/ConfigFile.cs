@@ -6,6 +6,9 @@ namespace HighFlowStorage
 {
     class HighFlowStorageConfig
     {
+        // variables, which can be changed in the config file
+        // The numbers are what will be used if the variable isn't present in the config file
+
         public float liquidStorageCapacity = 5000f;
         public float liquidStorageConstructionTime = 240f;
         public float liquidStorageMetalCost = 800f;
@@ -17,6 +20,32 @@ namespace HighFlowStorage
         public float Gas5StorageCapacity = 300f;
         public float Gas5StorageConstructionTime = 240f;
         public float Gas5StorageMetalCost = 800f;
+
+        // building colors
+        // Each number can be 0 to 255 and no decimal numbers
+        // Setting alpha to 0 will disable the customm color
+
+        public byte ColorLiquidHorizontalRed = 0;
+        public byte ColorLiquidHorizontalGreen = 255;
+        public byte ColorLiquidHorizontalBlue = 104;
+        public byte ColorLiquidHorizontalAlpha = 255;
+
+        public byte ColorLiquidVerticalRed = 50;
+        public byte ColorLiquidVerticalGreen = 50;
+        public byte ColorLiquidVerticalBlue = 0;
+        public byte ColorLiquidVerticalAlpha = 255;
+
+        public byte ColorGasHorizontalRed = 0;
+        public byte ColorGasHorizontalGreen = 255;
+        public byte ColorGasHorizontalBlue = 104;
+        public byte ColorGasHorizontalAlpha = 255;
+
+        public byte ColorGasVerticalRed = 200;
+        public byte ColorGasVerticalGreen = 0;
+        public byte ColorGasVerticalBlue = 104;
+        public byte ColorGasVerticalAlpha = 255;
+
+        // end of config file variables
 
         public static void OnLoad(string modPath)
         {

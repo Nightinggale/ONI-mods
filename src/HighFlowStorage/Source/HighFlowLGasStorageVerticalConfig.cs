@@ -36,7 +36,11 @@ namespace HighFlowStorage
 
         public static Color32 BuildingColor()
         {
-            return new Color32(200, 0, 104, 255);
+            return new Color32(
+                HighFlowStorageConfig.Config.ColorGasVerticalRed,
+                HighFlowStorageConfig.Config.ColorGasVerticalGreen,
+                HighFlowStorageConfig.Config.ColorGasVerticalBlue,
+                HighFlowStorageConfig.Config.ColorGasVerticalAlpha);
         }
 
         public override BuildingDef CreateBuildingDef()
@@ -92,6 +96,9 @@ namespace HighFlowStorage
                 consumer.capacityKG = storage.capacityKg;
                 consumer.AssignPort(port);
             }
+
+            go.AddComponent<HighFlowStorage.BuildingColor>().color = BuildingColor();
+
             this.AttachPort(go);
         }
 

@@ -94,6 +94,7 @@
     <Compile Include="..\NightLib\Extensions.cs">
       <Link>NightLib\Extensions.cs</Link>
     </Compile>
+    <Compile Include="Source\BuildingColor.cs" />
     <Compile Include="Source\HighFlowLiquidStorageVerticalConfig2.cs" />
     <Compile Include="Source\HighFlowLGasStorageVerticalConfig2.cs" />
     <Compile Include="Source\HighFlowLGasStorageConfig2.cs" />
