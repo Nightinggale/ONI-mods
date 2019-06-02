@@ -7,9 +7,9 @@ using TUNING;
 namespace HighFlowStorage
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class HighFlowGasReservoirVerticalConfig : IBuildingConfig
+    public class HighFlowGasReservoirVerticalConfig2 : IBuildingConfig
     {
-        new public const string ID = "Nightinggale.HighFlowGasReservoirVertical";
+        new public const string ID = "Nightinggale.HighFlowGasReservoirVertical2";
 
         private const string DisplayName = "High Flow Vertical Gas Reservoir";
         public const string Description = "";
@@ -29,9 +29,14 @@ namespace HighFlowStorage
 
         private static readonly PortDisplayInput[] inputPorts = { inputPort0, inputPort1, inputPort2, inputPort3, inputPort4 };
 
+        public static readonly LogicPorts.Port OUTPUT_PORT = ReservoirStorageSensor.MakePort();
+
         public static void Setup()
         {
             AddBuilding.AddStrings(ID, DisplayName, Description, Effect);
+
+            AddBuilding.AddBuildingToPlanScreen("Base", ID, GasReservoirConfig.ID);
+            AddBuilding.IntoTechTree("HVAC", ID);
         }
 
         public static Color32 BuildingColor()
@@ -62,8 +67,6 @@ namespace HighFlowStorage
             buildingDef.ViewMode = OverlayModes.GasConduits.ID;
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.PermittedRotations = PermittedRotations.FlipH;
-
-            buildingDef.Deprecated = true;
             return buildingDef;
         }
 
@@ -99,7 +102,7 @@ namespace HighFlowStorage
         {
             PortDisplayController controller = go.AddComponent<PortDisplayController>();
             controller.Init(go);
-            
+
             controller.AssignPort(go, outputPort0);
             controller.AssignPort(go, outputPort1);
             controller.AssignPort(go, outputPort2);
@@ -114,17 +117,21 @@ namespace HighFlowStorage
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
+            GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
             this.AttachPort(go);
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)
         {
+            GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
             this.AttachPort(go);
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
+            GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
             go.AddOrGetDef<StorageController.Def>();
+            go.AddComponent<ReservoirStorageSensor>();
         }
     }
 }

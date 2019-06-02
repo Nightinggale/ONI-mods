@@ -26,9 +26,6 @@ namespace HighFlowStorage
         public static void Setup()
         {
             AddBuilding.AddStrings(ID, DisplayName, Description, Effect);
-
-            AddBuilding.AddBuildingToPlanScreen("Base", ID, LiquidReservoirConfig.ID);
-            AddBuilding.IntoTechTree("ImprovedLiquidPiping", ID);
         }
 
         public static Color32 BuildingColor()
@@ -59,6 +56,8 @@ namespace HighFlowStorage
             buildingDef.ViewMode = OverlayModes.LiquidConduits.ID;
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.PermittedRotations = PermittedRotations.FlipH;
+
+            buildingDef.Deprecated = true;
             return buildingDef;
         }
 

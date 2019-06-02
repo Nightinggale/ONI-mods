@@ -7,6 +7,9 @@
 
 
 using UnityEngine;
+using KSerialization;
+using System;
+using UnityEngine;
 
 namespace NightLib
 {
@@ -56,6 +59,17 @@ namespace NightLib
         {
             string name = go.PrefabID().Name;
             return name.Substring(name.Length - 7) == "Preview";
+        }
+
+        
+        internal static void Subscribe(this KMonoBehaviour behavior, GameHashes hash, Action<object> handler)
+        {
+            behavior.Subscribe((int)hash, handler);
+        }
+        
+        internal static void Trigger(this KMonoBehaviour behavior, int hash, object data = null)
+        {
+            behavior.Trigger((int)hash, data);
         }
     }
 }
