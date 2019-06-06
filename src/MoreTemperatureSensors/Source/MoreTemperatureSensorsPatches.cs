@@ -15,6 +15,7 @@ namespace MoreTemperatureSensors
 
                 TileTemperatureSensorConfig.Setup();
                 ItemTemperatureSensorConfig.Setup();
+                ItemGermSensorConfig.Setup();
                 BuildingTemperatureSensorConfig.Setup();
                 ModdedLogicElementSensorLiquidConfig.Setup();
                 ConduitPressureSensorGas.Setup();

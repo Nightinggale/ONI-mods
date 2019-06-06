@@ -6,6 +6,7 @@ namespace MoreTemperatureSensors
 {
     class MoreTemperatureSensorsConfig
     {
+        public int ItemSensorItemCountFastThreshold = 3;
         public float ItemSensorUpdateIntervalSeconds = 0.15f;
         public float GasPressureSensorMax = 50f;
         public float LiquidPressureSensorMax = 2000f;

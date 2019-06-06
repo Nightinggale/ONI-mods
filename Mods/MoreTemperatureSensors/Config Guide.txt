@@ -1,0 +1,24 @@
+The following tags are allowed in the config file.
+
+If a tag isn't in the config file, the default value will be used.
+If units (like kg) are added to default values, then the number will always be in that unit.
+
+An f next to the number means it's a floating point and supports decimal numbers.
+No f means it has to be integer, as in 1, 2, 3, but not 0.5
+
+ItemSensorUpdateIntervalSeconds: 0.15f seconds
+How frequently the item germ/temperature sensors should update (in seconds)
+The sensors trigger when items are added or removed. This setting controls
+how often the sensor should refresh if nothing changed.
+High numbers will lower CPU usage, but also make sensors slower to respond to passive changes.
+
+ItemSensorItemCountFastThreshold: 3
+Item germ sensor will update if the number of items in the cell is below or equal this number.
+If higher, it will rely on ItemSensorUpdateIntervalSeconds.
+If no items, then display will set to 0 and the sensor will sleep until an item arrives.
+
+GasPressureSensorMax: 50f kg
+Max value for slider.
+
+LiquidPressureSensorMax: 2000f kg
+Max value for slider.
