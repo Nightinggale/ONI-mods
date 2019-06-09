@@ -17,6 +17,10 @@ namespace MoreTemperatureSensors
             base.OnSpawn();
             this.filterable.onFilterChanged += new Action<Tag>(this.OnFilterChanged);
             this.OnFilterChanged(this.filterable.SelectedTag);
+
+            // Update currentValue to avoid all displays from showing default value on load.
+            // No functional change. It's purely a display issue.
+            this.ConduitUpdate(-10);
         }
 
         private void OnFilterChanged(Tag tag)
@@ -49,6 +53,12 @@ namespace MoreTemperatureSensors
                 {
                     currentElement = primaryElement.ElementID;
                 }
+            }
+
+            // spawn code should never toggle as it crashes on load
+            if (dt < 0)
+            {
+                return;
             }
 
             if (base.IsSwitchedOn)

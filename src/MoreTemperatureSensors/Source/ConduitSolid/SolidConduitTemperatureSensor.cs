@@ -156,6 +156,11 @@ namespace MoreTemperatureSensors
                 return;
             }
 
+            // spawn code should never toggle as it crashes on load
+            if (dt < 0)
+            {
+                return;
+            }
 
             if (this.activateAboveThreshold)
             {
@@ -176,7 +181,7 @@ namespace MoreTemperatureSensors
 
             // Update currentValue to avoid all displays from showing default value on load.
             // No functional change. It's purely a display issue.
-            this.ConduitUpdate(0);
+            this.ConduitUpdate(-10);
         }
     }
 }

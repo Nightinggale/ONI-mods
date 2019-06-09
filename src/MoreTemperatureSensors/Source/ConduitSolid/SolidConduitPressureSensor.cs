@@ -142,6 +142,12 @@ namespace MoreTemperatureSensors
                 this.currentValue = pickupable.TotalAmount * 1000f;
             }
 
+            // spawn code should never toggle as it crashes on load
+            if (dt < 0)
+            {
+                return;
+            }
+
             if (this.activateAboveThreshold)
             {
                 // Empty is always false
@@ -181,7 +187,7 @@ namespace MoreTemperatureSensors
 
             // Update currentValue to avoid all displays from showing 0 g on load.
             // No functional change. It's purely a display issue.
-            this.ConduitUpdate(0);
+            this.ConduitUpdate(-10);
         }
     }
 }

@@ -33,6 +33,8 @@ namespace MoreTemperatureSensors
 
         private bool needsUpdating;
 
+        private bool isStarted = false;
+
         private int itemCount;
 
         private int itemCountThreshold;
@@ -202,9 +204,6 @@ namespace MoreTemperatureSensors
             int cell = this.NaturalBuildingCell();
             this.pickupablesChangedEntry = GameScenePartitioner.Instance.Add("ItemTemperatureSensor.PickupablesChanged", base.gameObject, cell, GameScenePartitioner.Instance.pickupablesChangedLayer, new Action<object>(this.OnPickupablesChanged));
 
-            // make sure the init state is correct if there are no items
-            this.Toggle();
-
             this.Update();
 
             // load refresh interval from config file
@@ -239,21 +238,28 @@ namespace MoreTemperatureSensors
 
         public void Sim200ms(float dt)
         {
-            if (!this.needsUpdating)
+            if (!isStarted)
             {
-                if (this.itemCount == 0)
+                this.isStarted = true;
+            }
+            else
+            {
+                if (!this.needsUpdating)
                 {
-                    // wait until an item arrive. No need to allocate a temp list when we know it will loop 0 items and not change output.
-                    return;
-                }
-
-                // use timer if item count exceeds the threshold.
-                if (this.itemCount > this.itemCountThreshold)
-                {
-                    this.timeSinceLastUpdate += dt;
-                    if (this.timeSinceLastUpdate < this.refreshInterval)
+                    if (this.itemCount == 0)
                     {
+                        // wait until an item arrive. No need to allocate a temp list when we know it will loop 0 items and not change output.
                         return;
+                    }
+
+                    // use timer if item count exceeds the threshold.
+                    if (this.itemCount > this.itemCountThreshold)
+                    {
+                        this.timeSinceLastUpdate += dt;
+                        if (this.timeSinceLastUpdate < this.refreshInterval)
+                        {
+                            return;
+                        }
                     }
                 }
             }
@@ -288,6 +294,12 @@ namespace MoreTemperatureSensors
 
             // update the cached count. Set to 0 if no items were found.
             this.diseaseCount = currentValue;
+
+            // don't toggle output before game is fully loaded. It can crash the game.
+            if (!isStarted)
+            {
+                return;
+            }
 
             // update the logic port output if needed.
             if (this.activateAboveThreshold)

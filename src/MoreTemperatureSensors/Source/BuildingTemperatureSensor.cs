@@ -12,6 +12,8 @@ namespace MoreTemperatureSensors
 
         private int cell;
 
+        private bool isStarted = false;
+
         public void OnOverlayChange(HashedString mode)
         {
             KBatchedAnimController component = base.GetComponent<KBatchedAnimController>();
@@ -24,7 +26,7 @@ namespace MoreTemperatureSensors
 
             this.cell = base.GetComponent<Building>().GetCellWithOffset(new CellOffset(0, -1));
 
-            this.Update();
+            this.SetTemperature();
 
             // Apply color
             this.OnOverlayChange("");
@@ -39,12 +41,19 @@ namespace MoreTemperatureSensors
 
         new public void Sim200ms(float dt)
         {
+            this.isStarted = true;
             this.Update();
         }
 
         private void Update()
         {
             this.SetTemperature();
+
+            // spawn code should never toggle as it crashes on load
+            if (!isStarted)
+            {
+                return;
+            }
 
             if (this.activateOnWarmerThan)
             {

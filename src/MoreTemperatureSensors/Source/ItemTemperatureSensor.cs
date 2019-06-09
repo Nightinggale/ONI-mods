@@ -22,6 +22,8 @@ namespace MoreTemperatureSensors
 
         private float refreshInterval;
 
+        private bool isStarted = false;
+
         private HandleVector<int>.Handle pickupablesChangedEntry;
 
 
@@ -38,9 +40,6 @@ namespace MoreTemperatureSensors
             // subscribe to add/remove pickupables on the cell in question
             int cell = this.NaturalBuildingCell();
             this.pickupablesChangedEntry = GameScenePartitioner.Instance.Add("ItemTemperatureSensor.PickupablesChanged", base.gameObject, cell, GameScenePartitioner.Instance.pickupablesChangedLayer, new Action<object>(this.OnPickupablesChanged));
-
-            // make sure the init state is correct if there are no items
-            this.Toggle();
 
             this.Update();
 
@@ -70,12 +69,19 @@ namespace MoreTemperatureSensors
         
         new public void Sim200ms(float dt)
         {
-            if (this.lastActivateOnWarmerThan == this.activateOnWarmerThan && this.lastThresholdTemperature == this.thresholdTemperature)
+            if (!isStarted)
             {
-                this.timeSinceLastUpdate += dt;
-                if (this.timeSinceLastUpdate < this.refreshInterval)
+                this.isStarted = true;
+            }
+            else
+            {
+                if (this.lastActivateOnWarmerThan == this.activateOnWarmerThan && this.lastThresholdTemperature == this.thresholdTemperature)
                 {
-                    return;
+                    this.timeSinceLastUpdate += dt;
+                    if (this.timeSinceLastUpdate < this.refreshInterval)
+                    {
+                        return;
+                    }
                 }
             }
             this.Update();
@@ -89,6 +95,12 @@ namespace MoreTemperatureSensors
             this.lastThresholdTemperature = this.thresholdTemperature;
 
             this.SetTemperature();
+
+            // don't toggle output before game is fully loaded. It can crash the game.
+            if (!isStarted)
+            {
+                return;
+            }
 
             if (this.activateOnWarmerThan)
             {
