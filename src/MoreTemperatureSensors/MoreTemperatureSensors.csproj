@@ -99,6 +99,8 @@
     </Compile>
     <Compile Include="Source\BuildingTemperatureSensorConfig.cs" />
     <Compile Include="Source\BuildingTemperatureSensor.cs" />
+    <Compile Include="Source\BatterySensorConfig.cs" />
+    <Compile Include="Source\BatterySensor.cs" />
     <Compile Include="Source\ItemGermSensor.cs" />
     <Compile Include="Source\ItemGermSensorConfig.cs" />
     <Compile Include="Source\ConduitSolid\SolidConduitElementSensor.cs" />

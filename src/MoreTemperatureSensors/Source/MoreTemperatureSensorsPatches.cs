@@ -25,6 +25,8 @@ namespace MoreTemperatureSensors
                 SolidConduitGermsSensorConfig.Setup();
                 SolidConduitTemperatureSensorConfig.Setup();
                 SolidConduitPressureSensorConfig.Setup();
+
+                BatterySensorConfig.Setup();
             }
         }
     }

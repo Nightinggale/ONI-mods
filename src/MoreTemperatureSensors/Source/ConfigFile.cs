@@ -8,8 +8,17 @@ namespace MoreTemperatureSensors
     {
         public int ItemSensorItemCountFastThreshold = 3;
         public float ItemSensorUpdateIntervalSeconds = 0.15f;
+        public float BatterySensorUpdateIntervalSeconds = 0.15f;
         public float GasPressureSensorMax = 50f;
         public float LiquidPressureSensorMax = 2000f;
+
+        public float GetBatteryInterval
+        {
+            get
+            {
+                return BatterySensorUpdateIntervalSeconds <= 0.15f ? 0.15f : BatterySensorUpdateIntervalSeconds;
+            }
+        }
 
         public static void OnLoad(string modPath)
         {

@@ -17,6 +17,9 @@ Item germ sensor will update if the number of items in the cell is below or equa
 If higher, it will rely on ItemSensorUpdateIntervalSeconds.
 If no items, then display will set to 0 and the sensor will sleep until an item arrives.
 
+BatterySensorUpdateIntervalSeconds: 0.15f
+Time between updates for the battery sensor.
+
 GasPressureSensorMax: 50f kg
 Max value for slider.
 
