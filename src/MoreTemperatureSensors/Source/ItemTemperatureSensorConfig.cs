@@ -11,7 +11,8 @@ namespace MoreTemperatureSensors
         public const string ID = "Nightinggale.ItemTemperatureSensor";
 
         private const string DisplayName = "Item Temperature Sensor";
-        public const string Description = "Provides a sensor output, which tells if the hottest item is colder than the threshold or if the coldest is hotter than threshold.\n\nActivates output if there are no items present.";
+        private static string Description = "Provides a sensor output, which tells if the hottest item is colder than the threshold or if the coldest is hotter than threshold.\n\nActivates output if there are no items present.\n" +
+            "Update interval (config file): " + MoreTemperatureSensorsConfig.Config.GetItemInterval.ToString() + " seconds.";
         public const string Effect = "Measures the temperature of the hottest/coldest item in the cell.";
 
         private static string LogicPortDesc = "Item " + UI.FormatAsLink("Temperature", "HEAT");

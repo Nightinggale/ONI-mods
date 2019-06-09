@@ -196,7 +196,6 @@ namespace MoreTemperatureSensors
             base.OnSpawn();
             this.animController = base.GetComponent<KBatchedAnimController>();
             base.OnToggle += new Action<bool>(this.OnSwitchToggled);
-            this.UpdateLogicCircuit();
             this.UpdateVisualState(true);
             this.wasOn = this.switchedOn;
 
@@ -207,11 +206,7 @@ namespace MoreTemperatureSensors
             this.Update();
 
             // load refresh interval from config file
-            this.refreshInterval = MoreTemperatureSensorsConfig.Config.ItemSensorUpdateIntervalSeconds;
-            if (this.refreshInterval < 0.15f)
-            {
-                this.refreshInterval = 0.15f;
-            }
+            this.refreshInterval = MoreTemperatureSensorsConfig.Config.GetItemInterval;
 
             this.itemCountThreshold = MoreTemperatureSensorsConfig.Config.ItemSensorItemCountFastThreshold;
             if (this.itemCountThreshold < 0)

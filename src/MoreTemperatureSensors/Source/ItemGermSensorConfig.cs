@@ -10,7 +10,8 @@ namespace MoreTemperatureSensors
         public const string ID = "Nightinggale.ItemGermSensor";
 
         private const string DisplayName = "Item Germ Sensor";
-        public const string Description = "Measurement is the germs on all items combined. This means the sensor can't detect if there is one germ free item in a pile of germy items.";
+        private static string Description = "Measurement is the germs on all items combined. This means the sensor can't detect if there is one germ free item in a pile of germy items.\n" +
+            "Update interval (config file): " + MoreTemperatureSensorsConfig.Config.GetItemInterval.ToString() + " seconds.";
         public const string Effect = "Becomes <link=\"LOGIC\">Active</link> or goes on <link=\"LOGIC\">Standby</link> depending on quantity of <link=\"DISEASE\">Germs</link> on items in the cell.";
     
         private static string LogicPortDesc = "Item " + UI.FormatAsLink("Germs", "DISEASE");

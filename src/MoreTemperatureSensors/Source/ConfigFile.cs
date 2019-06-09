@@ -12,6 +12,14 @@ namespace MoreTemperatureSensors
         public float GasPressureSensorMax = 50f;
         public float LiquidPressureSensorMax = 2000f;
 
+        public float GetItemInterval
+        {
+            get
+            {
+                return ItemSensorUpdateIntervalSeconds <= 0.15f ? 0.15f : ItemSensorUpdateIntervalSeconds;
+            }
+        }
+
         public float GetBatteryInterval
         {
             get
