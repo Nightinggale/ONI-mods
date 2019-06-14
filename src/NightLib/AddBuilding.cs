@@ -73,6 +73,31 @@ namespace NightLib.AddBuilding
             (BUILDINGS.PLANORDER[CategoryIndex].data as IList<string>)?.Add(buildingId);
         }
 
+        internal static void ReplaceBuildingInPlanScreen(HashedString category, string buildingId, string parentId)
+        {
+            int index = GetCategoryIndex(category, buildingId);
+
+            if (index == -1)
+                return;
+
+            int? indexBuilding = null;
+            indexBuilding = (BUILDINGS.PLANORDER[index].data as IList<string>)?.IndexOf(parentId);
+            if (indexBuilding != null)
+            {
+                (BUILDINGS.PLANORDER[index].data as IList<string>)?.Remove(parentId);
+                (BUILDINGS.PLANORDER[index].data as IList<string>)?.Insert(indexBuilding.Value, buildingId);
+                return;
+            }
+
+
+            if (indexBuilding == null)
+            {
+                Console.WriteLine("ERROR: building \"" + parentId + "\" not found in category " + category + ". Placing " + buildingId + " at the end of the list");
+            }
+
+            AddBuildingToPlanScreen(category, buildingId, indexBuilding);
+        }
+
         private static int GetCategoryIndex(HashedString category, string buildingId)
         {
             int index = BUILDINGS.PLANORDER.FindIndex(x => x.category == category);
@@ -98,6 +123,23 @@ namespace NightLib.AddBuilding
             // TODO figure out how to control the order within a group
            
         }
+
+        internal static void ReplaceInTechTree(string Tech, string BuildingID, string old)
+        {
+
+            var TechGroup = new List<string>(Database.Techs.TECH_GROUPING[Tech]) { };
+            int index = TechGroup.FindIndex(x => x == old);
+            if (index != -1)
+            {
+                TechGroup[index] = BuildingID;
+                Database.Techs.TECH_GROUPING[Tech] = TechGroup.ToArray();
+            }
+            else
+            {
+                IntoTechTree(Tech, BuildingID);
+            }
+        }
+
 
         private static int GetTechCategoryIndex(HashedString category, string buildingId)
         {
