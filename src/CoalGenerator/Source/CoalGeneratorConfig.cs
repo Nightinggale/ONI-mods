@@ -20,8 +20,8 @@ namespace Nightinggale.CoalGenerator
                 STRINGS.BUILDINGS.PREFABS.GENERATOR.DESC,
                 STRINGS.BUILDINGS.PREFABS.GENERATOR.EFFECT);
 
-            AddBuilding.ReplaceBuildingInPlanScreen("Power", ID, GeneratorConfig.ID);
-            AddBuilding.ReplaceInTechTree("Combustion", ID, GeneratorConfig.ID);
+            //AddBuilding.ReplaceBuildingInPlanScreen("Power", ID, GeneratorConfig.ID);
+            //AddBuilding.ReplaceInTechTree("Combustion", ID, GeneratorConfig.ID);
         }
 
         public override BuildingDef CreateBuildingDef()
@@ -44,6 +44,7 @@ namespace Nightinggale.CoalGenerator
             buildingDef.ViewMode = OverlayModes.Power.ID;
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.AudioSize = "large";
+            buildingDef.Deprecated = true;
             return buildingDef;
         }
 

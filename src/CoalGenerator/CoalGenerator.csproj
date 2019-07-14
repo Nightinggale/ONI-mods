@@ -71,6 +71,7 @@
       <Link>NightLib\Extensions.cs</Link>
     </Compile>
     <Compile Include="Source\AddStrings.cs" />
+    <Compile Include="Source\ModCoalGenerator.cs" />
     <Compile Include="Source\ModWoodGenerator.cs" />
     <Compile Include="Source\CoalManualDeliveryKG.cs" />
     <Compile Include="Source\CoalDeliveryController.cs" />

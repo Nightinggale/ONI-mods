@@ -10,7 +10,6 @@ namespace Nightinggale.CoalGenerator
         {
             public static void Prefix()
             {
-                AddStrings.AddString("Coal");
                 CoalGeneratorConfig.Setup();
             }
         }
