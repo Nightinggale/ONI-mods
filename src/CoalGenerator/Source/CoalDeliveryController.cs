@@ -95,7 +95,7 @@ namespace Nightinggale.CoalGenerator
         {
             get
             {
-                return "STRINGS.BUILDINGS.NIGHTINGGALE.COALGENERATOR.TITLE";
+                return "STRINGS.BUILDINGS.NIGHTINGGALE.COALGENERATOR.TITLE." + delivery.RequestedItemTag.Name;
             }
         }
 
@@ -136,7 +136,7 @@ namespace Nightinggale.CoalGenerator
 
         public string GetSliderTooltipKey(int index)
         {
-            return "STRINGS.BUILDINGS.NIGHTINGGALE.COALGENERATOR.BATTERYTHRESHOLD";
+            return "STRINGS.BUILDINGS.NIGHTINGGALE.COALGENERATOR.BATTERYTHRESHOLD." + delivery.RequestedItemTag.Name;
         }
     }
 }

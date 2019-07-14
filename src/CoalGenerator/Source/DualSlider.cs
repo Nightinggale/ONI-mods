@@ -110,7 +110,7 @@ namespace Nightinggale.CoalGenerator
         {
             get
             {
-                return "Duplicants will fill up to this amount of coal.\nLowering this number will reset current deliveries.";
+                return "Duplicants will fill up to this amount of " + delivery.RequestedItemTag.Name + ".\nLowering this number will reset current deliveries.";
             }
         }
 
@@ -118,7 +118,7 @@ namespace Nightinggale.CoalGenerator
         {
             get
             {
-                return "Duplicants will start to deliver coal when storage falls below this threshold.";
+                return "Duplicants will start to deliver " + delivery.RequestedItemTag.Name + " when storage falls below this threshold.";
             }
         }
 
@@ -134,7 +134,7 @@ namespace Nightinggale.CoalGenerator
         {
             get
             {
-                return "Coal Storage";
+                return delivery.RequestedItemTag.Name + " Storage";
             }
         }
 

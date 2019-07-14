@@ -63,7 +63,7 @@ namespace Nightinggale.CoalGenerator
 
         public bool hasMeter = true;
 
-        public Meter.Offset meterOffset;
+        public Meter.Offset meterOffset = Meter.Offset.Infront;
 
         [SerializeField]
         public EnergyGenerator.Formula formula;
@@ -181,20 +181,24 @@ namespace Nightinggale.CoalGenerator
         public List<Descriptor> RequirementDescriptors(BuildingDef def)
         {
             List<Descriptor> list = new List<Descriptor>();
+            List<Descriptor> result;
             if (this.formula.inputs == null || this.formula.inputs.Length == 0)
             {
-                return list;
+                result = list;
             }
-            for (int i = 0; i < this.formula.inputs.Length; i++)
+            else
             {
-                EnergyGenerator.InputItem inputItem = this.formula.inputs[i];
-                Element element = ElementLoader.GetElement(inputItem.tag);
-                string arg = element.tag.ProperName();
-                Descriptor item = default(Descriptor);
-                item.SetupDescriptor(string.Format(UI.BUILDINGEFFECTS.ELEMENTCONSUMED, arg, GameUtil.GetFormattedMass(inputItem.consumptionRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.##}")), string.Format(UI.BUILDINGEFFECTS.TOOLTIPS.ELEMENTCONSUMED, arg, GameUtil.GetFormattedMass(inputItem.consumptionRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.##}")), Descriptor.DescriptorType.Requirement);
-                list.Add(item);
+                for (int i = 0; i < this.formula.inputs.Length; i++)
+                {
+                    EnergyGenerator.InputItem inputItem = this.formula.inputs[i];
+                    string arg = inputItem.tag.ProperName();
+                    Descriptor item = default(Descriptor);
+                    item.SetupDescriptor(string.Format(UI.BUILDINGEFFECTS.ELEMENTCONSUMED, arg, GameUtil.GetFormattedMass(inputItem.consumptionRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.##}")), string.Format(UI.BUILDINGEFFECTS.TOOLTIPS.ELEMENTCONSUMED, arg, GameUtil.GetFormattedMass(inputItem.consumptionRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.##}")), Descriptor.DescriptorType.Requirement);
+                    list.Add(item);
+                }
+                result = list;
             }
-            return list;
+            return result;
         }
 
         public List<Descriptor> EffectDescriptors(BuildingDef def)

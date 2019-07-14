@@ -10,9 +10,7 @@ namespace Nightinggale.CoalGenerator
         {
             public static void Prefix()
             {
-                Strings.Add($"STRINGS.BUILDINGS.NIGHTINGGALE.COALGENERATOR.TITLE", "Coal delivery controls");
-                Strings.Add($"STRINGS.BUILDINGS.NIGHTINGGALE.COALGENERATOR.BATTERYTHRESHOLD", "Duplicants will deliver coal when the battery charge falls below the selected threshold.\nNote that this slider is ignored if the coal generator is connected to an automation wire.");
-
+                AddStrings.AddString("Coal");
                 CoalGeneratorConfig.Setup();
             }
         }
