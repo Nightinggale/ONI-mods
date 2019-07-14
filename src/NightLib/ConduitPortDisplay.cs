@@ -29,10 +29,7 @@ namespace NightLib
         internal bool input;
 
         [SerializeField]
-        internal Color32 colorConnected;
-
-        [SerializeField]
-        internal Color32 colorDisconnected;
+        internal Color32 color;
 
         [SerializeField]
         internal Sprite sprite;
@@ -43,8 +40,7 @@ namespace NightLib
             this.offset = port.offset;
             this.offsetFlipped = port.offsetFlipped;
             this.input = port.input;
-            this.colorConnected = port.colorConnected;
-            this.colorDisconnected = port.colorDisconnected;
+            this.color = port.color;
             this.sprite = GetSprite();
         }
 
@@ -53,8 +49,6 @@ namespace NightLib
             Building building = visualizer.GetBuilding();
             int utilityCell = building.GetCellWithOffset(building.Orientation == Orientation.Neutral ? this.offset : this.offsetFlipped);
 
-            Color color = GetColor(utilityCell);
-
             // redraw if anything changed
             if (force || utilityCell != this.lastUtilityCell || color != this.lastColor)
             {
@@ -62,11 +56,6 @@ namespace NightLib
                 this.lastUtilityCell = utilityCell;
                 visualizer.DrawUtilityIcon(utilityCell, this.sprite, ref portObject, color, Color.white);
             }
-        }
-
-        private Color32 GetColor(int utilityCell)
-        {
-            return this.type.IsConnected(utilityCell) ? this.colorConnected : this.colorDisconnected;
         }
 
         private Sprite GetSprite()

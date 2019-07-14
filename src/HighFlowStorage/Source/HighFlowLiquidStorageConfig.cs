@@ -138,6 +138,7 @@ namespace HighFlowStorage
 
         public override void DoPostConfigureComplete(GameObject go)
         {
+            go.AddOrGet<BuildingCellVisualizer>();
             go.AddOrGetDef<StorageController.Def>();
         }
     }

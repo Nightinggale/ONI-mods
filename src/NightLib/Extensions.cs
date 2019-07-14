@@ -9,7 +9,6 @@
 using UnityEngine;
 using KSerialization;
 using System;
-using UnityEngine;
 
 namespace NightLib
 {

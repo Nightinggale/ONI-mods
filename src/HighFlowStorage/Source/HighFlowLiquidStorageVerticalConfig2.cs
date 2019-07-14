@@ -128,6 +128,7 @@ namespace HighFlowStorage
 
         public override void DoPostConfigureComplete(GameObject go)
         {
+            go.AddOrGet<BuildingCellVisualizer>();
             GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
             go.AddOrGetDef<StorageController.Def>();
             go.AddComponent<ReservoirStorageSensor>();

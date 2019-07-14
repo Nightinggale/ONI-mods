@@ -9,7 +9,7 @@ namespace HighFlowStorage
     [SerializationConfig(MemberSerialization.OptIn)]
     public class HighFlowGasReservoirConfig : IBuildingConfig
     {
-        new public const string ID = "Nightinggale.HighFlowGasReservoir";
+        public const string ID = "Nightinggale.HighFlowGasReservoir";
 
         private const string DisplayName = "High Flow Gas Reservoir";
         public const string Description = "";
@@ -126,6 +126,7 @@ namespace HighFlowStorage
 
         public override void DoPostConfigureComplete(GameObject go)
         {
+            go.AddOrGet<BuildingCellVisualizer>();
             go.AddOrGetDef<StorageController.Def>();
         }
     }

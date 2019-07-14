@@ -9,17 +9,7 @@ namespace NightLib.PortDisplayDrawing
     public static class ConduitDisplayPortPatches
     {
         [HarmonyPatch(typeof(BuildingCellVisualizer))]
-        [HarmonyPatch("CheckRequiresComponent")]
-        public static class CheckRequiresComponent
-        {
-            public static void Postfix(ref bool __result, BuildingDef def)
-            {
-                __result |= DrawPorts.HasBuilding(def.PrefabID);
-            }
-        }
-
-        [HarmonyPatch(typeof(BuildingCellVisualizer))]
-        [HarmonyPatch("Tick")]
+        [HarmonyPatch("DrawIcons")]
         public static class DrawPorts
         {
             // cache variables

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace HighFlowStorage
 {
     class HighFlowStorageConfig
     {
+        private const string fileName = "HighFlowStorageConfig.json";
+
         // variables, which can be changed in the config file
         // The numbers are what will be used if the variable isn't present in the config file
 
@@ -47,16 +50,21 @@ namespace HighFlowStorage
 
         // end of config file variables
 
-        public static void OnLoad(string modPath)
+        private static HighFlowStorageConfig internalConfig = null;
+
+        public static HighFlowStorageConfig Config
         {
-            LoadConfig(modPath);
+            get
+            {
+                if (internalConfig == null)
+                {
+                    // load the config file, but only the first time the method is called.
+                    string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    internalConfig = LoadConfig<HighFlowStorageConfig>(Path.Combine(assemblyFolder, fileName));
+                }
+                return internalConfig;
+            }
         }
-
-        public static HighFlowStorageConfig Config = null;
-        public static void LoadConfig(string modPath) { Config = LoadConfig<HighFlowStorageConfig>(Path.Combine(modPath, "HighFlowStorageConfig.json")); }
-
-        // modified version of https://github.com/javisar/ONI-Modloader-Mods/blob/Q3-Steam/Source/SpeedControl/SpeedControlConfig.cs
-        // added error handling to make the game work despite missing/malformated json files or missing variables in said files
 
         protected static T LoadConfig<T>(string path) where T : class
         {
