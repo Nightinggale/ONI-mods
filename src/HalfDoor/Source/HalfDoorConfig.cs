@@ -8,7 +8,7 @@ namespace Nightinggale.HalfDoor
 
     public class HalfDoorConfig : PressureDoorConfig
     {
-        public const string ID = "Nightinggale.HalfDoor";
+        new public const string ID = "Nightinggale.HalfDoor";
 
         public static void Setup()
         {
