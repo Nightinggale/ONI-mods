@@ -179,7 +179,7 @@ namespace Nightinggale.CoalGenerator
                     float num = this.capacity - massAvailable;
                     num = Mathf.Max(PICKUPABLETUNING.MINIMUM_PICKABLE_AMOUNT, num);
                     ChoreType byHash = Db.Get().ChoreTypes.GetByHash(this.choreTypeIDHash);
-                    this.fetchList = new FetchList2(this.storage, byHash, this.choreTags);
+                    this.fetchList = new FetchList2(this.storage, byHash);
                     this.fetchList.ShowStatusItem = this.ShowStatusItem;
                     this.fetchList.MinimumAmount[this.requestedItemTag] = Mathf.Max(PICKUPABLETUNING.MINIMUM_PICKABLE_AMOUNT, this.minimumMass);
                     FetchList2 arg_12B_0 = this.fetchList;

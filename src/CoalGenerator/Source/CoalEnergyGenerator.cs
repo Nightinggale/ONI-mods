@@ -200,20 +200,32 @@ namespace Nightinggale.CoalGenerator
         public List<Descriptor> EffectDescriptors(BuildingDef def)
         {
             List<Descriptor> list = new List<Descriptor>();
+            List<Descriptor> result;
             if (this.formula.outputs == null || this.formula.outputs.Length == 0)
             {
-                return list;
+                result = list;
             }
-            for (int i = 0; i < this.formula.outputs.Length; i++)
+            else
             {
-                EnergyGenerator.OutputItem outputItem = this.formula.outputs[i];
-                Element element = ElementLoader.FindElementByHash(outputItem.element);
-                string arg = element.tag.ProperName();
-                Descriptor item = default(Descriptor);
-                item.SetupDescriptor(string.Format(UI.BUILDINGEFFECTS.ELEMENTEMITTED, arg, GameUtil.GetFormattedMass(outputItem.creationRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.#}")), string.Format(UI.BUILDINGEFFECTS.TOOLTIPS.ELEMENTEMITTED, arg, GameUtil.GetFormattedMass(outputItem.creationRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.#}")), Descriptor.DescriptorType.Effect);
-                list.Add(item);
+                for (int i = 0; i < this.formula.outputs.Length; i++)
+                {
+                    EnergyGenerator.OutputItem outputItem = this.formula.outputs[i];
+                    Element element = ElementLoader.FindElementByHash(outputItem.element);
+                    string arg = element.tag.ProperName();
+                    Descriptor item = default(Descriptor);
+                    if (outputItem.minTemperature > 0f)
+                    {
+                        item.SetupDescriptor(string.Format(UI.BUILDINGEFFECTS.ELEMENTEMITTED_MINORENTITYTEMP, arg, GameUtil.GetFormattedMass(outputItem.creationRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.#}"), GameUtil.GetFormattedTemperature(outputItem.minTemperature, GameUtil.TimeSlice.None, GameUtil.TemperatureInterpretation.Absolute, true, false)), string.Format(UI.BUILDINGEFFECTS.TOOLTIPS.ELEMENTEMITTED_MINORENTITYTEMP, arg, GameUtil.GetFormattedMass(outputItem.creationRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.#}"), GameUtil.GetFormattedTemperature(outputItem.minTemperature, GameUtil.TimeSlice.None, GameUtil.TemperatureInterpretation.Absolute, true, false)), Descriptor.DescriptorType.Effect);
+                    }
+                    else
+                    {
+                        item.SetupDescriptor(string.Format(UI.BUILDINGEFFECTS.ELEMENTEMITTED_ENTITYTEMP, arg, GameUtil.GetFormattedMass(outputItem.creationRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.#}")), string.Format(UI.BUILDINGEFFECTS.TOOLTIPS.ELEMENTEMITTED_ENTITYTEMP, arg, GameUtil.GetFormattedMass(outputItem.creationRate, GameUtil.TimeSlice.PerSecond, GameUtil.MetricMassFormat.UseThreshold, true, "{0:0.#}")), Descriptor.DescriptorType.Effect);
+                    }
+                    list.Add(item);
+                }
+                result = list;
             }
-            return list;
+            return result;
         }
 
         public List<Descriptor> GetDescriptors(BuildingDef def)

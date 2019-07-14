@@ -67,38 +67,8 @@
     <Compile Include="..\NightLib\AddBuilding.cs">
       <Link>NightLib\AddBuilding.cs</Link>
     </Compile>
-    <Compile Include="..\NightLib\BuildingCellVisualizerAccess.cs">
-      <Link>NightLib\BuildingCellVisualizerAccess.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\ConduitConsumer.cs">
-      <Link>NightLib\ConduitConsumer.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\ConduitDispenser.cs">
-      <Link>NightLib\ConduitDispenser.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\ConduitPatches.cs">
-      <Link>NightLib\ConduitPatches.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\ConduitPortDisplay.cs">
-      <Link>NightLib\ConduitPortDisplay.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\ConduitPortDisplayClasses.cs">
-      <Link>NightLib\ConduitPortDisplayClasses.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\ConduitPortDisplayController.cs">
-      <Link>NightLib\ConduitPortDisplayController.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\ConduitReadPrivate.cs">
-      <Link>NightLib\ConduitReadPrivate.cs</Link>
-    </Compile>
     <Compile Include="..\NightLib\Extensions.cs">
       <Link>NightLib\Extensions.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\KAminControllerResize.cs">
-      <Link>NightLib\KAminControllerResize.cs</Link>
-    </Compile>
-    <Compile Include="..\NightLib\OnOverlayChange.cs">
-      <Link>NightLib\OnOverlayChange.cs</Link>
     </Compile>
     <Compile Include="Source\CoalManualDeliveryKG.cs" />
     <Compile Include="Source\CoalDeliveryController.cs" />
@@ -113,10 +83,10 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)"
-copy "$(TargetPath)" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)"
-IF EXIST  "$(TargetDir)*.json" ( copy "$(TargetDir)*.json" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)" )
-IF EXIST  "$(TargetDir)*.txt" ( copy "$(TargetDir)*.txt" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\local\$(ProjectName)" )</PostBuildEvent>
+    <PostBuildEvent>mkdir "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
+copy "$(TargetPath)" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
+IF EXIST  "$(TargetDir)*.json" ( copy "$(TargetDir)*.json" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )
+IF EXIST  "$(TargetDir)*.txt" ( copy "$(TargetDir)*.txt" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

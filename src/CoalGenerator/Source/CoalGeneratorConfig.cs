@@ -52,7 +52,7 @@ namespace Nightinggale.CoalGenerator
         {
             go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.IndustrialMachinery);
             CoalEnergyGenerator energyGenerator = go.AddOrGet<CoalEnergyGenerator>();
-            energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(SimHashes.Carbon, 1f, 600f, SimHashes.Void, 0f, true);
+            energyGenerator.formula = EnergyGenerator.CreateSimpleFormula(SimHashes.Carbon.CreateTag(), 1f, 600f, SimHashes.Void, 0f, true);
             energyGenerator.powerDistributionOrder = 9;
             Storage storage = go.AddOrGet<Storage>();
             storage.capacityKg = 600f;
