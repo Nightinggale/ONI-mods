@@ -29,6 +29,9 @@ namespace NightLib.SavegameUnsafe
         [SerializeField]
         internal bool alwaysDispense;
 
+        [SerializeField]
+        public bool SkipSetOperational = false;
+
         private static readonly Operational.Flag outputConduitFlag = new Operational.Flag("output_conduit", Operational.Flag.Type.Functional);
 
         private FlowUtilityNetwork.NetworkItem networkItem;
@@ -37,7 +40,7 @@ namespace NightLib.SavegameUnsafe
         readonly private Operational operational;
 
         [MyCmpReq]
-        internal Storage storage;
+        public Storage storage;
 
         private HandleVector<int>.Handle partitionerEntry;
 
@@ -134,7 +137,10 @@ namespace NightLib.SavegameUnsafe
 
         protected virtual void ConduitUpdate(float dt)
         {
-            this.operational.SetFlag(PortConduitDispenserBase.outputConduitFlag, this.IsConnected);
+            if (!SkipSetOperational)
+            {
+                this.operational.SetFlag(PortConduitDispenserBase.outputConduitFlag, this.IsConnected);
+            }
             if (this.operational.IsOperational || this.alwaysDispense)
             {
                 PrimaryElement primaryElement = this.FindSuitableElement();
