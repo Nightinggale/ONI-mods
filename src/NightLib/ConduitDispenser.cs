@@ -12,22 +12,22 @@ namespace NightLib.SavegameUnsafe
     internal abstract class PortConduitDispenserBase : KMonoBehaviour, ISaveLoadable
     {
         [SerializeField]
-        internal CellOffset conduitOffset;
+        public CellOffset conduitOffset;
 
         [SerializeField]
-        internal CellOffset conduitOffsetFlipped;
+        public CellOffset conduitOffsetFlipped;
 
         [SerializeField]
-        internal ConduitType conduitType;
+        public ConduitType conduitType;
 
         [SerializeField]
-        internal SimHashes[] elementFilter = null;
+        public SimHashes[] elementFilter = null;
 
         [SerializeField]
-        internal bool invertElementFilter;
+        public bool invertElementFilter;
 
         [SerializeField]
-        internal bool alwaysDispense;
+        public bool alwaysDispense;
 
         [SerializeField]
         public bool SkipSetOperational = false;
@@ -44,7 +44,7 @@ namespace NightLib.SavegameUnsafe
 
         private HandleVector<int>.Handle partitionerEntry;
 
-        protected int utilityCell = -1;
+        private int utilityCell = -1;
 
         private int elementOutputOffset;
 
@@ -68,6 +68,14 @@ namespace NightLib.SavegameUnsafe
             get
             {
                 return this.GetConduitManager().GetContents(this.utilityCell);
+            }
+        }
+
+        public int UtilityCell
+        {
+            get
+            {
+                return this.utilityCell;
             }
         }
 

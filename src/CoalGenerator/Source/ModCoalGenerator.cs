@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Nightinggale.CoalGenerator
 {
-    [HarmonyPatch(typeof(GeneratorConfig))]
-    [HarmonyPatch("DoPostConfigureComplete")]
+    //[HarmonyPatch(typeof(GeneratorConfig))]
+    //[HarmonyPatch("DoPostConfigureComplete")]
     public static class CoalBurnerPatch
     {
         public static void Postfix(GameObject go)

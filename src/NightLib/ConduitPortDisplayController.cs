@@ -18,21 +18,6 @@ namespace NightLib
         [SerializeField]
         private List<PortDisplay2> solidOverlay = new List<PortDisplay2>();
 
-        [SerializeField]
-        private bool hasPower = false;
-
-        [SerializeField]
-        private bool hasGas = false;
-
-        [SerializeField]
-        private bool hasLiquid = false;
-
-        [SerializeField]
-        private bool hasSolid = false;
-
-        [SerializeField]
-        private bool hasDisease = false;
-
         public void AssignPort(GameObject go, DisplayConduitPortInfo port)
         {
             PortDisplay2 portDisplay = go.AddComponent<PortDisplay2>();
@@ -56,21 +41,12 @@ namespace NightLib
         {
             string ID = go.GetComponent<KPrefabID>().PrefabTag.Name;
 
-            // 
+            // criteria for drawing port icons on buildings
+            // vanilla will only attempt to draw icons on buildings with BuildingCellVisualizer
             go.AddOrGet<BuildingCellVisualizer>();
 
+            // when vanilla tries to draw, call this controller if the building is in the DrawPorts list
             NightLib.PortDisplayDrawing.ConduitDisplayPortPatches.DrawPorts.AddBuilding(ID);
-
-            // cache which overlays the vanilla code can use. Used to skip vanilla code when nothing is drawn anyway.
-            BuildingDef def = go.GetComponent<BuildingDef>();
-            if (def != null)
-            {
-                this.hasPower   = def.CheckRequiresPowerInput()  || def.CheckRequiresPowerOutput();
-                this.hasGas     = def.CheckRequiresGasInput()    || def.CheckRequiresGasOutput();
-                this.hasLiquid  = def.CheckRequiresLiquidInput() || def.CheckRequiresLiquidOutput();
-                this.hasSolid   = def.CheckRequiresSolidInput()  || def.CheckRequiresSolidOutput();
-                this.hasDisease = def.DiseaseCellVisName != null;
-            }
         }
 
         public bool Draw(BuildingCellVisualizer __instance, HashedString mode, GameObject go)
@@ -88,14 +64,7 @@ namespace NightLib
                 port.Draw(go, __instance, isNewMode);
             }
 
-            // return true if the vanilla port drawing code has anything to do
-            return isNewMode
-                || (this.hasPower   && mode == OverlayModes.Power.ID)
-                || (this.hasGas     && mode == OverlayModes.GasConduits.ID)
-                || (this.hasLiquid  && mode == OverlayModes.LiquidConduits.ID)
-                || (this.hasSolid   && mode == OverlayModes.SolidConveyor.ID)
-                || (this.hasDisease && mode == OverlayModes.Disease.ID)
-            ;
+            return true;
         }
 
         private void ClearPorts()

@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Nightinggale.CoalGenerator
 {
-    [HarmonyPatch(typeof(WoodGasGeneratorConfig))]
-    [HarmonyPatch("DoPostConfigureComplete")]
-    public static class WoodBurnerPatch
+    //[HarmonyPatch(typeof(WoodGasGeneratorConfig))]
+    //[HarmonyPatch("DoPostConfigureComplete")]
+    public static class ApplyCoalBurnerFixes
     {
-        public static void Postfix(GameObject go)
+        public static void Apply(GameObject go)
         {
             EnergyGenerator origEnergyGenerator = go.GetComponent<EnergyGenerator>();
             Storage storage = go.GetComponent<Storage>();

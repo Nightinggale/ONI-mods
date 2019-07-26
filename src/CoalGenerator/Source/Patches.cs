@@ -12,6 +12,20 @@ namespace Nightinggale.CoalGenerator
             {
                 CoalGeneratorConfig.Setup();
             }
+
+            public static void Postfix()
+            {
+                BuildingDef def = Assets.GetBuildingDef(GeneratorConfig.ID);
+                if (def != null)
+                {
+                    ApplyCoalBurnerFixes.Apply(def.BuildingComplete);
+                }
+                def = Assets.GetBuildingDef(WoodGasGeneratorConfig.ID);
+                if (def != null)
+                {
+                    ApplyCoalBurnerFixes.Apply(def.BuildingComplete);
+                }
+            }
         }
     }
 }
