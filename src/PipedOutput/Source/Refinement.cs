@@ -28,30 +28,18 @@ namespace Nightinggale.PipedOutput
         }
 
         [HarmonyPatch(typeof(OilRefineryConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class OilRefineryPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilRefinery(go);
-            }
-        }
-        [HarmonyPatch(typeof(OilRefineryConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class OilRefineryUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilRefinery(go);
-            }
-        }
-        [HarmonyPatch(typeof(OilRefineryConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+        [HarmonyPatch("DoPostConfigureComplete")]
         public static class OilRefineryCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddOilRefinery(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddOilRefinery(def.BuildingPreview);
+                    AddOilRefinery(def.BuildingUnderConstruction);
+                }
             }
         }
 

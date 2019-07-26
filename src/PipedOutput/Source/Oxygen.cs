@@ -18,6 +18,27 @@ namespace Nightinggale.PipedOutput
             ApplyExhaust.AddOutput(go, new CellOffset(0, 0), SimHashes.ChlorineGas);
         }
 
+        public static void AddAlgaeHabitat(GameObject go)
+        {
+            ApplyExhaust.AddOutput(go, new CellOffset(0, 1), SimHashes.Oxygen);
+        }
+
+        [HarmonyPatch(typeof(AlgaeHabitatConfig))]
+        [HarmonyPatch("DoPostConfigureComplete")]
+        public static class AlgaeHabitatPatch
+        {
+            public static void Postfix(GameObject go)
+            {
+                AddAlgaeHabitat(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddAlgaeHabitat(def.BuildingPreview);
+                    AddAlgaeHabitat(def.BuildingUnderConstruction);
+                }
+            }
+        }
+
 
         [HarmonyPatch(typeof(ElectrolyzerConfig))]
         [HarmonyPatch("DoPostConfigurePreview")]
