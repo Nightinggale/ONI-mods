@@ -27,11 +27,6 @@ namespace Nightinggale.PipedOutput
         [MyCmpReq]
         readonly private Operational operational;
 
-        public void OnPrefab()
-        {
-            //this.elementTag = this.elementHash.CreateTag();
-        }
-
         public void Sim200ms(float dt)
         {
             GameObject storedObject = this.storage.FindFirst(elementTag);
