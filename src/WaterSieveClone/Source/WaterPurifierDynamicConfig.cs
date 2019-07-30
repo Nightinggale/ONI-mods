@@ -16,8 +16,10 @@ namespace WaterSieveDynamicClone
         {
             AddBuilding.AddStrings(ID, DisplayName, Description, Effect);
 
+            /*
             AddBuilding.AddBuildingToPlanScreen("Refining", ID, WaterPurifierConfig.ID);
             AddBuilding.IntoTechTree("Distillation", ID);
+            */
         }
 
         public static Color32 Color()
@@ -32,7 +34,7 @@ namespace WaterSieveDynamicClone
             buildingDef.InitDef();
             return buildingDef;
         }
-
+        /*
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             base.ConfigureBuildingTemplate(go, prefab_tag);
@@ -43,5 +45,6 @@ namespace WaterSieveDynamicClone
                 elementConverter.outputElements[i].applyInputTemperature = true;
             }
         }
+        */
     }
 }
