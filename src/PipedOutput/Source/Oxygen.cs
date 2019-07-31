@@ -33,6 +33,11 @@ namespace Nightinggale.PipedOutput
             return outputPort;
         }
 
+        public static void AddMineralDeoxidizer(GameObject go)
+        {
+            ApplyExhaust.AddOutput(go, new CellOffset(0, 1), SimHashes.Oxygen);
+        }
+
         [HarmonyPatch(typeof(AlgaeHabitatConfig))]
         [HarmonyPatch("DoPostConfigureComplete")]
         public static class AlgaeHabitatPatch
@@ -91,6 +96,34 @@ namespace Nightinggale.PipedOutput
             public static void Postfix(GameObject go)
             {
                 AddElectrolyzer(go);
+            }
+        }
+
+        [HarmonyPatch(typeof(MineralDeoxidizerConfig))]
+        [HarmonyPatch("DoPostConfigurePreview")]
+        public static class MineralDeoxidizerPreviewPatch
+        {
+            public static void Postfix(GameObject go)
+            {
+                AddMineralDeoxidizer(go);
+            }
+        }
+        [HarmonyPatch(typeof(MineralDeoxidizerConfig))]
+        [HarmonyPatch("DoPostConfigureUnderConstruction")]
+        public static class MineralDeoxidizerUnderConstructionPatch
+        {
+            public static void Postfix(GameObject go)
+            {
+                AddMineralDeoxidizer(go);
+            }
+        }
+        [HarmonyPatch(typeof(MineralDeoxidizerConfig))]
+        [HarmonyPatch("ConfigureBuildingTemplate")]
+        public static class MineralDeoxidizerCompletePatch
+        {
+            public static void Postfix(GameObject go)
+            {
+                AddMineralDeoxidizer(go);
             }
         }
 
