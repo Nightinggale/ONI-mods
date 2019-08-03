@@ -122,6 +122,7 @@ namespace Nightinggale.PipedOutput
             public static void Postfix(ref BuildingDef __result)
             {
                 __result.OutputConduitType = ConduitType.None;
+                __result.UtilityOutputOffset = new CellOffset(0, 0);
             }
         }
         [HarmonyPatch(typeof(MethaneGeneratorConfig))]

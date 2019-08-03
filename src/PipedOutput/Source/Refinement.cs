@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using UnityEngine;
+using System;
 
 namespace Nightinggale.PipedOutput
 {
@@ -73,7 +74,11 @@ namespace Nightinggale.PipedOutput
                     ElementConverter converter = go.GetComponent<ElementConverter>();
                     if (converter != null)
                     {
-                        converter.outputElements.Append(new ElementConverter.OutputElement(emitter.emitRate, SimHashes.Methane, emitter.temperature));
+                        // Reserve memory for one more element in the array
+                        Array.Resize(ref converter.outputElements, converter.outputElements.Length + 1);
+                        // assign methane to what is now the last element in the array
+                        converter.outputElements[converter.outputElements.Length - 1] = new ElementConverter.OutputElement(emitter.emitRate, SimHashes.Methane, emitter.temperature);
+
                         UnityEngine.Object.DestroyImmediate(emitter);
                     }
                 }

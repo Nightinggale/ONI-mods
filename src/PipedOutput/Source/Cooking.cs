@@ -8,9 +8,7 @@ namespace Nightinggale.PipedOutput
     {
         internal static void AddGourmetCooking(GameObject go)
         {
-            // Due to limitations in ElementConverter, this is disabled for the time being
-            // It tries to store CarbonDioxide in the input storage and then drops it in bottles
-            //ApplyExhaust.AddOutput(go, new CellOffset(1, 2), SimHashes.CarbonDioxide);
+            ApplyExhaust.AddOutput(go, new CellOffset(1, 2), SimHashes.CarbonDioxide);
         }
 
         [HarmonyPatch(typeof(GourmetCookingStationConfig))]
