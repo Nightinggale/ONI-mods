@@ -151,18 +151,6 @@ namespace Nightinggale.PipedOutput
         {
             public static void Postfix(GameObject go)
             {
-                ElementConverter converter = go.GetComponent<ElementConverter>();
-                if (converter != null)
-                {
-                    // change the chlorine output from a liquid to a gas. Most likely a bug since it's at least 100 C higher than boiling.
-                    for (int i = 0; i < converter.outputElements.Length; ++i)
-                    {
-                        if (converter.outputElements[i].elementHash == SimHashes.Chlorine)
-                        {
-                            converter.outputElements[i].elementHash = SimHashes.ChlorineGas;
-                        }
-                    }
-                }
                 AddRust(go);
             }
         }

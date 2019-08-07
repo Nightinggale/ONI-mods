@@ -122,7 +122,6 @@ namespace Nightinggale.PipedOutput
             public static void Postfix(ref BuildingDef __result)
             {
                 __result.OutputConduitType = ConduitType.None;
-                __result.UtilityOutputOffset = new CellOffset(0, 0);
             }
         }
         [HarmonyPatch(typeof(MethaneGeneratorConfig))]
@@ -150,6 +149,12 @@ namespace Nightinggale.PipedOutput
             public static void Postfix(GameObject go)
             {
                 AddGasGenerator(go);
+                // remove the existing dispenser because it is messing up the CO2 output and it's no longer needed
+                ConduitDispenser conduitDispenser = go.GetComponent<ConduitDispenser>();
+                if (conduitDispenser != null)
+                {
+                    UnityEngine.Object.DestroyImmediate(conduitDispenser);
+                }
             }
         }
 
