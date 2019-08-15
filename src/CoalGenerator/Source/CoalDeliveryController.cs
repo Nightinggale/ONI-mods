@@ -91,6 +91,12 @@ namespace Nightinggale.CoalGenerator
             this.cell = building.NaturalBuildingCell();
         }
 
+        string ISliderControl.GetSliderTooltip()
+        {
+            CoalManualDeliveryKG component = base.GetComponent<CoalManualDeliveryKG>();
+            return string.Format(Strings.Get("STRINGS.UI.UISIDESCREENS.MANUALDELIVERYGENERATORSIDESCREEN.TOOLTIP"), component.requestedItemTag.ProperName(), this.batteryRefillPercent * 100f);
+        }
+
         public string SliderTitleKey
         {
             get
