@@ -15,8 +15,8 @@ namespace Nightinggale.PipedOutput
 
         public static void AddRust(GameObject go)
         {
-            ApplyExhaust.AddOutput(go, new CellOffset(1, 1), SimHashes.Oxygen);
-            ApplyExhaust.AddOutput(go, new CellOffset(0, 0), SimHashes.ChlorineGas);
+            //ApplyExhaust.AddOutput(go, new CellOffset(1, 1), SimHashes.Oxygen);
+            //ApplyExhaust.AddOutput(go, new CellOffset(0, 0), SimHashes.ChlorineGas);
         }
 
         internal static PortDisplayOutput AddAlgaeHabitat(GameObject go)
