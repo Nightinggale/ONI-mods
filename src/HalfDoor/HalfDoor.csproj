@@ -71,6 +71,8 @@
       <Link>NightLib\KAminControllerResize.cs</Link>
     </Compile>
     <Compile Include="Source\HalfDoorConfig.cs" />
+    <Compile Include="Source\HalfManualDoorConfig.cs" />
+    <Compile Include="Source\HalfPneumaticDoorConfig.cs" />
     <Compile Include="Source\ModInfo.cs" />
     <Compile Include="Source\Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Patches.cs" />
