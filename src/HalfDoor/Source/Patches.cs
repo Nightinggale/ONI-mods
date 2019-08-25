@@ -11,6 +11,8 @@ namespace Nightinggale.HalfDoor
             public static void Prefix()
             {
                 Nightinggale.HalfDoor.HalfDoorConfig.Setup();
+                Nightinggale.HalfDoor.HalfManualDoorConfig.Setup();
+                Nightinggale.HalfDoor.HalfPneumaticDoorConfig.Setup();
             }
         }
     }
