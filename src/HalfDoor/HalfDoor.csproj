@@ -76,6 +76,7 @@
     <Compile Include="Source\ModInfo.cs" />
     <Compile Include="Source\Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Patches.cs" />
+    <Compile Include="Source\WriteNameToLog.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
