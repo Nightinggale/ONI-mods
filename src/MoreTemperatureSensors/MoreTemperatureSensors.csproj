@@ -80,6 +80,11 @@
     <Compile Include="Source\BuildingTemperatureSensor.cs" />
     <Compile Include="Source\BatterySensorConfig.cs" />
     <Compile Include="Source\BatterySensor.cs" />
+    <Compile Include="Source\ConduitSolid\SolidConduitFlowSensor.cs" />
+    <Compile Include="Source\ConduitSolid\SolidConduitFlowSensorConfig.cs" />
+    <Compile Include="Source\Conduit\ConduitFlowSensor.cs" />
+    <Compile Include="Source\Conduit\ConduitFlowSensorGas.cs" />
+    <Compile Include="Source\Conduit\ConduitFlowSensorLiquid.cs" />
     <Compile Include="Source\ItemGermSensor.cs" />
     <Compile Include="Source\ItemGermSensorConfig.cs" />
     <Compile Include="Source\ConduitSolid\SolidConduitElementSensor.cs" />
