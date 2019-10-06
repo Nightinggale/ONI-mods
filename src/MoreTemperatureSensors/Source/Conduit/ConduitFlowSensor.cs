@@ -14,8 +14,8 @@ namespace MoreTemperatureSensors
 
 
 
-        public Color32 color;        
-        
+        public Color32 color;
+
         public float GetRangeMinInputField()
         {
             return 0f;
@@ -25,13 +25,13 @@ namespace MoreTemperatureSensors
         {
             return this.max;
         }
-        
+
         public string Format(float value, bool units)
         {
             GameUtil.MetricMassFormat massFormat = GameUtil.MetricMassFormat.Gram;
-            return GameUtil.GetFormattedMass(value/1000, GameUtil.TimeSlice.PerSecond, massFormat, units, "{0:0.#}");
+            return GameUtil.GetFormattedMass(value / 1000, GameUtil.TimeSlice.PerSecond, massFormat, units, "{0:0.#}");
         }
-        
+
         public float ProcessedSliderValue(float input)
         {
             return input;
@@ -41,12 +41,12 @@ namespace MoreTemperatureSensors
         {
             return input;
         }
-        
+
         public LocString ThresholdValueUnits()
-        {            
-            return GameUtil.AddTimeSliceText(GameUtil.GetCurrentMassUnit(true),GameUtil.TimeSlice.PerSecond);
+        {
+            return GameUtil.AddTimeSliceText(GameUtil.GetCurrentMassUnit(true), GameUtil.TimeSlice.PerSecond);
         }
-        
+
         public override float CurrentValue
         {
             get
@@ -54,7 +54,7 @@ namespace MoreTemperatureSensors
                 return this.currentValue;
             }
         }
-        
+
         public float RangeMax
         {
             get
@@ -69,18 +69,18 @@ namespace MoreTemperatureSensors
             {
                 return 0f;
             }
-        }        
-        public LocString Title => new LocString("Flow Threshold", "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.THRESHOLD");        
+        }
+        public LocString Title => new LocString("Flow Threshold", "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.THRESHOLD");
         public LocString ThresholdValueName => new LocString("Flow", "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.NAME");
-        
+
         public string AboveToolTip => new LocString(string.Concat(new string[] { "Will send a ", UI.FormatAsAutomationState("Green Signal", UI.AutomationState.Active), " if the ", UI.FormatAsKeyWord("Flow"), " is above <b>{0}</b> " }), "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.ABOVETOOLTIP");
-                
-        public string BelowToolTip => new LocString(string.Concat(new string[] { "Will send a ", UI.FormatAsAutomationState("Green Signal", UI.AutomationState.Active), " if the ", UI.FormatAsKeyWord("Flow"), " is below <b>{0}</b> " }), "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.BELOWTOOLTIP");        
+
+        public string BelowToolTip => new LocString(string.Concat(new string[] { "Will send a ", UI.FormatAsAutomationState("Green Signal", UI.AutomationState.Active), " if the ", UI.FormatAsKeyWord("Flow"), " is below <b>{0}</b> " }), "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.BELOWTOOLTIP");
 
         public ThresholdScreenLayoutType LayoutType
         {
             get
-            {                
+            {
                 return ThresholdScreenLayoutType.SliderBar;
             }
         }
@@ -114,15 +114,18 @@ namespace MoreTemperatureSensors
             }
 
             int cell = Grid.PosToCell(this);
-            ConduitFlow flowManager = Conduit.GetFlowManager(this.conduitType);            
-            if (flowManager != null)
+            ConduitFlow flowManager = Conduit.GetFlowManager(this.conduitType);
+            if (flowManager.HasConduit(cell))
             {
-                var conduit = flowManager.GetConduit(cell);
-                var lastFlow = conduit.GetLastFlowInfo(flowManager);
-                if (lastFlow.direction != ConduitFlow.FlowDirections.None)
-                { 
-                    this.currentValue = (lastFlow.contents.mass) * 1000;
-                }                
+                if (flowManager != null)
+                {
+                    var conduit = flowManager.GetConduit(cell);
+                    var lastFlow = conduit.GetLastFlowInfo(flowManager);
+                    if (lastFlow.direction != ConduitFlow.FlowDirections.None)
+                    {
+                        this.currentValue = (lastFlow.contents.mass) * 1000;
+                    }
+                }
             }
 
 
@@ -161,12 +164,12 @@ namespace MoreTemperatureSensors
             }
         }
 
-        
+
 
         protected override void OnSpawn()
         {
             this.max = this.conduitType == ConduitType.Gas ? 1000f : 10000f;
-            
+
             base.OnSpawn();
             OverlayChangeController.Add(this);
 

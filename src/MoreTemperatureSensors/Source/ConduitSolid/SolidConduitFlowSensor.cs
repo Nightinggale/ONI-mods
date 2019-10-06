@@ -22,9 +22,9 @@ namespace MoreTemperatureSensors
 
         public string Format(float value, bool units)
         {
-            if(!units) // Threshold Input
+            if (!units) // Threshold Input
             {
-                return string.Format("{0:0}", value);                
+                return string.Format("{0:0}", value);
             }
 
             if (value < 1)
@@ -33,7 +33,7 @@ namespace MoreTemperatureSensors
                 return GameUtil.GetFormattedMass(value, GameUtil.TimeSlice.PerSecond, massFormat, units, "{0:0.#}");
             }
             else
-            
+
             {
                 GameUtil.MetricMassFormat massFormat = GameUtil.MetricMassFormat.Kilogram;
                 return GameUtil.GetFormattedMass(value, GameUtil.TimeSlice.PerSecond, massFormat, units, "{0:0.00}");
@@ -52,7 +52,7 @@ namespace MoreTemperatureSensors
 
         public LocString ThresholdValueUnits()
         {
-            return GameUtil.AddTimeSliceText(GameUtil.GetCurrentMassUnit(true),GameUtil.TimeSlice.PerSecond);
+            return GameUtil.AddTimeSliceText(GameUtil.GetCurrentMassUnit(true), GameUtil.TimeSlice.PerSecond);
         }
 
         public override float CurrentValue
@@ -83,7 +83,7 @@ namespace MoreTemperatureSensors
         {
             get
             {
-                return new LocString("Flow Threshold", "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.THRESHOLD");        
+                return new LocString("Flow Threshold", "NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.THRESHOLD");
             }
         }
 
@@ -134,7 +134,7 @@ namespace MoreTemperatureSensors
                 return NonLinearSlider.GetDefaultRange(this.RangeMax);
             }
         }
-        
+
         protected override void ConduitUpdate(float dt)
         {
             this.currentValue = 0f;
@@ -146,20 +146,21 @@ namespace MoreTemperatureSensors
 
 
             int cell = Grid.PosToCell(this);
-            
-            var conduit = Game.Instance.solidConduitFlow.GetConduit(cell);
-            var lastFlow = conduit.GetLastFlowInfo(Game.Instance.solidConduitFlow);
-            if (lastFlow.direction != SolidConduitFlow.FlowDirection.None)
+            if (Game.Instance.solidConduitFlow.HasConduit(cell))
             {
-                var initial = conduit.GetInitialContents(Game.Instance.solidConduitFlow);
+                var conduit = Game.Instance.solidConduitFlow.GetConduit(cell);
+                var lastFlow = conduit.GetLastFlowInfo(Game.Instance.solidConduitFlow);
+                if (lastFlow.direction != SolidConduitFlow.FlowDirection.None)
+                {
+                    var initial = conduit.GetInitialContents(Game.Instance.solidConduitFlow);
 
-                if (initial.pickupableHandle.IsValid())
-                { 
-                    Pickupable pickupable = Game.Instance.solidConduitFlow.GetPickupable(initial.pickupableHandle);
-                    this.currentValue = pickupable.TotalAmount * 1000f;
-                }                
+                    if (initial.pickupableHandle.IsValid())
+                    {
+                        Pickupable pickupable = Game.Instance.solidConduitFlow.GetPickupable(initial.pickupableHandle);
+                        this.currentValue = pickupable.TotalAmount * 1000f;
+                    }
+                }
             }
-
 
 
 
@@ -195,7 +196,7 @@ namespace MoreTemperatureSensors
                 this.Toggle();
             }
         }
-        
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
