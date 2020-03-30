@@ -30,28 +30,44 @@ namespace Nightinggale.PipedOutput
             ApplyExhaust.AddOutput(go, new CellOffset(1, 1), SimHashes.DirtyWater);
         }
 
-
-
-        [HarmonyPatch(typeof(GeneratorConfig))]
+        [HarmonyPatch(typeof(IBuildingConfig))]
         [HarmonyPatch("DoPostConfigurePreview")]
-        public static class CoalBurnerPreviewPatch
+        public static class PreviewPatch
         {
-            public static void Postfix(GameObject go)
+            public static void Postfix(IBuildingConfig __instance, GameObject go)
             {
-                AddCoalGenerator(go);
+                var T = __instance.GetType();
+                if (T == typeof(GeneratorConfig))
+                    AddCoalGenerator(go);
+                else if (T == typeof(WoodGasGeneratorConfig))
+                    AddWoodGenerator(go);
+                else if (T == typeof(PetroleumGeneratorConfig))
+                    AddOilGenerator(go);
+                else if (T == typeof(MethaneGeneratorConfig))
+                    AddGasGenerator(go);
             }
         }
-        [HarmonyPatch(typeof(GeneratorConfig))]
+
+        [HarmonyPatch(typeof(IBuildingConfig))]
         [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class CoalBurnerUnderConstructionPatch
+        public static class UnderConstructionPatch
         {
-            public static void Postfix(GameObject go)
+            public static void Postfix(IBuildingConfig __instance, GameObject go)
             {
-                AddCoalGenerator(go);
+                var T = __instance.GetType();
+                if (T == typeof(GeneratorConfig))
+                    AddCoalGenerator(go);
+                else if (T == typeof(WoodGasGeneratorConfig))
+                    AddWoodGenerator(go);
+                else if (T == typeof(PetroleumGeneratorConfig))
+                    AddOilGenerator(go);
+                else if (T == typeof(MethaneGeneratorConfig))
+                    AddGasGenerator(go);
             }
         }
+
         [HarmonyPatch(typeof(GeneratorConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+        [HarmonyPatch("DoPostConfigureComplete")]
         public static class CoalBurnerCompletePatch
         {
             public static void Postfix(GameObject go)
@@ -59,24 +75,7 @@ namespace Nightinggale.PipedOutput
                 AddCoalGenerator(go);
             }
         }
-        [HarmonyPatch(typeof(WoodGasGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class WoodBurnerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddWoodGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(WoodGasGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class WoodBurnerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddWoodGenerator(go);
-            }
-        }
+
         [HarmonyPatch(typeof(WoodGasGeneratorConfig))]
         [HarmonyPatch("DoPostConfigureComplete")]
         public static class WoodBurnerCompletePatch
@@ -86,24 +85,7 @@ namespace Nightinggale.PipedOutput
                 AddWoodGenerator(go);
             }
         }
-        [HarmonyPatch(typeof(PetroleumGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class OilBurnerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(PetroleumGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class OilBurnerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilGenerator(go);
-            }
-        }
+
         [HarmonyPatch(typeof(PetroleumGeneratorConfig))]
         [HarmonyPatch("DoPostConfigureComplete")]
         public static class OilBurnerCompletePatch
@@ -114,7 +96,6 @@ namespace Nightinggale.PipedOutput
             }
         }
 
-
         [HarmonyPatch(typeof(MethaneGeneratorConfig))]
         [HarmonyPatch("CreateBuildingDef")]
         public static class GasBurnerDefPatch
@@ -122,24 +103,6 @@ namespace Nightinggale.PipedOutput
             public static void Postfix(ref BuildingDef __result)
             {
                 __result.OutputConduitType = ConduitType.None;
-            }
-        }
-        [HarmonyPatch(typeof(MethaneGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class GasBurnerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddGasGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(MethaneGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class GasBurnerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddGasGenerator(go);
             }
         }
         [HarmonyPatch(typeof(MethaneGeneratorConfig))]
@@ -157,6 +120,5 @@ namespace Nightinggale.PipedOutput
                 }
             }
         }
-
     }
 }

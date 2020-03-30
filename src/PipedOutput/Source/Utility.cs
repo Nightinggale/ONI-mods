@@ -20,24 +20,30 @@ namespace Nightinggale.PipedOutput
             return outputPort;
         }
 
-        [HarmonyPatch(typeof(OilWellCapConfig))]
+        [HarmonyPatch(typeof(IBuildingConfig))]
         [HarmonyPatch("DoPostConfigurePreview")]
-        public static class OilWellPreviewPatch
+        public static class PreviewPatch
         {
-            public static void Postfix(GameObject go)
+            public static void Postfix(IBuildingConfig __instance, GameObject go)
             {
-                AddOilWell(go);
+                var T = __instance.GetType();
+                if (T == typeof(OilWellCapConfig))
+                    AddOilWell(go);
             }
         }
-        [HarmonyPatch(typeof(OilWellCapConfig))]
+
+        [HarmonyPatch(typeof(IBuildingConfig))]
         [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class OilWellUnderConstructionPatch
+        public static class UnderConstructionPatch
         {
-            public static void Postfix(GameObject go)
+            public static void Postfix(IBuildingConfig __instance, GameObject go)
             {
-                AddOilWell(go);
+                var T = __instance.GetType();
+                if (T == typeof(OilWellCapConfig))
+                    AddOilWell(go);
             }
         }
+
         [HarmonyPatch(typeof(OilWellCapConfig))]
         [HarmonyPatch("ConfigureBuildingTemplate")]
         public static class OilWellCompletePatch

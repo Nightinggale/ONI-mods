@@ -67,6 +67,10 @@ namespace HighFlowStorage
             buildingDef.ViewMode = OverlayModes.GasConduits.ID;
             buildingDef.AudioCategory = "HollowMetal";
             buildingDef.PermittedRotations = PermittedRotations.FlipH;
+
+            buildingDef.LogicOutputPorts = new System.Collections.Generic.List<LogicPorts.Port>();
+            buildingDef.LogicOutputPorts.Add(OUTPUT_PORT);
+
             return buildingDef;
         }
 
@@ -119,20 +123,17 @@ namespace HighFlowStorage
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
-            GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
             this.AttachPort(go);
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)
         {
-            GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
             this.AttachPort(go);
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.AddOrGet<BuildingCellVisualizer>();
-            GeneratedBuildings.RegisterLogicPorts(go, OUTPUT_PORT);
             go.AddOrGetDef<StorageController.Def>();
             go.AddComponent<ReservoirStorageSensor>();
         }

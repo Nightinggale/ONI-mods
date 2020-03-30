@@ -38,6 +38,42 @@ namespace Nightinggale.PipedOutput
             ApplyExhaust.AddOutput(go, new CellOffset(0, 1), SimHashes.Oxygen);
         }
 
+        [HarmonyPatch(typeof(IBuildingConfig))]
+        [HarmonyPatch("DoPostConfigurePreview")]
+        public static class PreviewPatch
+        {
+            public static void Postfix(IBuildingConfig __instance, GameObject go)
+            {
+                var T = __instance.GetType();
+                if (T == typeof(AlgaeHabitatConfig))
+                    AddAlgaeHabitat(go);
+                else if (T == typeof(ElectrolyzerConfig))
+                    AddElectrolyzer(go);
+                else if (T == typeof(MineralDeoxidizerConfig))
+                    AddMineralDeoxidizer(go);
+                else if (T == typeof(RustDeoxidizerConfig))
+                    AddRust(go);
+            }
+        }
+
+        [HarmonyPatch(typeof(IBuildingConfig))]
+        [HarmonyPatch("DoPostConfigureUnderConstruction")]
+        public static class UnderConstructionPatch
+        {
+            public static void Postfix(IBuildingConfig __instance, GameObject go)
+            {
+                var T = __instance.GetType();
+                if (T == typeof(AlgaeHabitatConfig))
+                    AddAlgaeHabitat(go);
+                else if (T == typeof(ElectrolyzerConfig))
+                    AddElectrolyzer(go);
+                else if (T == typeof(MineralDeoxidizerConfig))
+                    AddMineralDeoxidizer(go);
+                else if (T == typeof(RustDeoxidizerConfig))
+                    AddRust(go);
+            }
+        }
+
         [HarmonyPatch(typeof(AlgaeHabitatConfig))]
         [HarmonyPatch("DoPostConfigureComplete")]
         public static class AlgaeHabitatPatch
@@ -70,25 +106,6 @@ namespace Nightinggale.PipedOutput
             }
         }
 
-
-        [HarmonyPatch(typeof(ElectrolyzerConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class ElectrolyzerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddElectrolyzer(go);
-            }
-        }
-        [HarmonyPatch(typeof(ElectrolyzerConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class ElectrolyzerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddElectrolyzer(go);
-            }
-        }
         [HarmonyPatch(typeof(ElectrolyzerConfig))]
         [HarmonyPatch("ConfigureBuildingTemplate")]
         public static class ElectrolyzerCompletePatch
@@ -100,24 +117,6 @@ namespace Nightinggale.PipedOutput
         }
 
         [HarmonyPatch(typeof(MineralDeoxidizerConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class MineralDeoxidizerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddMineralDeoxidizer(go);
-            }
-        }
-        [HarmonyPatch(typeof(MineralDeoxidizerConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class MineralDeoxidizerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddMineralDeoxidizer(go);
-            }
-        }
-        [HarmonyPatch(typeof(MineralDeoxidizerConfig))]
         [HarmonyPatch("ConfigureBuildingTemplate")]
         public static class MineralDeoxidizerCompletePatch
         {
@@ -127,24 +126,6 @@ namespace Nightinggale.PipedOutput
             }
         }
 
-        [HarmonyPatch(typeof(RustDeoxidizerConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class RustPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddRust(go);
-            }
-        }
-        [HarmonyPatch(typeof(RustDeoxidizerConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class RustUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddRust(go);
-            }
-        }
         [HarmonyPatch(typeof(RustDeoxidizerConfig))]
         [HarmonyPatch("ConfigureBuildingTemplate")]
         public static class RustCompletePatch
