@@ -10,6 +10,13 @@ using UnityEngine;
 using KSerialization;
 using System;
 
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class
+         | AttributeTargets.Method)]
+    public sealed class ExtensionAttribute : Attribute { }
+}
+
 namespace NightLib
 {
     internal static class ExtensionMethods
@@ -69,6 +76,22 @@ namespace NightLib
         internal static void Trigger(this KMonoBehaviour behavior, int hash, object data = null)
         {
             behavior.Trigger((int)hash, data);
+        }
+
+        // wrapper to avoid typecasting hash
+        internal static int Subscribe<ComponentType>(this KMonoBehaviour behaviour, GameHashes hash, EventSystem.IntraObjectHandler<ComponentType> handler) where ComponentType : Component
+        {
+            return behaviour.Subscribe((int)hash, handler);
+        }
+
+        internal static int Subscribe<ComponentType>(this KMonoBehaviour behaviour, GameHashes hash, Action<object> handler) where ComponentType : Component
+        {
+            return behaviour.Subscribe((int)hash, handler);
+        }
+
+        internal static int Subscribe<ComponentType>(this KMonoBehaviour behaviour, GameObject target, GameHashes hash, Action<object> handler) where ComponentType : Component
+        {
+            return behaviour.Subscribe(target, (int)hash, handler);
         }
     }
 }

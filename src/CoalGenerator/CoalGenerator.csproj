@@ -9,7 +9,7 @@
     <AppDesignerFolder>Source\Properties</AppDesignerFolder>
     <RootNamespace>CoalGenerator</RootNamespace>
     <AssemblyName>CoalGenerator</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <BaseIntermediateOutputPath>Source\obj</BaseIntermediateOutputPath>
@@ -64,20 +64,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NightLib\AddBuilding.cs">
-      <Link>NightLib\AddBuilding.cs</Link>
-    </Compile>
     <Compile Include="..\NightLib\Extensions.cs">
       <Link>NightLib\Extensions.cs</Link>
     </Compile>
     <Compile Include="Source\AddStrings.cs" />
-    <Compile Include="Source\ModCoalGenerator.cs" />
     <Compile Include="Source\ModWoodGenerator.cs" />
     <Compile Include="Source\CoalManualDeliveryKG.cs" />
-    <Compile Include="Source\CoalDeliveryController.cs" />
     <Compile Include="Source\DualSlider.cs" />
     <Compile Include="Source\CoalEnergyGenerator.cs" />
-    <Compile Include="Source\CoalGeneratorConfig.cs" />
     <Compile Include="Source\ModInfo.cs" />
     <Compile Include="Source\Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Patches.cs" />
@@ -89,7 +83,8 @@
     <PostBuildEvent>mkdir "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
 copy "$(TargetPath)" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
 IF EXIST  "$(TargetDir)*.json" ( copy "$(TargetDir)*.json" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )
-IF EXIST  "$(TargetDir)*.txt" ( copy "$(TargetDir)*.txt" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )</PostBuildEvent>
+IF EXIST  "$(TargetDir)*.txt" ( copy "$(TargetDir)*.txt" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )
+IF EXIST  "$(TargetDir)*.yaml" ( copy "$(TargetDir)*.yaml" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

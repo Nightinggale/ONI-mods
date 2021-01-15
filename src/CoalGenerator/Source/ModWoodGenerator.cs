@@ -1,10 +1,7 @@
-﻿using Harmony;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Nightinggale.CoalGenerator
 {
-    //[HarmonyPatch(typeof(WoodGasGeneratorConfig))]
-    //[HarmonyPatch("DoPostConfigureComplete")]
     public static class ApplyCoalBurnerFixes
     {
         public static void Apply(GameObject go)
@@ -23,6 +20,7 @@ namespace Nightinggale.CoalGenerator
             energyGenerator.powerDistributionOrder = origEnergyGenerator.powerDistributionOrder;
             energyGenerator.hasMeter = true;
             energyGenerator.formula = origEnergyGenerator.formula;
+            energyGenerator.ignoreBatteryRefillPercent = true;
 
             CoalManualDeliveryKG manualDeliveryKG = go.AddOrGet<CoalManualDeliveryKG>();
             manualDeliveryKG.SetStorage(storage);
@@ -30,20 +28,12 @@ namespace Nightinggale.CoalGenerator
             manualDeliveryKG.ignoresOperationStatus = true;
             manualDeliveryKG.capacity = origManualDeliveryKG.capacity;
             manualDeliveryKG.refillMass = origManualDeliveryKG.refillMass;
-            manualDeliveryKG.choreTags = new Tag[]
-            {
-                    GameTags.ChoreTypes.Power
-            };
+            manualDeliveryKG.requestedItemTag = origManualDeliveryKG.requestedItemTag;
             manualDeliveryKG.choreTypeIDHash = Db.Get().ChoreTypes.PowerFetch.IdHash;
 
             DualSlider dualSlider = go.AddOrGet<DualSlider>();
             dualSlider.fillUptoThreshold = manualDeliveryKG.capacity;
             dualSlider.refillThreshold = manualDeliveryKG.refillMass;
-
-            CoalDeliveryController controller = go.AddOrGet<CoalDeliveryController>();
-            controller.batteryRefillPercent = 0.5f;
-
-            AddStrings.AddString(manualDeliveryKG.RequestedItemTag.Name);
 
             UnityEngine.Object.DestroyImmediate(origEnergyGenerator);
             UnityEngine.Object.DestroyImmediate(origManualDeliveryKG);
