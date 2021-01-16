@@ -87,7 +87,7 @@ namespace PipePressureValve
 
         private void OnConduitConnectionChanged(object data)
         {
-            base.Trigger(-2094018600, this.IsConnected);
+            base.Trigger((int)GameHashes.ConduitConnectionChanged, this.IsConnected);
         }
 
         protected override void OnSpawn()
@@ -96,7 +96,7 @@ namespace PipePressureValve
             this.utilityCell = base.GetComponent<Building>().GetUtilityOutputCell();
             ScenePartitionerLayer layer = GameScenePartitioner.Instance.objectLayers[(this.conduitType != ConduitType.Gas) ? 16 : 12];
             this.partitionerEntry = GameScenePartitioner.Instance.Add("ConduitConsumer.OnSpawn", base.gameObject, this.utilityCell, layer, new Action<object>(this.OnConduitConnectionChanged));
-            this.GetConduitManager().AddConduitUpdater(new Action<float>(this.ConduitUpdate), ConduitFlowPriority.Last);
+            this.GetConduitManager().AddConduitUpdater(new Action<float>(this.ConduitUpdate), ConduitFlowPriority.Default);
             this.OnConduitConnectionChanged(null);
         }
 
