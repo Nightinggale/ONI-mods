@@ -111,7 +111,8 @@
     <PostBuildEvent>mkdir "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
 copy "$(TargetPath)" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
 IF EXIST  "$(TargetDir)*.json" ( copy "$(TargetDir)*.json" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )
-IF EXIST  "$(TargetDir)*.txt" ( copy "$(TargetDir)*.txt" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )</PostBuildEvent>
+IF EXIST  "$(TargetDir)*.txt" ( copy "$(TargetDir)*.txt" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )
+IF EXIST  "$(TargetDir)*.yaml" ( copy "$(TargetDir)*.yaml" "%25HOMEPATH%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
