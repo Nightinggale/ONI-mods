@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using STRINGS;
 using UnityEngine;
 
 namespace MoreTemperatureSensors
@@ -12,6 +13,10 @@ namespace MoreTemperatureSensors
             public static void Prefix()
             {
                 Strings.Add($"NIGHTINGGALE.SENSORY.OVERLOADED.MASS", "Mass");
+                Strings.Add($"NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.THRESHOLD", "Flow Threshold");
+                Strings.Add($"NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.NAME", "Flow");
+                Strings.Add($"NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.ABOVETOOLTIP", string.Concat(new string[] { "Will send a ", UI.FormatAsAutomationState("Green Signal", UI.AutomationState.Active), " if the ", UI.FormatAsKeyWord("Flow"), " is above <b>{0}</b> " }));
+                Strings.Add($"NIGHTINGGALE.SENSORY.OVERLOADED.FLOW.BELOWTOOLTIP", string.Concat(new string[] { "Will send a ", UI.FormatAsAutomationState("Green Signal", UI.AutomationState.Active), " if the ", UI.FormatAsKeyWord("Flow"), " is below <b>{0}</b> " }));
 
                 TileTemperatureSensorConfig.Setup();
                 ItemTemperatureSensorConfig.Setup();
@@ -20,11 +25,14 @@ namespace MoreTemperatureSensors
                 ModdedLogicElementSensorLiquidConfig.Setup();
                 ConduitPressureSensorGas.Setup();
                 ConduitPressureSensorLiquid.Setup();
+                ConduitFlowSensorGas.Setup();
+                ConduitFlowSensorLiquid.Setup();
 
                 SolidConduitElementSensorConfig.Setup();
                 SolidConduitGermsSensorConfig.Setup();
                 SolidConduitTemperatureSensorConfig.Setup();
                 SolidConduitPressureSensorConfig.Setup();
+                SolidConduitFlowSensorConfig.Setup();
 
                 BatterySensorConfig.Setup();
             }
