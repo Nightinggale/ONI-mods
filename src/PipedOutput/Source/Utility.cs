@@ -9,7 +9,8 @@ namespace Nightinggale.PipedOutput
         internal static PortDisplayOutput AddOilWell(GameObject go)
         {
             ApplyExhaust.AddOutput(go, new CellOffset(2, 1), SimHashes.CrudeOil);
-
+            ApplyExhaust.AddOutput(go, new CellOffset(1, 1), SimHashes.CrudeOil);
+            
             Element element = ElementLoader.GetElement(SimHashes.Methane.CreateTag());
             Color32 color = element.substance.conduitColour;
             color.a = 255;
