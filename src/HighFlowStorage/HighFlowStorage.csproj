@@ -9,7 +9,7 @@
     <AppDesignerFolder>Source\Properties</AppDesignerFolder>
     <RootNamespace>HighFlowStorage</RootNamespace>
     <AssemblyName>HighFlowStorage</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <BaseIntermediateOutputPath>Source\obj</BaseIntermediateOutputPath>

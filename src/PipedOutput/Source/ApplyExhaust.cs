@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using NightLib;
+using ProcGen.Map;
+using System;
 
 namespace Nightinggale.PipedOutput
 {
