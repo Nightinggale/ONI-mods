@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
 using System;
 
@@ -6,7 +6,6 @@ namespace Nightinggale.PipedOutput
 {
     public static class RefinementBuildingGenerationPatches
     {
-
         public static void AddOilRefinery(GameObject go)
         {
             ApplyExhaust.AddOutput(go, new CellOffset(-1, 3), SimHashes.Methane);
@@ -28,8 +27,11 @@ namespace Nightinggale.PipedOutput
             ApplyExhaust.AddOutput(go, new CellOffset(1, 0), SimHashes.Steam);
         }
 
-        [HarmonyPatch(typeof(OilRefineryConfig))]
-        [HarmonyPatch("DoPostConfigureComplete")]
+
+
+
+
+        [HarmonyPatch(typeof(OilRefineryConfig), "DoPostConfigureComplete")]
         public static class OilRefineryCompletePatch
         {
             public static void Postfix(GameObject go)
@@ -44,26 +46,7 @@ namespace Nightinggale.PipedOutput
             }
         }
 
-        [HarmonyPatch(typeof(FertilizerMakerConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class FertilizerMakerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddFertilizerMaker(go);
-            }
-        }
-        [HarmonyPatch(typeof(FertilizerMakerConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class FertilizerMakerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddFertilizerMaker(go);
-            }
-        }
-        [HarmonyPatch(typeof(FertilizerMakerConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+        [HarmonyPatch(typeof(FertilizerMakerConfig), "DoPostConfigureComplete")]
         public static class FertilizerMakerCompletePatch
         {
             public static void Postfix(GameObject go)
@@ -83,48 +66,31 @@ namespace Nightinggale.PipedOutput
                     }
                 }
                 AddFertilizerMaker(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddFertilizerMaker(def.BuildingPreview);
+                    AddFertilizerMaker(def.BuildingUnderConstruction);
+                }
             }
         }
 
-        [HarmonyPatch(typeof(EthanolDistilleryConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class EthanolDistilleryPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddEthanolDistillery(go);
-            }
-        }
-        [HarmonyPatch(typeof(EthanolDistilleryConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class EthanolDistilleryUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddEthanolDistillery(go);
-            }
-        }
-        [HarmonyPatch(typeof(EthanolDistilleryConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+        [HarmonyPatch(typeof(EthanolDistilleryConfig), "DoPostConfigureComplete")]
         public static class EthanolDistilleryCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddEthanolDistillery(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddEthanolDistillery(def.BuildingPreview);
+                    AddEthanolDistillery(def.BuildingUnderConstruction);
+                }
             }
         }
 
-        [HarmonyPatch(typeof(PolymerizerConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class PolymerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddPolymer(go);
-            }
-        }
-        [HarmonyPatch(typeof(PolymerizerConfig))]
-        [HarmonyPatch("CreateBuildingDef")]
+        [HarmonyPatch(typeof(PolymerizerConfig), "CreateBuildingDef")]
         public static class PolymerDefPatch
         {
             public static void Postfix(ref BuildingDef __result)
@@ -132,22 +98,18 @@ namespace Nightinggale.PipedOutput
                 __result.OutputConduitType = ConduitType.None;
             }
         }
-        [HarmonyPatch(typeof(PolymerizerConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class PolymerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddPolymer(go);
-            }
-        }
-        [HarmonyPatch(typeof(PolymerizerConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+        [HarmonyPatch(typeof(PolymerizerConfig), "DoPostConfigureComplete")]
         public static class PolymerCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddPolymer(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddPolymer(def.BuildingPreview);
+                    AddPolymer(def.BuildingUnderConstruction);
+                }
             }
         }
     }
