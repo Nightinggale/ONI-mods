@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
 using NightLib;
 
@@ -6,36 +6,24 @@ namespace Nightinggale.PipedOutput
 {
     public static class CookingBuildingGenerationPatches
     {
-        internal static void AddGourmetCooking(GameObject go)
+        public static void AddGourmetCooking(GameObject go)
         {
             //ApplyExhaust.AddOutput(go, new CellOffset(1, 2), SimHashes.CarbonDioxide);
         }
 
-        [HarmonyPatch(typeof(GourmetCookingStationConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class GourmetCookingPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddGourmetCooking(go);
-            }
-        }
-        [HarmonyPatch(typeof(GourmetCookingStationConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class GourmetCookingUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddGourmetCooking(go);
-            }
-        }
-        [HarmonyPatch(typeof(GourmetCookingStationConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+
+        [HarmonyPatch(typeof(GourmetCookingStationConfig), "DoPostConfigureComplete")]
         public static class GourmetCookingCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddGourmetCooking(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddGourmetCooking(def.BuildingPreview);
+                    AddGourmetCooking(def.BuildingUnderConstruction);
+                }
             }
         }
     }

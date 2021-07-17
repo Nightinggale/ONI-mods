@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
 using NightLib;
 
@@ -20,31 +20,18 @@ namespace Nightinggale.PipedOutput
             return outputPort;
         }
 
-        [HarmonyPatch(typeof(OilWellCapConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class OilWellPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilWell(go);
-            }
-        }
-        [HarmonyPatch(typeof(OilWellCapConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class OilWellUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilWell(go);
-            }
-        }
-        [HarmonyPatch(typeof(OilWellCapConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+        [HarmonyPatch(typeof(OilWellCapConfig), "DoPostConfigureComplete")]
         public static class OilWellCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 PortDisplayOutput outputPort = AddOilWell(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddOilWell(def.BuildingPreview);
+                    AddOilWell(def.BuildingUnderConstruction);
+                }
                 PipedDispenser dispenser = go.AddComponent<PipedDispenser>();
                 dispenser.elementFilter = new SimHashes[] { SimHashes.Methane };
                 dispenser.AssignPort(outputPort);

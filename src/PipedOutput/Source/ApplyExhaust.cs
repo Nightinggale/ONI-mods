@@ -45,6 +45,8 @@ namespace Nightinggale.PipedOutput
                         dispenser.alwaysDispense = true;
                         dispenser.SkipSetOperational = true;
 
+                        Debug.Log($"[PipedOutput] Added pipe to {go.PrefabID()} for {elementHash}");
+
                         PipedOptionalExhaust exhaust = go.AddComponent<PipedOptionalExhaust>();
                         exhaust.dispenser = dispenser;
                         exhaust.elementHash = elementHash;
@@ -72,6 +74,8 @@ namespace Nightinggale.PipedOutput
                             dispenser.AssignPort(outputPort);
                             dispenser.alwaysDispense = true;
                             dispenser.SkipSetOperational = true;
+
+                            Debug.Log($"[PipedOutput] Added pipe to {go.PrefabID()} for {elementHash}");
 
                             PipedOptionalExhaust exhaust = go.AddComponent<PipedOptionalExhaust>();
                             exhaust.dispenser = dispenser;

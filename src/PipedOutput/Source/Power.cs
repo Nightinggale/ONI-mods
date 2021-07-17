@@ -1,7 +1,6 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
 using NightLib;
-
 using System;
 
 namespace Nightinggale.PipedOutput
@@ -32,91 +31,54 @@ namespace Nightinggale.PipedOutput
 
 
 
-        [HarmonyPatch(typeof(GeneratorConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class CoalBurnerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddCoalGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(GeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class CoalBurnerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddCoalGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(GeneratorConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
+
+
+        [HarmonyPatch(typeof(GeneratorConfig), "DoPostConfigureComplete")]
         public static class CoalBurnerCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddCoalGenerator(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddCoalGenerator(def.BuildingPreview);
+                    AddCoalGenerator(def.BuildingUnderConstruction);
+                }
             }
         }
-        [HarmonyPatch(typeof(WoodGasGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class WoodBurnerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddWoodGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(WoodGasGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class WoodBurnerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddWoodGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(WoodGasGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureComplete")]
+
+        [HarmonyPatch(typeof(WoodGasGeneratorConfig), "DoPostConfigureComplete")]
         public static class WoodBurnerCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddWoodGenerator(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddWoodGenerator(def.BuildingPreview);
+                    AddWoodGenerator(def.BuildingUnderConstruction);
+                }
             }
         }
-        [HarmonyPatch(typeof(PetroleumGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class OilBurnerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(PetroleumGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class OilBurnerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(PetroleumGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureComplete")]
+
+        [HarmonyPatch(typeof(PetroleumGeneratorConfig), "DoPostConfigureComplete")]
         public static class OilBurnerCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddOilGenerator(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddOilGenerator(def.BuildingPreview);
+                    AddOilGenerator(def.BuildingUnderConstruction);
+                }
             }
         }
 
-
-        [HarmonyPatch(typeof(MethaneGeneratorConfig))]
-        [HarmonyPatch("CreateBuildingDef")]
+        [HarmonyPatch(typeof(MethaneGeneratorConfig), "CreateBuildingDef")]
         public static class GasBurnerDefPatch
         {
             public static void Postfix(ref BuildingDef __result)
@@ -124,31 +86,18 @@ namespace Nightinggale.PipedOutput
                 __result.OutputConduitType = ConduitType.None;
             }
         }
-        [HarmonyPatch(typeof(MethaneGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class GasBurnerPreviewPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddGasGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(MethaneGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class GasBurnerUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddGasGenerator(go);
-            }
-        }
-        [HarmonyPatch(typeof(MethaneGeneratorConfig))]
-        [HarmonyPatch("DoPostConfigureComplete")]
+        [HarmonyPatch(typeof(MethaneGeneratorConfig), "DoPostConfigureComplete")]
         public static class GasBurnerCompletePatch
         {
             public static void Postfix(GameObject go)
             {
                 AddGasGenerator(go);
+                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
+                if (def != null)
+                {
+                    AddGasGenerator(def.BuildingPreview);
+                    AddGasGenerator(def.BuildingUnderConstruction);
+                }
                 // remove the existing dispenser because it is messing up the CO2 output and it's no longer needed
                 ConduitDispenser conduitDispenser = go.GetComponent<ConduitDispenser>();
                 if (conduitDispenser != null)
