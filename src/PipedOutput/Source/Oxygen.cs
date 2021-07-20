@@ -41,81 +41,48 @@ namespace Nightinggale.PipedOutput
 
 
 
-        [HarmonyPatch(typeof(AlgaeHabitatConfig), "DoPostConfigureComplete")]
-        public static class AlgaeHabitatPatch
+        public static void AlgaeHabitatComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
+            PortDisplayOutput outputPort = AddAlgaeHabitat(def.BuildingComplete);
+            AddAlgaeHabitat(def.BuildingPreview);
+            AddAlgaeHabitat(def.BuildingUnderConstruction);
+
+            PipedDispenser dispenser = def.BuildingComplete.AddComponent<PipedDispenser>();
+            dispenser.AssignPort(outputPort);
+            dispenser.SkipSetOperational = true;
+            dispenser.alwaysDispense = true;
+
+            Storage[] storageComponents = def.BuildingComplete.GetComponents<Storage>();
+
+            foreach (Storage storage in storageComponents)
             {
-                PortDisplayOutput outputPort = AddAlgaeHabitat(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
+                if (storage.storageFilters != null && storage.storageFilters.Contains(SimHashes.DirtyWater.CreateTag()))
                 {
-                    AddAlgaeHabitat(def.BuildingPreview);
-                    AddAlgaeHabitat(def.BuildingUnderConstruction);
-                }
-
-                PipedDispenser dispenser = go.AddComponent<PipedDispenser>();
-                dispenser.AssignPort(outputPort);
-                dispenser.SkipSetOperational = true;
-                dispenser.alwaysDispense = true;
-                
-                Storage[] storageComponents = go.GetComponents<Storage>();
-
-                foreach (Storage storage in storageComponents)
-                {
-                    if (storage.storageFilters != null && storage.storageFilters.Contains(SimHashes.DirtyWater.CreateTag()))
-                    {
-                        dispenser.storage = storage;
-                        break;
-                    }
+                    dispenser.storage = storage;
+                    break;
                 }
             }
         }
 
-
-        [HarmonyPatch(typeof(ElectrolyzerConfig), "DoPostConfigureComplete")]
-        public static class ElectrolyzerCompletePatch
+        public static void ElectrolyzerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddElectrolyzer(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddElectrolyzer(def.BuildingPreview);
-                    AddElectrolyzer(def.BuildingUnderConstruction);
-                }
-            }
+            AddElectrolyzer(def.BuildingComplete);
+            AddElectrolyzer(def.BuildingPreview);
+            AddElectrolyzer(def.BuildingUnderConstruction);
         }
 
-        [HarmonyPatch(typeof(MineralDeoxidizerConfig), "DoPostConfigureComplete")]
-        public static class MineralDeoxidizerCompletePatch
+        public static void MineralDeoxidizerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddMineralDeoxidizer(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddMineralDeoxidizer(def.BuildingPreview);
-                    AddMineralDeoxidizer(def.BuildingUnderConstruction);
-                }
-            }
+            AddMineralDeoxidizer(def.BuildingComplete);
+            AddMineralDeoxidizer(def.BuildingPreview);
+            AddMineralDeoxidizer(def.BuildingUnderConstruction);
         }
 
-        [HarmonyPatch(typeof(RustDeoxidizerConfig), "DoPostConfigureComplete")]
-        public static class RustCompletePatch
+        public static void RustComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddRust(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddRust(def.BuildingPreview);
-                    AddRust(def.BuildingUnderConstruction);
-                }
-            }
+            AddRust(def.BuildingComplete);
+            AddRust(def.BuildingPreview);
+            AddRust(def.BuildingUnderConstruction);
         }
     }
 }

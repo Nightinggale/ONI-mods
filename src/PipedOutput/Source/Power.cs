@@ -33,49 +33,25 @@ namespace Nightinggale.PipedOutput
 
 
 
-        [HarmonyPatch(typeof(GeneratorConfig), "DoPostConfigureComplete")]
-        public static class CoalBurnerCompletePatch
+        public static void CoalBurnerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddCoalGenerator(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddCoalGenerator(def.BuildingPreview);
-                    AddCoalGenerator(def.BuildingUnderConstruction);
-                }
-            }
+            AddCoalGenerator(def.BuildingComplete);
+            AddCoalGenerator(def.BuildingPreview);
+            AddCoalGenerator(def.BuildingUnderConstruction);
         }
 
-        [HarmonyPatch(typeof(WoodGasGeneratorConfig), "DoPostConfigureComplete")]
-        public static class WoodBurnerCompletePatch
+        public static void WoodBurnerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddWoodGenerator(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddWoodGenerator(def.BuildingPreview);
-                    AddWoodGenerator(def.BuildingUnderConstruction);
-                }
-            }
+            AddWoodGenerator(def.BuildingComplete);
+            AddWoodGenerator(def.BuildingPreview);
+            AddWoodGenerator(def.BuildingUnderConstruction);
         }
 
-        [HarmonyPatch(typeof(PetroleumGeneratorConfig), "DoPostConfigureComplete")]
-        public static class OilBurnerCompletePatch
+        public static void OilBurnerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddOilGenerator(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddOilGenerator(def.BuildingPreview);
-                    AddOilGenerator(def.BuildingUnderConstruction);
-                }
-            }
+            AddOilGenerator(def.BuildingComplete);
+            AddOilGenerator(def.BuildingPreview);
+            AddOilGenerator(def.BuildingUnderConstruction);
         }
 
         [HarmonyPatch(typeof(MethaneGeneratorConfig), "CreateBuildingDef")]
@@ -83,27 +59,22 @@ namespace Nightinggale.PipedOutput
         {
             public static void Postfix(ref BuildingDef __result)
             {
+                Helpers.PrintDebug("GasBurnerDefPatch");
+
                 __result.OutputConduitType = ConduitType.None;
             }
         }
-        [HarmonyPatch(typeof(MethaneGeneratorConfig), "DoPostConfigureComplete")]
-        public static class GasBurnerCompletePatch
+        public static void GasBurnerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
+            AddGasGenerator(def.BuildingComplete);
+            AddGasGenerator(def.BuildingPreview);
+            AddGasGenerator(def.BuildingUnderConstruction);
+
+            // remove the existing dispenser because it is messing up the CO2 output and it's no longer needed
+            ConduitDispenser conduitDispenser = def.BuildingComplete.GetComponent<ConduitDispenser>();
+            if (conduitDispenser != null)
             {
-                AddGasGenerator(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddGasGenerator(def.BuildingPreview);
-                    AddGasGenerator(def.BuildingUnderConstruction);
-                }
-                // remove the existing dispenser because it is messing up the CO2 output and it's no longer needed
-                ConduitDispenser conduitDispenser = go.GetComponent<ConduitDispenser>();
-                if (conduitDispenser != null)
-                {
-                    UnityEngine.Object.DestroyImmediate(conduitDispenser);
-                }
+                UnityEngine.Object.DestroyImmediate(conduitDispenser);
             }
         }
 

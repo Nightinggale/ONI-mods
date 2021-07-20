@@ -12,19 +12,14 @@ namespace Nightinggale.PipedOutput
         }
 
 
-        [HarmonyPatch(typeof(GourmetCookingStationConfig), "DoPostConfigureComplete")]
-        public static class GourmetCookingCompletePatch
+
+
+
+        public static void GourmetCookingComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddGourmetCooking(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddGourmetCooking(def.BuildingPreview);
-                    AddGourmetCooking(def.BuildingUnderConstruction);
-                }
-            }
+            AddGourmetCooking(def.BuildingComplete);
+            AddGourmetCooking(def.BuildingPreview);
+            AddGourmetCooking(def.BuildingUnderConstruction);
         }
     }
 }

@@ -1,5 +1,10 @@
 ﻿# Changelog
 
+## [1.4.1.0]
+
+### Fixed
+- removed individual patches altogether and combined them in a single patch; this should fix crashes under Linux/Mac
+
 ## [1.4.0.0]
 
 ### Dev

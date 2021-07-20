@@ -20,24 +20,24 @@ namespace Nightinggale.PipedOutput
             return outputPort;
         }
 
-        [HarmonyPatch(typeof(OilWellCapConfig), "DoPostConfigureComplete")]
-        public static class OilWellCompletePatch
+
+
+
+
+        public static void OilWellComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                PortDisplayOutput outputPort = AddOilWell(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddOilWell(def.BuildingPreview);
-                    AddOilWell(def.BuildingUnderConstruction);
-                }
-                PipedDispenser dispenser = go.AddComponent<PipedDispenser>();
-                dispenser.elementFilter = new SimHashes[] { SimHashes.Methane };
-                dispenser.AssignPort(outputPort);
-                dispenser.alwaysDispense = true;
-                dispenser.SkipSetOperational = true;
-            }
+            Helpers.PrintDebug("OilWellCompletePatch");
+
+            PortDisplayOutput outputPort = AddOilWell(def.BuildingComplete);
+            AddOilWell(def.BuildingPreview);
+            AddOilWell(def.BuildingUnderConstruction);
+            PipedDispenser dispenser = def.BuildingComplete.AddComponent<PipedDispenser>();
+            dispenser.elementFilter = new SimHashes[] { SimHashes.Methane };
+            dispenser.AssignPort(outputPort);
+            dispenser.alwaysDispense = true;
+            dispenser.SkipSetOperational = true;
+
+            Helpers.PrintDebug("OilWellCompletePatch done");
         }
     }
 }

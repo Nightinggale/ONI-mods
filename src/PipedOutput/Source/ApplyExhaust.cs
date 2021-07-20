@@ -7,6 +7,8 @@ namespace Nightinggale.PipedOutput
     {
         internal static PortDisplayOutput AddOutput(GameObject go, CellOffset offset, SimHashes elementHash)
         {
+            Helpers.PrintDebug($"ApplyExhaust.AddOutput for {go.PrefabID()} with {elementHash}");
+
             Element element = ElementLoader.GetElement(elementHash.CreateTag());
             ConduitType conduitType = element.IsGas ? ConduitType.Gas : element.IsLiquid ? ConduitType.Liquid : ConduitType.Solid;
 
@@ -23,11 +25,11 @@ namespace Nightinggale.PipedOutput
             }
 
             PortDisplayOutput outputPort = new PortDisplayOutput(conduitType, offset, null, color);
-
             PortDisplayController controller = go.AddOrGet<PortDisplayController>();
             controller.Init(go);
-
             controller.AssignPort(go, outputPort);
+
+            Helpers.PrintDebug("ApplyExhaust.AddOutput add controller");
 
             ElementConverter converter = go.GetComponent<ElementConverter>();
             if (converter != null)
@@ -88,6 +90,7 @@ namespace Nightinggale.PipedOutput
                     }
                 }
             }
+            Helpers.PrintDebug("ApplyExhaust.AddOutput done");
             return outputPort;
         }
     }

@@ -31,63 +31,44 @@ namespace Nightinggale.PipedOutput
 
 
 
-        [HarmonyPatch(typeof(OilRefineryConfig), "DoPostConfigureComplete")]
-        public static class OilRefineryCompletePatch
+        public static void OilRefineryComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddOilRefinery(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddOilRefinery(def.BuildingPreview);
-                    AddOilRefinery(def.BuildingUnderConstruction);
-                }
-            }
+            AddOilRefinery(def.BuildingComplete);
+            AddOilRefinery(def.BuildingPreview);
+            AddOilRefinery(def.BuildingUnderConstruction);
         }
 
-        [HarmonyPatch(typeof(FertilizerMakerConfig), "DoPostConfigureComplete")]
-        public static class FertilizerMakerCompletePatch
+        public static void FertilizerMakerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                BuildingElementEmitter emitter = go.GetComponent<BuildingElementEmitter>();
-                if (emitter != null)
-                {
-                    ElementConverter converter = go.GetComponent<ElementConverter>();
-                    if (converter != null)
-                    {
-                        // Reserve memory for one more element in the array
-                        Array.Resize(ref converter.outputElements, converter.outputElements.Length + 1);
-                        // assign methane to what is now the last element in the array
-                        converter.outputElements[converter.outputElements.Length - 1] = new ElementConverter.OutputElement(emitter.emitRate, SimHashes.Methane, emitter.temperature);
+            Helpers.PrintDebug("FertilizerMakerCompletePatch");
 
-                        UnityEngine.Object.DestroyImmediate(emitter);
-                    }
-                }
-                AddFertilizerMaker(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
+            BuildingElementEmitter emitter = def.BuildingComplete.GetComponent<BuildingElementEmitter>();
+            if (emitter != null)
+            {
+                ElementConverter converter = def.BuildingComplete.GetComponent<ElementConverter>();
+                if (converter != null)
                 {
-                    AddFertilizerMaker(def.BuildingPreview);
-                    AddFertilizerMaker(def.BuildingUnderConstruction);
+                    // Reserve memory for one more element in the array
+                    Array.Resize(ref converter.outputElements, converter.outputElements.Length + 1);
+                    // assign methane to what is now the last element in the array
+                    converter.outputElements[converter.outputElements.Length - 1] = new ElementConverter.OutputElement(emitter.emitRate, SimHashes.Methane, emitter.temperature);
+
+                    UnityEngine.Object.DestroyImmediate(emitter);
                 }
             }
+
+            AddFertilizerMaker(def.BuildingComplete);
+            AddFertilizerMaker(def.BuildingPreview);
+            AddFertilizerMaker(def.BuildingUnderConstruction);
+
+            Helpers.PrintDebug("FertilizerMakerCompletePatch done");
         }
 
-        [HarmonyPatch(typeof(EthanolDistilleryConfig), "DoPostConfigureComplete")]
-        public static class EthanolDistilleryCompletePatch
+        public static void EthanolDistilleryComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddEthanolDistillery(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddEthanolDistillery(def.BuildingPreview);
-                    AddEthanolDistillery(def.BuildingUnderConstruction);
-                }
-            }
+            AddEthanolDistillery(def.BuildingComplete);
+            AddEthanolDistillery(def.BuildingPreview);
+            AddEthanolDistillery(def.BuildingUnderConstruction);
         }
 
         [HarmonyPatch(typeof(PolymerizerConfig), "CreateBuildingDef")]
@@ -95,22 +76,16 @@ namespace Nightinggale.PipedOutput
         {
             public static void Postfix(ref BuildingDef __result)
             {
+                Helpers.PrintDebug("PolymerDefPatch");
+
                 __result.OutputConduitType = ConduitType.None;
             }
         }
-        [HarmonyPatch(typeof(PolymerizerConfig), "DoPostConfigureComplete")]
-        public static class PolymerCompletePatch
+        public static void PolymerComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddPolymer(go);
-                BuildingDef def = go.GetComponent<BuildingComplete>().Def;
-                if (def != null)
-                {
-                    AddPolymer(def.BuildingPreview);
-                    AddPolymer(def.BuildingUnderConstruction);
-                }
-            }
+            AddPolymer(def.BuildingComplete);
+            AddPolymer(def.BuildingPreview);
+            AddPolymer(def.BuildingUnderConstruction);
         }
     }
 }
