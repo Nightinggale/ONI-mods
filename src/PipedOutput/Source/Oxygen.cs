@@ -66,6 +66,8 @@ namespace Nightinggale.PipedOutput
 
         public static void ElectrolyzerComplete(BuildingDef def)
         {
+            def.BuildingComplete.GetComponent<Electrolyzer>().maxMass = 4f;
+
             AddElectrolyzer(def.BuildingComplete);
             AddElectrolyzer(def.BuildingPreview);
             AddElectrolyzer(def.BuildingUnderConstruction);

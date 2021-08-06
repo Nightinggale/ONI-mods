@@ -1,5 +1,10 @@
 ﻿# Changelog
 
+## [1.4.2.0]
+
+### Changed
+- increased Electrolyzer max pressure from 1.8kg to 4kg
+
 ## [1.4.1.0]
 
 ### Fixed
