@@ -39,7 +39,7 @@
   <PropertyGroup>
     <SteamFolder>D:\Programme\Steam</SteamFolder>
     <ONIManaged Condition="Exists('$(SteamFolder)')">$(SteamFolder)\SteamApps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed</ONIManaged>
-    <ONIManaged Condition="!Exists('$(SteamFolder)')">..\..\$non-backup\ONI sources</ONIManaged>
+    <ONIManaged Condition="!Exists('$(SteamFolder)')">..\..\..\..\$non-backup\ONI sources</ONIManaged>
     <ModFolder>$(UserProfile)\Documents\Klei\OxygenNotIncluded\mods\dev</ModFolder>
   </PropertyGroup>
   <ItemGroup>

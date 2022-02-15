@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +12,17 @@ namespace Nightinggale.PipedOutput
     [HarmonyPatch(typeof(Assets), nameof(Assets.AddBuildingDef))]
     public class MasterPatch
     {
+        public static string filename = Path.Combine(Util.RootFolder(), "mods", "PipedOutput.json");
+        public static List<string> exclusion;
+
         public static void Prefix(BuildingDef def)
         {
+            if (exclusion == null)
+                exclusion = ReadSettings();
+
+            if (exclusion.Contains(def.PrefabID))
+                return;
+            
             if (def.PrefabID == GeneratorConfig.ID)
                 PowerBuildingGenerationPatches.CoalBurnerComplete(def);
             else if (def.PrefabID == WoodGasGeneratorConfig.ID)
@@ -44,6 +55,36 @@ namespace Nightinggale.PipedOutput
 
             else if (def.PrefabID == OilWellCapConfig.ID)
                 UtilityBuildingGenerationPatches.OilWellComplete(def);
+        }
+
+        private static List<string> ReadSettings()
+        {
+            List<string> exclusion;
+            try
+            {
+                exclusion = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(filename));
+                Debug.Log("[PipedOutput] read settings");
+            }
+            catch (Exception e1)
+            {
+                Debug.Log("[PipedOutput] couldn't read settings " + e1.ToString());
+
+                exclusion = new List<string>
+                {
+                    CookingStationConfig.ID,
+                    GourmetCookingStationConfig.ID
+                };
+
+                try
+                {
+                    File.WriteAllText(filename, JsonConvert.SerializeObject(exclusion));
+                }
+                catch (Exception e2)
+                {
+                    Debug.Log("[PipedOutput] couldn't write settings " + e2.ToString());
+                }
+            }
+            return exclusion;
         }
     }
 }
