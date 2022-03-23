@@ -50,7 +50,7 @@ namespace Nightinggale.PipedOutput
 
                     if (element.IsGas)
                     {
-                        Console.WriteLine("Outputing " + stored.ToString() + " of " + elementHash.CreateTag() + " at " + outputCell.ToString());
+                        //Console.WriteLine("Outputing " + stored.ToString() + " of " + elementHash.CreateTag() + " at " + outputCell.ToString());
                         SimMessages.ModifyMass(outputCell, stored, 255, disease, CellEventLogger.Instance.EnergyGeneratorModifyMass, temperature, elementHash);
                     }
                     else if (element.IsLiquid)

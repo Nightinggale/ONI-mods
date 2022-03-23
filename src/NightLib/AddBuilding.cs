@@ -32,6 +32,8 @@ namespace NightLib.AddBuilding
     {
         internal static void AddBuildingToPlanScreen(HashedString category, string buildingId, string parentId)
         {
+            ModUtil.AddBuildingToPlanScreen(category, buildingId);
+#if false
             int index = GetCategoryIndex(category, buildingId);
 
             if (index == -1)
@@ -53,10 +55,13 @@ namespace NightLib.AddBuilding
             }
 
             AddBuildingToPlanScreen(category, buildingId, indexBuilding);
+#endif
         }
 
         internal static void AddBuildingToPlanScreen(HashedString category, string buildingId, int? index = null)
         {
+            ModUtil.AddBuildingToPlanScreen(category, buildingId);
+#if false
             int CategoryIndex = GetCategoryIndex(category, buildingId);
 
             if (CategoryIndex == -1)
@@ -71,10 +76,13 @@ namespace NightLib.AddBuilding
             }
             
             (BUILDINGS.PLANORDER[CategoryIndex].data as IList<string>)?.Add(buildingId);
+#endif
         }
 
         internal static void ReplaceBuildingInPlanScreen(HashedString category, string buildingId, string parentId)
         {
+            throw new NotImplementedException();
+#if false
             int index = GetCategoryIndex(category, buildingId);
 
             if (index == -1)
@@ -96,6 +104,7 @@ namespace NightLib.AddBuilding
             }
 
             AddBuildingToPlanScreen(category, buildingId, indexBuilding);
+#endif
         }
 
         private static int GetCategoryIndex(HashedString category, string buildingId)

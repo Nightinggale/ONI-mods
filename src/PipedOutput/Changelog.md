@@ -1,5 +1,8 @@
 ﻿# Changelog
 
+## [1.4.3.1]
+- removed logging
+
 ## [1.4.3.0]
 - added option to exclude buildings found here: %userprofile%\documents\Klei\OxygenNotIncluded\mods\PipedOutput.json
 
