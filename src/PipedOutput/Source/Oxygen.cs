@@ -66,7 +66,9 @@ namespace Nightinggale.PipedOutput
 
         public static void ElectrolyzerComplete(BuildingDef def)
         {
-            def.BuildingComplete.GetComponent<Electrolyzer>().maxMass = 4f;
+            var electrolyzer = def.BuildingComplete.GetComponent<Electrolyzer>();
+            if (electrolyzer != null)
+                electrolyzer.maxMass = 4f;
 
             AddElectrolyzer(def.BuildingComplete);
             AddElectrolyzer(def.BuildingPreview);
@@ -75,6 +77,12 @@ namespace Nightinggale.PipedOutput
 
         public static void MineralDeoxidizerComplete(BuildingDef def)
         {
+            var electrolyzer = def.BuildingComplete.GetComponent<Electrolyzer>();
+            if (electrolyzer != null)
+                electrolyzer.maxMass = 4f;
+
+            def.BuildingComplete.ManualDeliveryForce();
+
             AddMineralDeoxidizer(def.BuildingComplete);
             AddMineralDeoxidizer(def.BuildingPreview);
             AddMineralDeoxidizer(def.BuildingUnderConstruction);
@@ -82,6 +90,12 @@ namespace Nightinggale.PipedOutput
 
         public static void RustComplete(BuildingDef def)
         {
+            var rustDeoxidizer = def.BuildingComplete.GetComponent<RustDeoxidizer>();
+            if (rustDeoxidizer != null)
+                rustDeoxidizer.maxMass = 4f;
+
+            def.BuildingComplete.ManualDeliveryForce();
+
             AddRust(def.BuildingComplete);
             AddRust(def.BuildingPreview);
             AddRust(def.BuildingUnderConstruction);

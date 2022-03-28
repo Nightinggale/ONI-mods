@@ -203,7 +203,7 @@ namespace NightLib
 
         private void OnConduitConnectionChanged(object data)
         {
-            base.Trigger(-2094018600, this.IsConnected);
+            base.Trigger((int)GameHashes.ConduitConnectionChanged, this.IsConnected);
         }
 
         private void ConduitUpdate(float dt)

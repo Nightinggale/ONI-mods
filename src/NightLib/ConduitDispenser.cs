@@ -109,7 +109,7 @@ namespace NightLib.SavegameUnsafe
 
         private void OnConduitConnectionChanged(object data)
         {
-            base.Trigger(-2094018600, this.IsConnected);
+            base.Trigger((int)GameHashes.ConduitConnectionChanged, this.IsConnected);
         }
 
         internal virtual CellOffset GetUtilityCellOffset()

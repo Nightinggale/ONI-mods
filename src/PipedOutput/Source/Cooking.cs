@@ -8,7 +8,7 @@ namespace Nightinggale.PipedOutput
     {
         public static void AddGourmetCooking(GameObject go)
         {
-            //ApplyExhaust.AddOutput(go, new CellOffset(1, 2), SimHashes.CarbonDioxide);
+            ApplyExhaust.AddOutput(go, new CellOffset(1, 2), SimHashes.CarbonDioxide);
         }
 
 
@@ -17,6 +17,8 @@ namespace Nightinggale.PipedOutput
 
         public static void GourmetCookingComplete(BuildingDef def)
         {
+            def.BuildingComplete.ManualDeliveryForce();
+
             AddGourmetCooking(def.BuildingComplete);
             AddGourmetCooking(def.BuildingPreview);
             AddGourmetCooking(def.BuildingUnderConstruction);
