@@ -20,7 +20,7 @@ namespace Nightinggale.PipedOutput
         public static void ManualDeliveryForce(this GameObject go)
         {
             foreach (var delivery in go.GetComponents<ManualDeliveryKG>())
-                delivery.operationalRequirement = FetchOrder2.OperationalRequirement.None;
+                delivery.operationalRequirement = Operational.State.None;
         }
     }
 }
