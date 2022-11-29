@@ -1,5 +1,8 @@
 ﻿# Changelog
 
+## [1.4.4.2]
+- removed changes to Electrolyzer max pressure; if you need this get CustomizedBuildings
+
 ## [1.4.4.1]
 - recompiled
 
