@@ -109,7 +109,7 @@ namespace NightLib.SavegameUnsafe
 
         private void OnConduitConnectionChanged(object data)
         {
-            base.Trigger(-2094018600, this.IsConnected);
+            base.Trigger((int)GameHashes.ConduitConnectionChanged, this.IsConnected);
         }
 
         internal virtual CellOffset GetUtilityCellOffset()
@@ -129,7 +129,7 @@ namespace NightLib.SavegameUnsafe
 
             ScenePartitionerLayer layer = GameScenePartitioner.Instance.objectLayers[(this.conduitType != ConduitType.Gas) ? 16 : 12];
             this.partitionerEntry = GameScenePartitioner.Instance.Add("ConduitConsumer.OnSpawn", base.gameObject, this.utilityCell, layer, new Action<object>(this.OnConduitConnectionChanged));
-            this.GetConduitManager().AddConduitUpdater(new Action<float>(this.ConduitUpdate), ConduitFlowPriority.Last);
+            this.GetConduitManager().AddConduitUpdater(new Action<float>(this.ConduitUpdate), ConduitFlowPriority.LastPostUpdate);
             this.OnConduitConnectionChanged(null);
         }
 

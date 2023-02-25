@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
 using NightLib;
 
@@ -20,37 +20,24 @@ namespace Nightinggale.PipedOutput
             return outputPort;
         }
 
-        [HarmonyPatch(typeof(OilWellCapConfig))]
-        [HarmonyPatch("DoPostConfigurePreview")]
-        public static class OilWellPreviewPatch
+
+
+
+
+        public static void OilWellComplete(BuildingDef def)
         {
-            public static void Postfix(GameObject go)
-            {
-                AddOilWell(go);
-            }
-        }
-        [HarmonyPatch(typeof(OilWellCapConfig))]
-        [HarmonyPatch("DoPostConfigureUnderConstruction")]
-        public static class OilWellUnderConstructionPatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                AddOilWell(go);
-            }
-        }
-        [HarmonyPatch(typeof(OilWellCapConfig))]
-        [HarmonyPatch("ConfigureBuildingTemplate")]
-        public static class OilWellCompletePatch
-        {
-            public static void Postfix(GameObject go)
-            {
-                PortDisplayOutput outputPort = AddOilWell(go);
-                PipedDispenser dispenser = go.AddComponent<PipedDispenser>();
-                dispenser.elementFilter = new SimHashes[] { SimHashes.Methane };
-                dispenser.AssignPort(outputPort);
-                dispenser.alwaysDispense = true;
-                dispenser.SkipSetOperational = true;
-            }
+            Helpers.PrintDebug("OilWellCompletePatch");
+
+            PortDisplayOutput outputPort = AddOilWell(def.BuildingComplete);
+            AddOilWell(def.BuildingPreview);
+            AddOilWell(def.BuildingUnderConstruction);
+            PipedDispenser dispenser = def.BuildingComplete.AddComponent<PipedDispenser>();
+            dispenser.elementFilter = new SimHashes[] { SimHashes.Methane };
+            dispenser.AssignPort(outputPort);
+            dispenser.alwaysDispense = true;
+            dispenser.SkipSetOperational = true;
+
+            Helpers.PrintDebug("OilWellCompletePatch done");
         }
     }
 }

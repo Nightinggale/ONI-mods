@@ -32,6 +32,8 @@ namespace NightLib.AddBuilding
     {
         internal static void AddBuildingToPlanScreen(HashedString category, string buildingId, string parentId)
         {
+            ModUtil.AddBuildingToPlanScreen(category, buildingId);
+#if false
             int index = GetCategoryIndex(category, buildingId);
 
             if (index == -1)
@@ -53,10 +55,13 @@ namespace NightLib.AddBuilding
             }
 
             AddBuildingToPlanScreen(category, buildingId, indexBuilding);
+#endif
         }
 
         internal static void AddBuildingToPlanScreen(HashedString category, string buildingId, int? index = null)
         {
+            ModUtil.AddBuildingToPlanScreen(category, buildingId);
+#if false
             int CategoryIndex = GetCategoryIndex(category, buildingId);
 
             if (CategoryIndex == -1)
@@ -71,10 +76,13 @@ namespace NightLib.AddBuilding
             }
             
             (BUILDINGS.PLANORDER[CategoryIndex].data as IList<string>)?.Add(buildingId);
+#endif
         }
 
         internal static void ReplaceBuildingInPlanScreen(HashedString category, string buildingId, string parentId)
         {
+            throw new NotImplementedException();
+#if false
             int index = GetCategoryIndex(category, buildingId);
 
             if (index == -1)
@@ -96,6 +104,7 @@ namespace NightLib.AddBuilding
             }
 
             AddBuildingToPlanScreen(category, buildingId, indexBuilding);
+#endif
         }
 
         private static int GetCategoryIndex(HashedString category, string buildingId)
@@ -115,44 +124,16 @@ namespace NightLib.AddBuilding
 
         internal static void IntoTechTree(string Tech, string BuildingID)
         {
-#if DLC1
-            int a = Db.Get().Techs.Count;
-            if (Db.Get().Techs.Get(Tech) != null)
-            {
-                Db.Get().Techs.Get(Tech).unlockedItemIDs.Add(BuildingID);
-            }
-#else
-            var TechGroup = new List<string>(Database.Techs.TECH_GROUPING[Tech]) { };
-            TechGroup.Insert(1, BuildingID);
-            Database.Techs.TECH_GROUPING[Tech] = TechGroup.ToArray();
-#endif
-            // TODO figure out how to control the order within a group
+            var tech = Db.Get().Techs.TryGet(Tech);
+            tech.unlockedItemIDs.Add(BuildingID);
         }
 
         internal static void ReplaceInTechTree(string Tech, string BuildingID, string old)
         {
-#if DLC1
-            if (Db.Get().Techs.TryGet(Tech) != null)
-            {
-                int iIndex = Db.Get().Techs.Get(Tech).unlockedItemIDs.FindIndex( x => x == old);
-                if (iIndex >= 0)
-                {
-                    Db.Get().Techs.Get(Tech).unlockedItemIDs[iIndex] = BuildingID;
-                }
-            }
-#else
-            var TechGroup = new List<string>(Database.Techs.TECH_GROUPING[Tech]) { };
-            int index = TechGroup.FindIndex(x => x == old);
-            if (index != -1)
-            {
-                TechGroup[index] = BuildingID;
-                Database.Techs.TECH_GROUPING[Tech] = TechGroup.ToArray();
-            }
-            else
-            {
-                IntoTechTree(Tech, BuildingID);
-            }
-#endif
+
+            var tech = Db.Get().Techs.TryGet(Tech);
+            var index = tech.unlockedItemIDs.IndexOf(old);
+            tech.unlockedItemIDs[index] = BuildingID;
         }
 
 
